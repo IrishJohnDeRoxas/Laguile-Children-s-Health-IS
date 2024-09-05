@@ -1,6 +1,6 @@
 from django import forms
-from .models import ChildModel, GuardianModel
-from django.forms.widgets import DateInput
+from .models import ChildModel, GuardianModel, GalleryModel
+from django.forms.widgets import FileInput, TextInput, Textarea, Select
 
 class LoginForm(forms.Form):
     username = forms.CharField(label='Username',
@@ -35,7 +35,7 @@ class ChildModelForm(forms.ModelForm):
                                choices=(('M', 'M'),('F', 'F')),
                                widget=forms.Select(attrs={'class': 'form-control'}))
     image = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control-file'}), required=False)
- 
+
  
 class GuardianModelForm(forms.ModelForm):
     class Meta:
@@ -52,3 +52,14 @@ class GuardianModelForm(forms.ModelForm):
                                 error_messages={'required': 'Please enter Last name.'},
                                 widget=forms.TextInput(attrs={'class': 'form-control'}))
     
+    
+# TODO add gallery form
+class GalleryModelForm(forms.ModelForm):
+  class Meta:
+    model = GalleryModel
+    fields = '__all__'
+    widgets = {
+          'image': FileInput(attrs={'class': 'custom-file-input', 'id':'imageInput'}),
+          'type': Select(attrs={'class': 'custom-select'}),
+          'date': TextInput( attrs={'class': 'form-control date', 'autocomplete': 'off'})
+        }

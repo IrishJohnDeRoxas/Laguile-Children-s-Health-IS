@@ -40,17 +40,17 @@
             <!-- Main Content -->
             <div id="content">
                 
-            {% include 'LCHIS/admin/topbar.html' %}
-            {% if error %}
-                <div id="error" class="card bg-danger text-white shadow mb-3 position-absolute" style="right: 22px;">
-                    <div class="card-body">
-                        {{error}}
+                {% include 'LCHIS/admin/topbar.html' %}
+                {% if error %}
+                    <div id="error" class="card bg-danger text-white shadow mb-3 position-absolute" style="right: 22px;">
+                        <div class="card-body">
+                            {{error}}
+                        </div>
                     </div>
-                </div>
-            {% endif %}
+                {% endif %}
 
-            {% block content %}
-            {% endblock %}
+                {% block content %}
+                {% endblock %}
 
             </div>
             <!-- End of Main Content -->

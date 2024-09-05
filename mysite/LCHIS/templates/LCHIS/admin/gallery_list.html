@@ -1,0 +1,133 @@
+{% extends 'LCHIS/admin/index.html' %} {% block content %}
+<div class="container-fluid">
+   <div class="d-flex justify-content-end mb-3">
+    <h1 class="h4 mb-0 text-gray-800 align-self-start mr-auto">Select image to change</h1>
+        <a class="btn btn-primary"  href="{% url 'gallery_detail' %}">
+            <i class="fa fa-plus"></i>
+                Add Image to Gallery
+        </a>
+   </div>
+  {% if page_obj %}
+    <form method="post" id="galleryForm">
+      {% csrf_token %}
+      <div class="row">
+        <div class="col-2">
+          <label for="option">Option</label>
+          <select class="form-control" id="option">
+            <option>-------</option>
+            <option>Delete</option>
+          </select>
+        </div>
+        <div class="col-1 align-self-end">
+          <button type="button" class="btn btn-light mt-3 border" id="go">Go</button>
+        </div>
+      </div>
+        
+
+    <table class="table table-striped mt-3">
+      <thead>
+        <tr>
+          <th scope="col">Image</th>
+          <th scope="col">Type</th>
+          <th scope="col">Date</th>
+          <th scope="col">
+            <input type="checkbox" id="select-all">
+            <label for="select-all">Select All</label>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for gallery in page_obj %}
+          <tr>
+            <td>
+              <a href="{% url 'gallery_detail' gallery.pk %}" class="nav-link text-dark p-0 m-0">
+                <img src="{{ gallery.image.url }}" class="img-thumbnail" alt="{{ gallery.image.name }}" style="width: 150px;">
+              </a>
+            </td>
+            <td class="align-middle">
+              <a href="{% url 'gallery_detail' gallery.pk %}" class="nav-link text-dark p-0 m-0 h-100">{{ gallery.get_type_display }}</a>
+            </td>
+            <td class="align-middle">
+              <a href="{% url 'gallery_detail' gallery.pk %}" class="nav-link text-dark p-0 m-0">{{ gallery.date }}</a>
+            </td>
+            <td class="align-middle">
+              <input type="checkbox" name="image_to_delete" value="{{ gallery.pk }}">
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    </form>
+  {% else %}
+    <table class="table">
+      <thead>
+        <th>No items</th>
+      </thead>
+    </table>
+  {% endif %}
+
+
+</div>
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    
+    {% if page_obj.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+      </li>
+    {% else %}
+      <li class="page-item disabled">
+        <a class="page-link" href="#">Previous</a>
+      </li>
+    {% endif %}
+    
+    <li class="page-item">
+      <span class="page-link text-dark" href="#">{{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+    </li>   
+      
+
+    {% if page_obj.has_next %}
+
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+      </li>
+    {% else %}
+      <li class="page-item disabled">
+        <a class="page-link" href="#">Next</a>
+      </li>
+    {% endif %}
+      
+    
+  </ul>
+</nav>
+<script>
+  const selectAll = document.getElementById('select-all')
+  selectAll.addEventListener('change', function() {
+    var checkboxes = document.querySelectorAll('input[name="image_to_delete"]');
+
+    for (var i = 0; i < checkboxes.length; i++) {
+      checkboxes[i].checked = this.checked;
+    }
+  });
+
+  const goButton = document.getElementById('go')
+  const optionSelect = document.querySelector('select#option')
+
+  goButton.addEventListener('click', (event)=>{
+    event.preventDefault()
+    goButton.blur()
+
+    const selectedIndex = optionSelect.selectedIndex;
+    const selectedValue = optionSelect.options[selectedIndex].value;
+    console.log(selectedValue)
+    if (selectedValue == 'Delete'){
+      document.getElementById('galleryForm').submit()
+    }
+
+  })
+
+</script>
+{% endblock %}
+
+

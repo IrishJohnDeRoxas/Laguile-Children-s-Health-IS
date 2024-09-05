@@ -11,14 +11,7 @@
       {% for child_form in child_form_set %}
         <div class="card shadow mb-5 child-form" id="id_child_card_form-0">
           <div class="card-header py-3 d-flex justify-content-between">
-            Child
-            <div class="form-check form-check-inline ml-auto">
-              
-              {% if forloop.counter0 != 0 %}
-              <i role="button" onclick="deleteForm(this)" class="fa-solid fa-circle-xmark"></i>
-              {% endif %}
-                
-            </div>
+            <h6 class="m-0 font-weight-bold text-primary">Child</h6>
           </div>
           <div class="card-body">
             <div class="form-row">
@@ -203,14 +196,14 @@
     </div>
 
 
-    <button onclick="addForm(this,'child')" type="button" class="btn btn-light shadow mb-3">Add another child form</button>
+    <button onclick="addForm(this,'child')" type="button" class="btn btn-primary shadow mb-3">Add another child form</button>
 
     {{ guardian_form_set.management_form }}
     <div id="guardian-form-card">
       {% for guardian_form in guardian_form_set %}
         <div class="card shadow mb-5 guardian-form" id="id_guardian_card_form-0">
           <div class="card-header py-3 d-flex justify-content-between">
-            Guardian
+            <h6 class="m-0 font-weight-bold text-primary">Guardian</h6>
           </div>
           <div class="card-body">
             <div class="form-row">
