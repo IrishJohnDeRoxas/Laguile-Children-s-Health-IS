@@ -14,8 +14,69 @@
             <h6 class="m-0 font-weight-bold text-primary">Child</h6>
           </div>
           <div class="card-body">
-            <div class="form-row">
-              <div class="col-md-4 mb-3">
+            <div class="row mb-4">
+              <div class="d-flex align-items-center" style="padding-left: 11px;">
+                {{ child_form.barangay.label }}
+              </div>
+              <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6 d-flex align-items-center">
+                {{ child_form.barangay }}
+                {% if child_form.barangay.errors %}
+                <div class="errorlist position-relative">
+                    {% for error in child_form.barangay.errors %}
+                    <span class="small text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+              </div>
+            </div>
+            <div class="row mb-4">
+              <div class="d-flex align-items-center" style="padding-left: 11px;">
+                {{ child_form.name_of_bhw.label }}
+              </div>
+              <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6 d-flex align-items-center">
+                {{ child_form.name_of_bhw }}
+                {% if child_form.name_of_bhw.errors %}
+                <div class="errorlist position-relative">
+                    {% for error in child_form.name_of_bhw.errors %}
+                    <span class="small text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+              </div>
+            </div>
+            <div class="row mb-4">
+              <div class="d-flex align-items-center" style="padding-left: 11px;">
+                {{ child_form.purok.label }}
+              </div>
+              <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6 d-flex align-items-center">
+                {{ child_form.purok }}
+                {% if child_form.purok.errors %}
+                <div class="errorlist position-relative">
+                    {% for error in child_form.purok.errors %}
+                    <span class="small text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+              </div>
+            </div>
+            <div class="row mb-4">
+              <div class="d-flex align-items-center" style="padding-left: 11px;">
+                {{ child_form.nurse.label }}
+              </div>
+              <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6 d-flex align-items-center">
+                {{ child_form.nurse }}
+                {% if child_form.nurse.errors %}
+                <div class="errorlist position-relative">
+                    {% for error in child_form.nurse.errors %}
+                    <span class="small text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+              </div>
+            </div>  
+          
+            <div class="row mt-5 mb-4">
+              <div class="col-md-4">
                 {{ child_form.first_name.label }}
                 {{ child_form.first_name }}
                 {% if child_form.first_name.errors %}
@@ -26,7 +87,7 @@
                   </div>
                 {% endif %}
               </div>
-              <div class="col-md-4 mb-3">
+              <div class="col-md-4">
                 {{ child_form.middle_name.label }}
                 {{ child_form.middle_name }}
                 {% if child_form.middle_name.errors %}
@@ -37,7 +98,7 @@
                   </div>
                 {% endif %}
               </div>
-              <div class="col-md-4 mb-3">
+              <div class="col-md-4">
                 {{ child_form.last_name.label }}
                 {{ child_form.last_name }}
                 {% if child_form.last_name.errors %}
@@ -49,51 +110,69 @@
                 {% endif %}
               </div>
     
-              <div class="col-md-12">
-                <div class="form-row mb-4">
-                  <div class="col-xlg-1 col-lg-2 col-md-3 col-sm-3">
-                    {{ child_form.birthdate.label }}
-                    {{ child_form.birthdate }}
-                    {% if child_form.birthdate.errors %}
-                      <div class="errorlist position-relative">
-                        {% for error in child_form.birthdate.errors %}
-                          <span class="small text-danger">{{ error }}</span>
-                        {% endfor %}
-                      </div>
-                    {% endif %}
-                  </div>
-                  <div class="col-xlg-1 col-lg-1 col-md-2 col-sm-3 col-3">
-                    {{ child_form.years_old.label }}
-                    {{ child_form.years_old }}
-                    {% if child_form.years_old.errors %}
-                      <div class="errorlist position-relative">
-                        {% for error in child_form.years_old.errors %}
-                          <span class="small text-danger">{{ error }}</span>
-                        {% endfor %}
-                      </div>
-                    {% endif %}
-                  </div>
-                  <div class="col-xlg-1 col-lg-1 col-md-2 col-sm-3 col-3">
-                    {{ child_form.months_old.label }}
-                    {{ child_form.months_old }}
-                    {% if child_form.months_old.errors %}
-                      <div class="errorlist position-relative">
-                        {% for error in child_form.months_old.errors %}
-                          <span class="small text-danger">{{ error }}</span>
-                        {% endfor %}
-                      </div>
-                    {% endif %}
-                  </div>
+
+            </div>
+            <div class="row mb-4">
+                <div class="col-xlg-1 col-lg-2 col-md-3 col-sm-3">
+                  {{ child_form.birthdate.label }}
+                  {{ child_form.birthdate }}
+                  {% if child_form.birthdate.errors %}
+                    <div class="errorlist position-relative">
+                      {% for error in child_form.birthdate.errors %}
+                        <span class="small text-danger">{{ error }}</span>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
                 </div>
-    
-                <div class="form-row mb-4" style="width: 100px;">
-                  {{ child_form.gender.label }}
-                  {{ child_form.gender }}
+                <div class="col-xlg-1 col-lg-1 col-md-2 col-sm-3 col-3">
+                  {{ child_form.years_old.label }}
+                  {{ child_form.years_old }}
+                  {% if child_form.years_old.errors %}
+                    <div class="errorlist position-relative">
+                      {% for error in child_form.years_old.errors %}
+                        <span class="small text-danger">{{ error }}</span>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
                 </div>
-                <div class="form-row"> 
-                  {{ child_form.image.label }}
-                  {{ child_form.image }}
+                <div class="col-xlg-1 col-lg-1 col-md-2 col-sm-3 col-3">
+                  {{ child_form.months_old.label }}
+                  {{ child_form.months_old }}
+                  {% if child_form.months_old.errors %}
+                    <div class="errorlist position-relative">
+                      {% for error in child_form.months_old.errors %}
+                        <span class="small text-danger">{{ error }}</span>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
                 </div>
+            </div>
+            <div class="row mb-4">
+              <div class="col-xlg-1 col-lg-1 col-md-6 col-sm-6">
+                {{ child_form.gender.label }}
+              {{ child_form.gender }}
+              </div>
+              
+            </div>
+            <div class="row mb-4">
+              <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6" style="padding-left: 11px;">
+                <div class="custom-file">
+                    {{ child_form.image }}
+                    <label class="custom-file-label">Choose image</label>
+                </div>
+                    <img id="imagePreview" src="#" class="img-thumbnail d-none"  style="width: 150px;" alt="Image Preview">
+                
+                {% if gallery %}
+                    <img id="dbImagePreview" src="{{ gallery.image.url }}" class="img-thumbnail" alt="{{ gallery.image.name }}" style="width: 150px;">
+                {% endif %}
+
+                {% if child_form.image.errors %}
+                <div class="errorlist position-relative">
+                    {% for error in child_form.image.errors %}
+                    <span class="small text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
               </div>
             </div>
           </div>

@@ -11,32 +11,39 @@ class LoginForm(forms.Form):
 class ChildModelForm(forms.ModelForm):
     class Meta:
       model=ChildModel
-      fields = ['first_name', 'middle_name', 'last_name', 'birthdate', 'years_old', 'months_old', 'gender', 'image']
+      fields = '__all__'
+      widgets = {
+        'barangay':TextInput( attrs={'class':'form-control'}),
+        'name_of_bhw':TextInput( attrs={'class':'form-control'}),
+        'purok':TextInput( attrs={'class':'form-control'}),
+        'nurse':TextInput( attrs={'class':'form-control'}),
+        
+        'first_name':TextInput( attrs={'class':'form-control'}),
+        'middle_name':TextInput( attrs={'class':'form-control'}),
+        'last_name':TextInput( attrs={'class':'form-control'}),
+        'birthdate':TextInput( attrs={'class':'form-control'}),
+        'image':FileInput(attrs={'class': 'custom-file-input', 'id':'imageInput'}),
+        'years_old':TextInput( attrs={'class':'form-control', 'readonly':'true'}),
+        'months_old':TextInput( attrs={'class':'form-control', 'readonly':'true'}),
+        'gender':Select(attrs={'class': 'custom-select'}),
+        }
+      error_messages = {
+      'first_name': {
+          'required': 'Please enter a first name.',
+          'invalid': 'First name must be a valid string.',
+          # Add more custom error messages here as needed
+        }
+      }
+      labels = {
+        'barangay':'Barangay:',
+        'nurse':'Name of Widwife/Nurse:',
+        'name_of_bhw':'Name of BHW:',
+        'purok':'Purok:',
+        'months_old':'Months\'s',
+        'years_old':'Year\'s',
+      }
       
-    first_name = forms.CharField(label='First Name',
-                                 error_messages={'required': 'Please enter first name.'},
-                                widget=forms.TextInput(attrs={'class': 'form-control'}))
-    middle_name = forms.CharField(label='Middle Name',
-                                  error_messages={'required': 'Please enter middle name.'},
-                                widget=forms.TextInput(attrs={'class': 'form-control'}))
-    last_name = forms.CharField(label='Last Name',
-                                error_messages={'required': 'Please enter Last name.'},
-                                widget  =forms.TextInput(attrs={'class': 'form-control'}))
-    birthdate = forms.CharField(label='Birthdate',
-                                error_messages={'required':'Birthdate is required'},
-                                widget=forms.TextInput(attrs={'class': 'form-control birthdate', 'autocomplete': 'off'}))
-    years_old = forms.IntegerField(label='Year',
-                             widget=forms.NumberInput(attrs={'class': 'form-control','readonly':'True'}),
-                              required=False)
-    months_old = forms.IntegerField(label='Month',
-                             widget=forms.NumberInput(attrs={'class': 'form-control','readonly':'True'}),
-                              required=False)
-    gender = forms.ChoiceField(label='Gender',
-                               choices=(('M', 'M'),('F', 'F')),
-                               widget=forms.Select(attrs={'class': 'form-control'}))
-    image = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control-file'}), required=False)
 
- 
 class GuardianModelForm(forms.ModelForm):
     class Meta:
       model=GuardianModel
@@ -52,8 +59,6 @@ class GuardianModelForm(forms.ModelForm):
                                 error_messages={'required': 'Please enter Last name.'},
                                 widget=forms.TextInput(attrs={'class': 'form-control'}))
     
-    
-# TODO add gallery form
 class GalleryModelForm(forms.ModelForm):
   class Meta:
     model = GalleryModel

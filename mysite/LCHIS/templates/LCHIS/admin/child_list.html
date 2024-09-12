@@ -1,5 +1,23 @@
 {% extends 'LCHIS/admin/index.html' %} {% block content %}
 <div class="container-fluid">
+
+    <!-- Topbar Search -->
+    <form class="mb-4">
+      <div class="input-group">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search for..."
+          aria-label="Search"
+          aria-describedby="basic-addon2"
+        />
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="button">
+            <i class="fas fa-search fa-sm"></i>
+          </button>
+        </div>
+      </div>
+    </form>
    <div class="d-flex justify-content-end mb-3">
     <h1 class="h4 mb-0 text-gray-800 align-self-start mr-auto">Select child to change</h1>
         <a class="btn btn-primary"  href="{% url 'child_detail' %}">
@@ -8,52 +26,61 @@
         </a>
    </div>
   {% if guardians %}
-  <!-- Topbar Search -->
-  <form class="">
-    <div class="input-group">
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Search for..."
-        aria-label="Search"
-        aria-describedby="basic-addon2"
-      />
-      <div class="input-group-append">
-        <button class="btn btn-primary" type="button">
-          <i class="fas fa-search fa-sm"></i>
-        </button>
+
+  <form method="post" id="childForm">
+
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-2">
+        <label for="option">Option</label>
+        <select class="form-control" id="option">
+          <option>-------</option>
+          <option>Delete</option>
+        </select>
+      </div>
+      <div class="col-1 align-self-end">
+        <button type="button" class="btn btn-light mt-3 border" id="go">Go</button>
       </div>
     </div>
+
+    <table class="table table-striped mt-3">
+      <thead>
+        <tr>
+          <th scope="col">First name</th>
+          <th scope="col">Middle Name</th>
+          <th scope="col">Last Name</th>
+          <th scope="col">Guardian</th>
+          <th scope="col">
+            <input type="checkbox" id="select-all">
+            <label for="select-all">Select All</label>
+          </th>
+          </tr>
+      </thead>
+      <tbody>
+        {% for guardian in page_obj %}
+            {% for child in guardian.children.all %}
+               <tr>
+                  <td><a href="" class="nav-link text-dark p-0 m-0">{{ child.first_name }}</a></td>
+                  <td><a href="" class="nav-link text-dark p-0 m-0">{{ child.middle_name }}</a></td>
+                  <td><a href="" class="nav-link text-dark p-0 m-0">{{ child.last_name }}</a></td>
+                  <td>
+                      <a href="" class="nav-link text-dark p-0 m-0">{{guardian.first_name}}</a>
+                  </td>
+                  <td class="align-middle">
+                    <input type="checkbox" name="image_to_delete" value="{{ gallery.pk }}">
+                  </td>
+              </tr>
+  
+              {% endfor %}
+          
+        {% endfor %}
+        
+      </tbody>
+    </table>
   </form>
 
-  <table class="table table-striped mt-3">
-    <thead>
-      <tr>
-        <th scope="col">First name</th>
-        <th scope="col">Middle Name</th>
-        <th scope="col">Last Name</th>
-        <th scope="col">Guardian</th>
-        </tr>
-    </thead>
-    <tbody>
-      {% for guardian in page_obj %}
-          {% for child in guardian.children.all %}
-             <tr>
-                <td><a href="" class="nav-link text-dark p-0 m-0">{{ child.first_name }}</a></td>
-                <td><a href="" class="nav-link text-dark p-0 m-0">{{ child.middle_name }}</a></td>
-                <td><a href="" class="nav-link text-dark p-0 m-0">{{ child.last_name }}</a></td>
-                <td>
-                  <a href="" class="nav-link text-dark p-0 m-0">{{guardian.first_name}}</a>
-              </td>
-            </tr>
-
-            {% endfor %}
-        
-      {% endfor %}
-      
-    </tbody>
-  </table>
-  {% else %} 
+    {% else %} 
+   
   <table class="table">
     <thead>
         <th>
@@ -61,14 +88,8 @@
         </th>
     </thead>
   </table>
-
-  
-  
   {% endif %}
 </div>
-
-
-
 
 <nav aria-label="Page navigation example">
   <ul class="pagination justify-content-center">
@@ -103,4 +124,31 @@
   </ul>
 </nav>
 
+<script>
+  const selectAll = document.getElementById('select-all')
+  selectAll.addEventListener('change', function() {
+    var checkboxes = document.querySelectorAll('input[name="image_to_delete"]');
+
+    for (var i = 0; i < checkboxes.length; i++) {
+      checkboxes[i].checked = this.checked;
+    }
+  });
+
+  const goButton = document.getElementById('go')
+  const optionSelect = document.querySelector('select#option')
+
+  goButton.addEventListener('click', (event)=>{
+    event.preventDefault()
+    goButton.blur()
+
+    const selectedIndex = optionSelect.selectedIndex;
+    const selectedValue = optionSelect.options[selectedIndex].value;
+    console.log(selectedValue)
+    if (selectedValue == 'Delete'){
+      document.getElementById('childForm').submit()
+    }
+
+  })
+
+</script>
 {% endblock %}
