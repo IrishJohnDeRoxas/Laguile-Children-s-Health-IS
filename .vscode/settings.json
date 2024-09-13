@@ -1,5 +1,11 @@
 {
     "cSpell.words": [
         "LCHIS"
-    ]
+    ],
+    "editor.fontSize": 19,
+    "[python]": {
+        "diffEditor.ignoreTrimWhitespace": false,
+        "editor.formatOnType": true,
+        "editor.rulers":[79] ,
+    }
 }

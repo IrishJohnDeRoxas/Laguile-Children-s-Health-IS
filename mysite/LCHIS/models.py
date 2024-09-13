@@ -17,10 +17,10 @@ class ChildModel(models.Model):
     first_name = models.CharField(max_length=200)
     middle_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
-    image = models.ImageField(null=True, upload_to='child/')
+    image = models.ImageField(null=True, upload_to='child/', blank=True)
     birthdate = models.CharField(max_length=200)
-    years_old = models.PositiveIntegerField(null=True)
-    months_old = models.PositiveIntegerField(null=True)
+    years_old = models.PositiveIntegerField(null=True, blank=True)
+    months_old = models.PositiveIntegerField(null=True, blank=True)
     gender = models.CharField(max_length=1, choices=genderChoices, default='M')
     
     bcg = models.CharField(max_length=200, null=True)
@@ -66,7 +66,6 @@ class GuardianModel(models.Model):
 #     header = models.TextField(null=True)
 #     description = models.TextField(null=True)
 
-# TODO add gallery model
 class GalleryModel(models.Model):
     typeChoices = (
         ('health-center', 'Health Center'),

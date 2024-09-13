@@ -81,7 +81,7 @@ def child_list(request):
 
 @login_required(login_url='/login/')
 def child_detail(request, child_id = None):
-    ChildFormSet = formset_factory(ChildModelForm)
+    ChildFormSet = formset_factory(ChildModelForm, extra=0 ,min_num=1)
     GuardianFormSet = formset_factory(GuardianModelForm, extra=0 ,min_num=1)
     
     arguments = {
@@ -93,7 +93,7 @@ def child_detail(request, child_id = None):
     if request.method == 'POST':
         child_form_set = ChildFormSet(request.POST, request.FILES, prefix='child')
         guardian_form_set = GuardianFormSet(request.POST, request.FILES, prefix='guardian')
-        print(guardian_form_set.is_valid())
+        print(guardian_form_set.errors)
         
         if child_form_set.is_valid() and guardian_form_set.is_valid():
             

@@ -28,11 +28,30 @@ class ChildModelForm(forms.ModelForm):
         'gender':Select(attrs={'class': 'custom-select'}),
         }
       error_messages = {
+      'name_of_bhw': {
+          'required': 'Please enter the name of BHW .',
+          'invalid': 'Name must be a valid string.',
+        },
+      'purok': {
+          'required': 'Please enter the name of purok .',
+          'invalid': 'Purok must be a valid string.',
+        },
+      'nurse': {
+          'required': 'Please enter the name of nurse/midwife .',
+          'invalid': 'Nurse/midwife must be a valid string.',
+        },
       'first_name': {
           'required': 'Please enter a first name.',
           'invalid': 'First name must be a valid string.',
-          # Add more custom error messages here as needed
-        }
+        },
+      'middle_name': {
+          'required': 'Please enter a middle name.',
+          'invalid': 'Middle name must be a valid string.',
+        },
+      'last_name': {
+          'required': 'Please enter a last name.',
+          'invalid': 'Last name must be a valid string.',
+        },
       }
       labels = {
         'barangay':'Barangay:',
@@ -41,23 +60,34 @@ class ChildModelForm(forms.ModelForm):
         'purok':'Purok:',
         'months_old':'Months\'s',
         'years_old':'Year\'s',
-      }
-      
+      }     
 
 class GuardianModelForm(forms.ModelForm):
     class Meta:
       model=GuardianModel
-      fields = ['first_name', 'middle_name', 'last_name', ]
-      
-    first_name = forms.CharField(label='First Name',
-                                 error_messages={'required': 'Please enter guardian first name.'},
-                                widget=forms.TextInput(attrs={'class': 'form-control'}))
-    middle_name = forms.CharField(label='Middle Name',
-                                  error_messages={'required': 'Please enter middle name.'},
-                                widget=forms.TextInput(attrs={'class': 'form-control'}))
-    last_name = forms.CharField(label='Last Name',
-                                error_messages={'required': 'Please enter Last name.'},
-                                widget=forms.TextInput(attrs={'class': 'form-control'}))
+      fields = '__all__'
+      widgets = {
+        'first_name': TextInput( attrs={'class': 'form-control', 'required':''}),
+        'middle_name': TextInput( attrs={'class': 'form-control'}),
+        'last_name': TextInput( attrs={'class': 'form-control'}),
+      }
+      error_messages = {
+      'first_name': {
+          'required': 'Please enter a first name.',
+          'invalid': 'First name must be a valid string.',
+          # Add more custom error messages here as needed
+        },
+      'middle_name': {
+          'required': 'Please enter a middle name.',
+          'invalid': 'Middle name must be a valid string.',
+          # Add more custom error messages here as needed
+        },
+      'last_name': {
+          'required': 'Please enter a last name.',
+          'invalid': 'Last name must be a valid string.',
+          # Add more custom error messages here as needed
+        },
+      }
     
 class GalleryModelForm(forms.ModelForm):
   class Meta:
