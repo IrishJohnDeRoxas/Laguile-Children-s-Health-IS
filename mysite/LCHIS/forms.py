@@ -7,7 +7,7 @@ class LoginForm(forms.Form):
                                 widget=forms.TextInput(attrs={'class': 'form-control'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}),
                               label='Password')
-    
+# TODO add required on all of the fields 
 class ChildModelForm(forms.ModelForm):
     class Meta:
       model=ChildModel

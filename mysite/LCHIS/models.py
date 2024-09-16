@@ -2,7 +2,7 @@ from django.db import models
 import os
 # Create your models here.
 
-# TODO update child model
+# TODO Add Blank False on the required fields
 class ChildModel(models.Model):
     genderChoices = (
         ('M', 'Male'),

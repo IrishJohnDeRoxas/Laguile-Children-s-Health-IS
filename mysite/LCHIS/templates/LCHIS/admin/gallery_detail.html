@@ -4,25 +4,27 @@
 <link href="{% static 'vendor/datepicker/datepicker.min.css' %}" rel="stylesheet">
 <!-- Date picker -->
 <script src="{% static 'vendor/datepicker/datepicker.min.js' %}"></script>
+<!-- TODO Use bootstrap 4 for form validation -->
+<!-- TODO Use bootstrap 4 progress bar -->
 <div class="modal fade" id="confirmDelete" tabindex="-1" aria-labelledby="confirmDelete" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Delete the image?</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete the image?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                This will permanently delete the image, confirm to delete the image.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="confirmDelete">Confirm</button>
+            </div>
         </div>
-        <div class="modal-body">
-          This will permanently delete the image, confirm to delete the image.
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id="confirmDelete">Confirm</button>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
 <div class="container-fluid">
     <h1 class="h4 mb-0 text-gray-800 mb-5">Add image</h1>
     <form method="post" class="form-group" enctype="multipart/form-data" id="gallery-form">
@@ -44,10 +46,12 @@
                                 {{ form.image }}
                                 <label class="custom-file-label">Choose image</label>
                             </div>
-                                <img id="imagePreview" src="#" class="img-thumbnail d-none"  style="width: 150px;" alt="Image Preview">
-                            
+                            <img id="imagePreview" src="#" class="img-thumbnail d-none" style="width: 150px;"
+                                alt="Image Preview">
+
                             {% if gallery %}
-                                <img id="dbImagePreview" src="{{ gallery.image.url }}" class="img-thumbnail" alt="{{ gallery.image.name }}" style="width: 150px;">
+                            <img id="dbImagePreview" src="{{ gallery.image.url }}" class="img-thumbnail"
+                                alt="{{ gallery.image.name }}" style="width: 150px;">
                             {% endif %}
 
                             {% if form.image.errors %}
@@ -102,15 +106,17 @@
         </div>
         <div class="card-body">
             <div class="controls">
-                
+
                 {% if gallery %}
-                    <button id="save" type="button" class="btn btn-primary mr-2">Save</button>
-                    <button id="delete" type="button" class="btn btn-danger mr-2" data-toggle="modal" data-target="#confirmDelete">Delete</button>
+                <button id="save" type="button" class="btn btn-primary mr-2">Save</button>
+                <button id="delete" type="button" class="btn btn-danger mr-2" data-toggle="modal"
+                    data-target="#confirmDelete">Delete</button>
                 {% else %}
-                    <button id="save" type="button" class="btn btn-primary mr-2">Save</button>
-                    <button id="save-and-add-another" type="button" class="btn btn-primary mr-2">Save and add
-                        another</button>
-                    <button type="button" id="save-and-edit-another" class="btn btn-primary">Save and continue editing</button>
+                <button id="save" type="button" class="btn btn-primary mr-2">Save</button>
+                <button id="save-and-add-another" type="button" class="btn btn-primary mr-2">Save and add
+                    another</button>
+                <button type="button" id="save-and-edit-another" class="btn btn-primary">Save and continue
+                    editing</button>
                 {% endif %}
             </div>
         </div>
@@ -147,16 +153,16 @@
         document.getElementById("gallery-form").submit();
     });
 
-    if(saveAndAddButton){
+    if (saveAndAddButton) {
         saveAndAddButton.addEventListener("click", function () {
-        saveAndAddInput.value = 1
-        formSubmitted = true;
-        document.getElementById("gallery-form").submit();
+            saveAndAddInput.value = 1
+            formSubmitted = true;
+            document.getElementById("gallery-form").submit();
 
         });
     }
-    
-    if (saveAndEditButton){
+
+    if (saveAndEditButton) {
         saveAndEditButton.addEventListener("click", function () {
             saveAndEditInput.value = 1
             formSubmitted = true;
@@ -164,8 +170,8 @@
         });
     }
 
-    if (confirmDeleteButton){
-        confirmDeleteButton.addEventListener('click',() => {
+    if (confirmDeleteButton) {
+        confirmDeleteButton.addEventListener('click', () => {
             confirmDeleteInput.value = 1
             formSubmitted = true;
             document.getElementById("gallery-form").submit();
@@ -211,9 +217,9 @@
         const reader = new FileReader();
 
         reader.onload = (event) => {
-          imagePreview.src = event.target.result;
+            imagePreview.src = event.target.result;
         };
-      
+
         reader.readAsDataURL(selectedFile);
         imagePreview.classList.add('d-block')
         dbImagePreview.classList.add('d-none')
