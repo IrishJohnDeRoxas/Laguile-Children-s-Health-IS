@@ -1,132 +1,107 @@
 {% extends 'LCHIS/admin/index.html' %}
 {% block content %}
 {% load static %}
-<!-- TODO Use bootstrap 4 for form validation -->
-<!-- TODO Use bootstrap 4 progress bar -->
+<!-- TODO Use bootstrap 4 for Guardian form validation -->
+<!-- TODO Refactor the empty forms -->
 <script src="{% static 'vendor/htmx/htmx.min.js' %}"></script>
-<div class="container-fluid">
+
+<div class="d-flex justify-content-center align-items-center" style="height: 85vh;" id="pre-loader">
+  <div style="width: 100px;">
+    <img src="{% static 'img/svg/tube-spinner.svg' %}" alt="pre-loader">
+  </div>
+</div>
+
+<div class="container-fluid d-none" id="child-form-cards">
+
   <h1 class="h4 mb-0 text-gray-800 mb-5">Add child</h1>
-  <form method="post" class="form-group" enctype="multipart/form-data" id="child-form">
+  <form method="post" class="form-group needs-validation" enctype="multipart/form-data" novalidate>
     {% csrf_token %}
     {{ child_form_set.management_form }}
-    <div class="d-none" id="child-form-card">
+    <div id="child-form-card">
       {% for child_form in child_form_set %}
       <div class="card shadow mb-5 child-form" id="id_child_card_form-0">
         <div class="card-header py-3 d-flex justify-content-between">
           <h6 class="m-0 font-weight-bold text-primary">Child</h6>
         </div>
         <div class="card-body">
-          <div class="row mb-4">
-            <div class="d-flex align-items-center" style="padding-left: 11px;">
+          <div class="form-row mb-4">
+            <div class="d-flex align-items-center" style="padding-left:6px;">
               {{ child_form.barangay.label }}
             </div>
-            <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6 d-flex align-items-center">
+            <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6">
               {{ child_form.barangay }}
-              {% if child_form.barangay.errors %}
-              <div class="errorlist position-relative">
-                {% for error in child_form.barangay.errors %}
-                <span class="small text-danger">{{ error }}</span>
-                {% endfor %}
+              <div class="invalid-feedback">
+                Please add a barangay.
               </div>
-              {% endif %}
             </div>
           </div>
-          <div class="row mb-4">
-            <div class="d-flex align-items-center" style="padding-left: 11px;">
+          <div class="form-row mb-4">
+            <div class="d-flex align-items-center" style="padding-left:6px;">
               {{ child_form.name_of_bhw.label }}
             </div>
-            <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6 d-flex align-items-center">
+            <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6">
               {{ child_form.name_of_bhw }}
-              {% if child_form.name_of_bhw.errors %}
-              <div class="errorlist position-relative">
-                {% for error in child_form.name_of_bhw.errors %}
-                <span class="small text-danger">{{ error }}</span>
-                {% endfor %}
+              <div class="invalid-feedback">
+                Please add a BHW name.
               </div>
-              {% endif %}
             </div>
           </div>
-          <div class="row mb-4">
-            <div class="d-flex align-items-center" style="padding-left: 11px;">
+          <div class="form-row mb-4">
+            <div class="d-flex align-items-center" style="padding-left:6px;">
               {{ child_form.purok.label }}
             </div>
-            <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6 d-flex align-items-center">
+            <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6">
               {{ child_form.purok }}
-              {% if child_form.purok.errors %}
-              <div class="errorlist position-relative">
-                {% for error in child_form.purok.errors %}
-                <span class="small text-danger">{{ error }}</span>
-                {% endfor %}
+              <div class="invalid-feedback">
+                Please add a purok.
               </div>
-              {% endif %}
             </div>
           </div>
-          <div class="row mb-4">
-            <div class="d-flex align-items-center" style="padding-left: 11px;">
+          <div class="form-row mb-4">
+            <div class="d-flex align-items-center" style="padding-left:6px;">
               {{ child_form.nurse.label }}
             </div>
-            <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6 d-flex align-items-center">
+            <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6">
               {{ child_form.nurse }}
-              {% if child_form.nurse.errors %}
-              <div class="errorlist position-relative">
-                {% for error in child_form.nurse.errors %}
-                <span class="small text-danger">{{ error }}</span>
-                {% endfor %}
+              <div class="invalid-feedback">
+                Please add a midwife/nurse.
               </div>
-              {% endif %}
             </div>
           </div>
-
-          <div class="row mt-5 mb-4">
+          <!-- Child's name -->
+          <div class="form-row mt-5 mb-4">
             <div class="col-md-4">
               {{ child_form.first_name.label }}
               {{ child_form.first_name }}
-              {% if child_form.first_name.errors %}
-              <div class="errorlist position-relative">
-                {% for error in child_form.first_name.errors %}
-                <span class="small text-danger">{{ error }}</span>
-                {% endfor %}
+              <div class="invalid-feedback">
+                Please add a first name.
               </div>
-              {% endif %}
             </div>
             <div class="col-md-4">
               {{ child_form.middle_name.label }}
               {{ child_form.middle_name }}
-              {% if child_form.middle_name.errors %}
-              <div class="errorlist position-relative">
-                {% for error in child_form.middle_name.errors %}
-                <span class="small text-danger">{{ error }}</span>
-                {% endfor %}
+              <div class="invalid-feedback">
+                Please add a middle name.
               </div>
-              {% endif %}
             </div>
             <div class="col-md-4">
               {{ child_form.last_name.label }}
               {{ child_form.last_name }}
-              {% if child_form.last_name.errors %}
-              <div class="errorlist position-relative">
-                {% for error in child_form.last_name.errors %}
-                <span class="small text-danger">{{ error }}</span>
-                {% endfor %}
+              <div class="invalid-feedback">
+                Please add a last name.
               </div>
-              {% endif %}
             </div>
-
-
           </div>
-          <div class="row mb-4">
-            <div class="col-xlg-1 col-lg-2 col-md-3 col-sm-3">
+          <!-- End of Child's name -->
+          <div class="form-row mb-4">
+            <div class="col-xlg-1 col-lg-2  col-md-6">
               {{ child_form.birthdate.label }}
               {{ child_form.birthdate }}
-              {% if child_form.birthdate.errors %}
-              <div class="errorlist position-relative">
-                {% for error in child_form.birthdate.errors %}
-                <span class="small text-danger">{{ error }}</span>
-                {% endfor %}
+              <div class="invalid-feedback">
+                Please add a birthdate.
               </div>
-              {% endif %}
             </div>
-            <div class="col-xlg-1 col-lg-1 col-md-2 col-sm-3 col-3">
+            <div class="col-xlg-1 col-lg-1 col-md-6">
               {{ child_form.years_old.label }}
               {{ child_form.years_old }}
               {% if child_form.years_old.errors %}
@@ -137,7 +112,7 @@
               </div>
               {% endif %}
             </div>
-            <div class="col-xlg-1 col-lg-1 col-md-2 col-sm-3 col-3">
+            <div class="col-xlg-1 col-lg-1 col-md-6">
               {{ child_form.months_old.label }}
               {{ child_form.months_old }}
               {% if child_form.months_old.errors %}
@@ -149,15 +124,15 @@
               {% endif %}
             </div>
           </div>
-          <div class="row mb-4">
+          <div class="form-row mb-4">
             <div class="col-xlg-1 col-lg-1 col-md-6 col-sm-6">
               {{ child_form.gender.label }}
               {{ child_form.gender }}
             </div>
 
           </div>
-          <div class="row mb-4">
-            <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6" style="padding-left: 11px;">
+          <div class="form-row mb-4">
+            <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6" style="padding-left:6px;">
               <div class="custom-file">
                 {{ child_form.image }}
                 <label class="custom-file-label">Choose image</label>
@@ -168,14 +143,76 @@
               <img id="dbImagePreview" src="{{ gallery.image.url }}" class="img-thumbnail"
                 alt="{{ gallery.image.name }}" style="width: 150px;">
               {% endif %}
-
-              {% if child_form.image.errors %}
-              <div class="errorlist position-relative">
-                {% for error in child_form.image.errors %}
-                <span class="small text-danger">{{ error }}</span>
-                {% endfor %}
-              </div>
-              {% endif %}
+            </div>
+          </div>
+          <!-- Child's Vaccines -->
+          <div class="form-row mb-4">
+            <div class="col-xlg-1 col-lg-3 col-md-6">
+              {{ child_form.bcg.label }}
+              {{ child_form.bcg }}
+            </div>
+            <div class="col-xlg-1 col-lg-3 col-md-6">
+              {{ child_form.hepa_b.label }}
+              {{ child_form.hepa_b }}
+            </div>
+            <div class="col-xlg-1 col-lg-3 col-md-6">
+              {{ child_form.penta_1.label }}
+              {{ child_form.penta_1 }}
+            </div>
+            <div class="col-xlg-1 col-lg-3 col-md-6">
+              {{ child_form.penta_2.label }}
+              {{ child_form.penta_2 }}
+            </div>
+            <div class="col-xlg-1 col-lg-3 col-md-6">
+              {{ child_form.penta_3.label }}
+              {{ child_form.penta_3 }}
+            </div>
+            <div class="col-xlg-1 col-lg-3 col-md-6">
+              {{ child_form.opv_1.label }}
+              {{ child_form.opv_1 }}
+            </div>
+            <div class="col-xlg-1 col-lg-3 col-md-6">
+              {{ child_form.opv_2.label }}
+              {{ child_form.opv_2 }}
+            </div>
+            <div class="col-xlg-1 col-lg-3 col-md-6">
+              {{ child_form.opv_3.label }}
+              {{ child_form.opv_3 }}
+            </div>
+            <div class="col-xlg-1 col-lg-3 col-md-6">
+              {{ child_form.ipv_1.label }}
+              {{ child_form.ipv_1 }}
+            </div>
+            <div class="col-xlg-1 col-lg-3 col-md-6">
+              {{ child_form.ipv_2.label }}
+              {{ child_form.ipv_2 }}
+            </div>
+            <div class="col-xlg-1 col-lg-3 col-md-6">
+              {{ child_form.pcv_1.label }}
+              {{ child_form.pcv_1 }}
+            </div>
+            <div class="col-xlg-1 col-lg-3 col-md-6">
+              {{ child_form.pcv_2.label }}
+              {{ child_form.pcv_2 }}
+            </div>
+            <div class="col-xlg-1 col-lg-3 col-md-6">
+              {{ child_form.pcv_3.label }}
+              {{ child_form.pcv_3 }}
+            </div>
+            <div class="col-xlg-1 col-lg-3 col-md-6">
+              {{ child_form.mcv_1.label }}
+              {{ child_form.mcv_1 }}
+            </div>
+            <div class="col-xlg-1 col-lg-3 col-md-6">
+              {{ child_form.mcv_2.label }}
+              {{ child_form.mcv_2 }}
+            </div>
+          </div>
+          <!-- End of Child's Vaccines -->
+          <div class="form-row">
+            <div class="col-xlg-1 col-lg-3 col-md-6">
+              {{ child_form.remarks.label }}
+              {{ child_form.remarks }}
             </div>
           </div>
         </div>
@@ -191,11 +228,11 @@
           </div>
         </div>
         <div class="card-body">
-          <div class="row mb-4">
-            <div class="d-flex align-items-center" style="padding-left: 11px;">
+          <div class="form-row mb-4">
+            <div class="d-flex align-items-center" style="padding-left:6px;">
               {{ child_form_set.empty_form.barangay.label }}
             </div>
-            <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6 d-flex align-items-center">
+            <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6">
               {{ child_form_set.empty_form.barangay }}
               {% if child_form_set.empty_form.barangay.errors %}
               <div class="errorlist position-relative">
@@ -206,11 +243,11 @@
               {% endif %}
             </div>
           </div>
-          <div class="row mb-4">
-            <div class="d-flex align-items-center" style="padding-left: 11px;">
+          <div class="form-row mb-4">
+            <div class="d-flex align-items-center" style="padding-left:6px;">
               {{ child_form_set.empty_form.name_of_bhw.label }}
             </div>
-            <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6 d-flex align-items-center">
+            <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6">
               {{ child_form_set.empty_form.name_of_bhw }}
               {% for child_form in child_form_set %}
               {% if child_form.name_of_bhw.errors %}
@@ -224,11 +261,11 @@
 
             </div>
           </div>
-          <div class="row mb-4">
-            <div class="d-flex align-items-center" style="padding-left: 11px;">
+          <div class="form-row mb-4">
+            <div class="d-flex align-items-center" style="padding-left:6px;">
               {{ child_form_set.empty_form.purok.label }}
             </div>
-            <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6 d-flex align-items-center">
+            <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6">
               {{ child_form_set.empty_form.purok }}
               {% if child_form_set.empty_form.purok.errors %}
               <div class="errorlist position-relative">
@@ -239,11 +276,11 @@
               {% endif %}
             </div>
           </div>
-          <div class="row mb-4">
-            <div class="d-flex align-items-center" style="padding-left: 11px;">
+          <div class="form-row mb-4">
+            <div class="d-flex align-items-center" style="padding-left:6px;">
               {{ child_form_set.empty_form.nurse.label }}
             </div>
-            <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6 d-flex align-items-center">
+            <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6">
               {{ child_form_set.empty_form.nurse }}
               {% if child_form_set.empty_form.nurse.errors %}
               <div class="errorlist position-relative">
@@ -292,7 +329,7 @@
 
 
           </div>
-          <div class="row mb-4">
+          <div class="form-row mb-4">
             <div class="col-xlg-1 col-lg-2 col-md-3 col-sm-3">
               {{ child_form_set.empty_form.birthdate.label }}
               {{ child_form_set.empty_form.birthdate }}
@@ -327,15 +364,15 @@
               {% endif %}
             </div>
           </div>
-          <div class="row mb-4">
+          <div class="form-row mb-4">
             <div class="col-xlg-1 col-lg-1 col-md-6 col-sm-6">
               {{ child_form_set.empty_form.gender.label }}
               {{ child_form_set.empty_form.gender }}
             </div>
 
           </div>
-          <div class="row mb-4">
-            <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6" style="padding-left: 11px;">
+          <div class="form-row mb-4">
+            <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6" style="padding-left:6px;">
               <div class="custom-file">
                 {{ child_form.image }}
                 <label class="custom-file-label">Choose image</label>
@@ -463,20 +500,23 @@
 
     <button onclick="addForm(this,'guardian')" type="button" class="btn btn-primary shadow mb-3">Add another guardian
       form</button>
-  </form>
 
-  <div class="card shadow mb-4">
-    <div class="card-header">
-      <h6 class="m-0">Controls</h6>
-    </div>
-    <div class="card-body">
-      <div class="controls">
-        <button id="save" type="button" class="btn btn-primary mr-2">Save</button>
-        <button type="button" class="btn btn-primary mr-2">Save and add another</button>
-        <button type="button" class="btn btn-primary">Save and continue editing</button>
+
+    <div class="card shadow mb-4">
+      <div class="card-header">
+        <h6 class="m-0">Controls</h6>
+      </div>
+      <div class="card-body">
+        <div class="controls">
+          <button id="save" type="submit" class="btn btn-primary mr-2">Save</button>
+          <button type="button" class="btn btn-primary mr-2">Save and add another</button>
+          <button type="button" class="btn btn-primary">Save and continue editing</button>
+        </div>
       </div>
     </div>
-  </div>
+  </form>
+
+
 
 
 </div>
@@ -486,7 +526,8 @@
 <script src="{% static 'vendor/datepicker/datepicker.min.js' %}"></script>
 
 <script>
-
+  const childFormCards = document.getElementById('child-form-cards')
+  const preLoader = document.getElementById('pre-loader')
   const errorLists = document.querySelectorAll('.errorlist');
   const saveButton = document.getElementById("save")
 
@@ -582,40 +623,36 @@
     return datepickerInstance;
   }
 
-  let formSubmitted = false;
+  // let formSubmitted = false;
 
-  saveButton.addEventListener("click", function () {
-    formSubmitted = true;
-    document.getElementById("child-form").submit();
-  });
+  // saveButton.addEventListener("click", function () {
+  //   formSubmitted = true;
+  //   document.querySelector("form").submit();
+  // });
 
-  window.addEventListener('beforeunload', (event) => {
-    if (!formSubmitted) {
-      event.preventDefault(); // Prevent the default reload message
-    }
-  });
+  // window.addEventListener('beforeunload', (event) => {
+  //   if (!formSubmitted) {
+  //     event.preventDefault(); // Prevent the default reload message
+  //   }
+  // });
 
-  if (errorLists) {
-    // Iterate over each error list
-    errorLists.forEach((errorList) => {
-      // Get the parent element of the error list (the div)
-      const parentDiv = errorList.parentElement;
+  window.addEventListener('load', () => {
+    childFormCards.classList.remove('d-none')
+    preLoader.remove()
 
-      // Find the input element within the div
-      const input = parentDiv.querySelector('input');
-
-      // Check if an input element was found
-      if (input) {
-        // Add a CSS class (e.g., "error") to the input to change its style
-        input.classList.add('is-invalid');
-      }
-
-
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    var validation = Array.prototype.filter.call(forms, function (form) {
+      form.addEventListener('submit', function (event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
     });
-  }
-
+  })
 </script>
-
-
 
 {% endblock %}

@@ -7,52 +7,43 @@ class LoginForm(forms.Form):
                                 widget=forms.TextInput(attrs={'class': 'form-control'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}),
                               label='Password')
-# TODO add required on all of the fields 
 class ChildModelForm(forms.ModelForm):
     class Meta:
       model=ChildModel
       fields = '__all__'
       widgets = {
-        'barangay':TextInput( attrs={'class':'form-control'}),
-        'name_of_bhw':TextInput( attrs={'class':'form-control'}),
-        'purok':TextInput( attrs={'class':'form-control'}),
-        'nurse':TextInput( attrs={'class':'form-control'}),
+        'barangay':TextInput( attrs={'class':'form-control', 'required':''}),
+        'name_of_bhw':TextInput( attrs={'class':'form-control', 'required':''}),
+        'purok':TextInput( attrs={'class':'form-control', 'required':''}),
+        'nurse':TextInput( attrs={'class':'form-control', 'required':''}),
         
-        'first_name':TextInput( attrs={'class':'form-control'}),
-        'middle_name':TextInput( attrs={'class':'form-control'}),
-        'last_name':TextInput( attrs={'class':'form-control'}),
-        'birthdate':TextInput( attrs={'class':'form-control'}),
+        'first_name':TextInput( attrs={'class':'form-control', 'required':''}),
+        'middle_name':TextInput( attrs={'class':'form-control', 'required':''}),
+        'last_name':TextInput( attrs={'class':'form-control', 'required':''}),
+        'birthdate':TextInput( attrs={'class':'form-control', 'required':''}),
         'image':FileInput(attrs={'class': 'custom-file-input', 'id':'imageInput'}),
-        'years_old':TextInput( attrs={'class':'form-control', 'readonly':'true'}),
-        'months_old':TextInput( attrs={'class':'form-control', 'readonly':'true'}),
+        'years_old':TextInput( attrs={'class':'form-control', 'required':'', 'readonly':'true'}),
+        'months_old':TextInput( attrs={'class':'form-control', 'required':'', 'readonly':'true'}),
         'gender':Select(attrs={'class': 'custom-select'}),
+        
+        'bcg':TextInput( attrs={'class':'form-control'}),
+        'hepa_b':TextInput( attrs={'class':'form-control'}),
+        'penta_1':TextInput( attrs={'class':'form-control'}),
+        'penta_2':TextInput( attrs={'class':'form-control'}),
+        'penta_3':TextInput( attrs={'class':'form-control'}),
+        'opv_1':TextInput( attrs={'class':'form-control'}),
+        'opv_2':TextInput( attrs={'class':'form-control'}),
+        'opv_3':TextInput( attrs={'class':'form-control'}),
+        'ipv_1':TextInput( attrs={'class':'form-control'}),
+        'ipv_2':TextInput( attrs={'class':'form-control'}),
+        'pcv_1':TextInput( attrs={'class':'form-control'}),
+        'pcv_2':TextInput( attrs={'class':'form-control'}),
+        'pcv_3':TextInput( attrs={'class':'form-control'}),
+        'mcv_1':TextInput( attrs={'class':'form-control'}),
+        'mcv_2':TextInput( attrs={'class':'form-control'}),
+        
+        'remarks':TextInput( attrs={'class':'form-control', 'required':''}),
         }
-      error_messages = {
-      'name_of_bhw': {
-          'required': 'Please enter the name of BHW .',
-          'invalid': 'Name must be a valid string.',
-        },
-      'purok': {
-          'required': 'Please enter the name of purok .',
-          'invalid': 'Purok must be a valid string.',
-        },
-      'nurse': {
-          'required': 'Please enter the name of nurse/midwife .',
-          'invalid': 'Nurse/midwife must be a valid string.',
-        },
-      'first_name': {
-          'required': 'Please enter a first name.',
-          'invalid': 'First name must be a valid string.',
-        },
-      'middle_name': {
-          'required': 'Please enter a middle name.',
-          'invalid': 'Middle name must be a valid string.',
-        },
-      'last_name': {
-          'required': 'Please enter a last name.',
-          'invalid': 'Last name must be a valid string.',
-        },
-      }
       labels = {
         'barangay':'Barangay:',
         'nurse':'Name of Widwife/Nurse:',
@@ -68,27 +59,10 @@ class GuardianModelForm(forms.ModelForm):
       fields = '__all__'
       widgets = {
         'first_name': TextInput( attrs={'class': 'form-control', 'required':''}),
-        'middle_name': TextInput( attrs={'class': 'form-control'}),
-        'last_name': TextInput( attrs={'class': 'form-control'}),
+        'middle_name': TextInput( attrs={'class': 'form-control', 'required':''}),
+        'last_name': TextInput( attrs={'class': 'form-control', 'required':''}),
       }
-      error_messages = {
-      'first_name': {
-          'required': 'Please enter a first name.',
-          'invalid': 'First name must be a valid string.',
-          # Add more custom error messages here as needed
-        },
-      'middle_name': {
-          'required': 'Please enter a middle name.',
-          'invalid': 'Middle name must be a valid string.',
-          # Add more custom error messages here as needed
-        },
-      'last_name': {
-          'required': 'Please enter a last name.',
-          'invalid': 'Last name must be a valid string.',
-          # Add more custom error messages here as needed
-        },
-      }
-    
+ 
 class GalleryModelForm(forms.ModelForm):
   class Meta:
     model = GalleryModel
