@@ -81,6 +81,8 @@ def child_list(request):
 
 @login_required(login_url='/login/')
 def child_detail(request, child_id = None):
+    # TODO Add child info
+    # TODO Populate form when clicked on 
     ChildFormSet = formset_factory(ChildModelForm, extra=0 ,min_num=1)
     GuardianFormSet = formset_factory(GuardianModelForm, extra=0 ,min_num=1)
     
