@@ -585,11 +585,27 @@
   const errorLists = document.querySelectorAll('.errorlist');
   const saveButton = document.getElementById("save")
   const form = document.querySelector('form.needs-validation')
+  const datePickerFields = document.getElementsByClassName('date-picker')
+
+
+  for (const element of datePickerFields) {
+    // Access element
+    console.log(element);
+    const datepickerInstance = datepicker(element, {
+      formatter: (input, date, instance) => {
+        const value = date.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+        input.value = value; // => 'September/1/2099'
+      }
+    });
+  }
+
 
   function initializeBirthdateInput() {
     const birthdateCount = document.getElementsByClassName('birthdate').length + 1
-    const datePickerCount = document.getElementsByClassName('date-picker').length + 1
-    console.log(birthdateCount)
     let i = 0
     while (i < birthdateCount) {
       var birthdateInput = document.getElementById(`id_child-${i}-birthdate`);
@@ -639,6 +655,13 @@
       initializeDatepicker(newBirthdateInput, newYearInput, newMonthInput);
     }
 
+    const datePickerFields = copyEmptyFormEl.getElementsByClassName('date-picker')
+
+
+    for (const element of datePickerFields) {
+      initializeDatepicker(element)
+    }
+
   }
 
   function deleteForm(button, prefix) {
@@ -650,8 +673,8 @@
     totalNewForms.setAttribute('value', currentFormCount - 1)
   }
 
-  function initializeDatepicker(inputField, yearInput = "", monthInput = "") {
-    const datepickerInstance = datepicker(inputField, {
+  function initializeDatepicker(datePickerField, yearInput = "", monthInput = "") {
+    const datepickerInstance = datepicker(datePickerField, {
       formatter: (input, date, instance) => {
         const value = date.toLocaleDateString('en-US', {
           year: 'numeric',
@@ -680,7 +703,6 @@
     return datepickerInstance;
   }
 
-  initializeDatepicker()
 
   saveButton.addEventListener("click", function () {
     saveButton.blur()
