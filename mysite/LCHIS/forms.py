@@ -7,6 +7,7 @@ class LoginForm(forms.Form):
                                 widget=forms.TextInput(attrs={'class': 'form-control'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}),
                               label='Password')
+
 class ChildModelForm(forms.ModelForm):
     class Meta:
       model=ChildModel
@@ -20,7 +21,7 @@ class ChildModelForm(forms.ModelForm):
         'first_name':TextInput( attrs={'class':'form-control', 'required':''}),
         'middle_name':TextInput( attrs={'class':'form-control', 'required':''}),
         'last_name':TextInput( attrs={'class':'form-control', 'required':''}),
-        'birthdate':TextInput( attrs={'class':'form-control', 'required':''}),
+        'birthdate':TextInput( attrs={'class':'form-control', 'required':'', 'autocomplete': 'off'}),
         'image':FileInput(attrs={'class': 'custom-file-input', 'id':'imageInput'}),
         'years_old':TextInput( attrs={'class':'form-control', 'required':'', 'readonly':'true'}),
         'months_old':TextInput( attrs={'class':'form-control', 'required':'', 'readonly':'true'}),
@@ -70,7 +71,9 @@ class GalleryModelForm(forms.ModelForm):
     model = GalleryModel
     fields = '__all__'
     widgets = {
-          'image': FileInput(attrs={'class': 'custom-file-input', 'id':'imageInput'}),
-          'type': Select(attrs={'class': 'custom-select'}),
-          'date': TextInput( attrs={'class': 'form-control date', 'autocomplete': 'off'})
+          'image': FileInput(attrs={'class': 'custom-file-input', 'id':'imageInput', 'required':''}),
+          'type': Select(attrs={'class': 'custom-select', 'required':''}),
+          'date': TextInput( attrs={'class': 'form-control date', 'required':'', 'autocomplete': 'off'})
         }
+
+

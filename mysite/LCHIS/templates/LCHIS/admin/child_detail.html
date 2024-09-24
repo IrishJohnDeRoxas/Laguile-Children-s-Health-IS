@@ -1,7 +1,6 @@
 {% extends 'LCHIS/admin/index.html' %}
 {% block content %}
 {% load static %}
-<!-- TODO Datepicker for the Child vaccines -->
 <script src="{% static 'vendor/htmx/htmx.min.js' %}"></script>
 
 <div class="d-flex justify-content-center align-items-center" style="height: 85vh;" id="pre-loader">
@@ -13,6 +12,7 @@
 <div class="container-fluid d-none" id="child-form-cards">
 
   <h1 class="h4 mb-0 text-gray-800 mb-5">Add child</h1>
+
   <form method="post" class="form-group needs-validation" enctype="multipart/form-data" novalidate>
     {% csrf_token %}
     {{ child_form_set.management_form }}
@@ -221,213 +221,7 @@
 
 
 
-    <div class="d-none" id="empty-child-form">
-      <div class="card shadow">
-        <div class="card-header py-3 d-flex justify-content-between">
-          <h6 class="m-0 font-weight-bold text-primary">Child</h6>
-          <div class="form-check form-check-inline ml-auto">
-            <i role="button" onclick="deleteForm(this,'child')" class="fa-solid fa-circle-xmark"></i>
-          </div>
-        </div>
-        <div class="card-body">
 
-          <div class="form-row mb-4">
-            <div class="d-flex align-items-center" style="padding-left:6px;">
-              {{ child_form_set.empty_form.barangay.label }}
-            </div>
-            <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6">
-              {{ child_form_set.empty_form.barangay }}
-              <div class="invalid-feedback">
-                Please add a barangay.
-              </div>
-            </div>
-          </div>
-          <div class="form-row mb-4">
-            <div class="d-flex align-items-center" style="padding-left:6px;">
-              {{ child_form_set.empty_form.name_of_bhw.label }}
-            </div>
-            <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6">
-              {{ child_form_set.empty_form.name_of_bhw }}
-              <div class="invalid-feedback">
-                Please add a BHW name.
-              </div>
-            </div>
-          </div>
-          <div class="form-row mb-4">
-            <div class="d-flex align-items-center" style="padding-left:6px;">
-              {{ child_form_set.empty_form.purok.label }}
-            </div>
-            <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6">
-              {{ child_form_set.empty_form.purok }}
-              <div class="invalid-feedback">
-                Please add a purok.
-              </div>
-            </div>
-          </div>
-          <div class="form-row mb-4">
-            <div class="d-flex align-items-center" style="padding-left:6px;">
-              {{ child_form_set.empty_form.nurse.label }}
-            </div>
-            <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6">
-              {{ child_form_set.empty_form.nurse }}
-              <div class="invalid-feedback">
-                Please add a midwife/nurse.
-              </div>
-            </div>
-          </div>
-          <!-- Child's name -->
-          <div class="form-row mt-5 mb-4">
-            <div class="col-md-4">
-              {{ child_form_set.empty_form.first_name.label }}
-              {{ child_form_set.empty_form.first_name }}
-              <div class="invalid-feedback">
-                Please add a first name.
-              </div>
-            </div>
-            <div class="col-md-4">
-              {{ child_form_set.empty_form.middle_name.label }}
-              {{ child_form_set.empty_form.middle_name }}
-              <div class="invalid-feedback">
-                Please add a middle name.
-              </div>
-            </div>
-            <div class="col-md-4">
-              {{ child_form_set.empty_form.last_name.label }}
-              {{ child_form_set.empty_form.last_name }}
-              <div class="invalid-feedback">
-                Please add a last name.
-              </div>
-            </div>
-          </div>
-          <!-- End of Child's name -->
-          <div class="form-row mb-4">
-            <div class="col-xlg-1 col-lg-2  col-md-6">
-              {{ child_form_set.empty_form.birthdate.label }}
-              {{ child_form_set.empty_form.birthdate }}
-              <div class="invalid-feedback">
-                Please add a birthdate.
-              </div>
-            </div>
-            <div class="col-xlg-1 col-lg-1 col-md-6">
-              {{ child_form_set.empty_form.years_old.label }}
-              {{ child_form_set.empty_form.years_old }}
-              {% if child_form_set.empty_form.years_old.errors %}
-              <div class="errorlist position-relative">
-                {% for error in child_form_set.empty_form.years_old.errors %}
-                <span class="small text-danger">{{ error }}</span>
-                {% endfor %}
-              </div>
-              {% endif %}
-            </div>
-            <div class="col-xlg-1 col-lg-1 col-md-6">
-              {{ child_form_set.empty_form.months_old.label }}
-              {{ child_form_set.empty_form.months_old }}
-              {% if child_form_set.empty_form.months_old.errors %}
-              <div class="errorlist position-relative">
-                {% for error in child_form_set.empty_form.months_old.errors %}
-                <span class="small text-danger">{{ error }}</span>
-                {% endfor %}
-              </div>
-              {% endif %}
-            </div>
-          </div>
-          <div class="form-row mb-4">
-            <div class="col-xlg-1 col-lg-1 col-md-6 col-sm-6">
-              {{ child_form_set.empty_form.gender.label }}
-              {{ child_form_set.empty_form.gender }}
-            </div>
-
-          </div>
-          <div class="form-row mb-4">
-            <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6" style="padding-left:6px;">
-              <div class="custom-file">
-                {{ child_form_set.empty_form.image }}
-                <label class="custom-file-label">Choose image</label>
-              </div>
-              <img id="imagePreview" src="#" class="img-thumbnail d-none" style="width: 150px;" alt="Image Preview">
-
-              {% if gallery %}
-              <img id="dbImagePreview" src="{{ gallery.image.url }}" class="img-thumbnail"
-                alt="{{ gallery.image.name }}" style="width: 150px;">
-              {% endif %}
-            </div>
-          </div>
-          <!-- Child's Vaccines -->
-          <div class="form-row mb-4">
-            <div class="col-xlg-1 col-lg-3 col-md-6">
-              {{ child_form_set.empty_form.bcg.label }}
-              {{ child_form_set.empty_form.bcg }}
-            </div>
-            <div class="col-xlg-1 col-lg-3 col-md-6">
-              {{ child_form_set.empty_form.hepa_b.label }}
-              {{ child_form_set.empty_form.hepa_b }}
-            </div>
-            <div class="col-xlg-1 col-lg-3 col-md-6">
-              {{ child_form_set.empty_form.penta_1.label }}
-              {{ child_form_set.empty_form.penta_1 }}
-            </div>
-            <div class="col-xlg-1 col-lg-3 col-md-6">
-              {{ child_form_set.empty_form.penta_2.label }}
-              {{ child_form_set.empty_form.penta_2 }}
-            </div>
-            <div class="col-xlg-1 col-lg-3 col-md-6">
-              {{ child_form_set.empty_form.penta_3.label }}
-              {{ child_form_set.empty_form.penta_3 }}
-            </div>
-            <div class="col-xlg-1 col-lg-3 col-md-6">
-              {{ child_form_set.empty_form.opv_1.label }}
-              {{ child_form_set.empty_form.opv_1 }}
-            </div>
-            <div class="col-xlg-1 col-lg-3 col-md-6">
-              {{ child_form_set.empty_form.opv_2.label }}
-              {{ child_form_set.empty_form.opv_2 }}
-            </div>
-            <div class="col-xlg-1 col-lg-3 col-md-6">
-              {{ child_form_set.empty_form.opv_3.label }}
-              {{ child_form_set.empty_form.opv_3 }}
-            </div>
-            <div class="col-xlg-1 col-lg-3 col-md-6">
-              {{ child_form_set.empty_form.ipv_1.label }}
-              {{ child_form_set.empty_form.ipv_1 }}
-            </div>
-            <div class="col-xlg-1 col-lg-3 col-md-6">
-              {{ child_form_set.empty_form.ipv_2.label }}
-              {{ child_form_set.empty_form.ipv_2 }}
-            </div>
-            <div class="col-xlg-1 col-lg-3 col-md-6">
-              {{ child_form_set.empty_form.pcv_1.label }}
-              {{ child_form_set.empty_form.pcv_1 }}
-            </div>
-            <div class="col-xlg-1 col-lg-3 col-md-6">
-              {{ child_form_set.empty_form.pcv_2.label }}
-              {{ child_form_set.empty_form.pcv_2 }}
-            </div>
-            <div class="col-xlg-1 col-lg-3 col-md-6">
-              {{ child_form_set.empty_form.pcv_3.label }}
-              {{ child_form_set.empty_form.pcv_3 }}
-            </div>
-            <div class="col-xlg-1 col-lg-3 col-md-6">
-              {{ child_form_set.empty_form.mcv_1.label }}
-              {{ child_form_set.empty_form.mcv_1 }}
-            </div>
-            <div class="col-xlg-1 col-lg-3 col-md-6">
-              {{ child_form_set.empty_form.mcv_2.label }}
-              {{ child_form_set.empty_form.mcv_2 }}
-            </div>
-          </div>
-          <!-- End of Child's Vaccines -->
-          <div class="form-row">
-            <div class="col-xlg-1 col-lg-3 col-md-6">
-              {{ child_form_set.empty_form.remarks.label }}
-              {{ child_form_set.empty_form.remarks }}
-            </div>
-          </div>
-
-
-
-        </div>
-      </div>
-    </div>
 
 
     <button onclick="addForm(this,'child')" type="button" class="btn btn-primary shadow mb-3">Add another child
@@ -492,64 +286,7 @@
       {% endfor %}
     </div>
 
-    <div class="d-none" id="empty-guardian-form">
-      <div class="card shadow">
-        <div class="card-header py-3 d-flex justify-content-between">
-          <h6 class="m-0 font-weight-bold text-primary">Guardian</h6>
-          <div class="form-check form-check-inline ml-auto">
-            <i role="button" onclick="deleteForm(this,'guardian')" class="fa-solid fa-circle-xmark"></i>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="form-row mb-4">
-            <div class="col-md-4">
-              {{ guardian_form_set.empty_form.first_name.label }}
-              {{ guardian_form_set.empty_form.first_name }}
-              <div class="invalid-feedback">
-                Please add a first name.
-              </div>
-            </div>
-            <div class="col-md-4">
-              {{ guardian_form_set.empty_form.middle_name.label }}
-              {{ guardian_form_set.empty_form.middle_name }}
-              <div class="invalid-feedback">
-                Please add a middle name.
-              </div>
-            </div>
-            <div class="col-md-4">
-              {{ guardian_form_set.empty_form.last_name.label }}
-              {{ guardian_form_set.empty_form.last_name }}
-              <div class="invalid-feedback">
-                Please add a last name.
-              </div>
-            </div>
-          </div>
-          <div class="form-row mb-4">
-            <div class="d-flex align-items-center" style="padding-left:6px;">
-              {{ guardian_form_set.empty_form.username.label }}
-            </div>
-            <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6">
-              {{ guardian_form_set.empty_form.username }}
-              <div class="invalid-feedback">
-                Please add a username.
-              </div>
-            </div>
-          </div>
-          <div class="form-row mb-4">
-            <div class="d-flex align-items-center" style="padding-left:6px;">
-              {{ guardian_form_set.empty_form.password.label }}
-            </div>
-            <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6">
-              {{ guardian_form_set.empty_form.password }}
-              <div class="invalid-feedback">
-                Please add a password.
-              </div>
-            </div>
-          </div>
 
-        </div>
-      </div>
-    </div>
 
 
     <button onclick="addForm(this,'guardian')" type="button" class="btn btn-primary shadow mb-5">Add another guardian
@@ -574,6 +311,274 @@
 
 
 </div>
+
+<div class="d-none" id="empty-child-form">
+  <div class="card shadow">
+    <div class="card-header py-3 d-flex justify-content-between">
+      <h6 class="m-0 font-weight-bold text-primary">Child</h6>
+      <div class="form-check form-check-inline ml-auto">
+        <i role="button" onclick="deleteForm(this,'child')" class="fa-solid fa-circle-xmark"></i>
+      </div>
+    </div>
+    <div class="card-body">
+
+      <div class="form-row mb-4">
+        <div class="d-flex align-items-center" style="padding-left:6px;">
+          {{ child_form_set.empty_form.barangay.label }}
+        </div>
+        <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6">
+          {{ child_form_set.empty_form.barangay }}
+          <div class="invalid-feedback">
+            Please add a barangay.
+          </div>
+        </div>
+      </div>
+      <div class="form-row mb-4">
+        <div class="d-flex align-items-center" style="padding-left:6px;">
+          {{ child_form_set.empty_form.name_of_bhw.label }}
+        </div>
+        <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6">
+          {{ child_form_set.empty_form.name_of_bhw }}
+          <div class="invalid-feedback">
+            Please add a BHW name.
+          </div>
+        </div>
+      </div>
+      <div class="form-row mb-4">
+        <div class="d-flex align-items-center" style="padding-left:6px;">
+          {{ child_form_set.empty_form.purok.label }}
+        </div>
+        <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6">
+          {{ child_form_set.empty_form.purok }}
+          <div class="invalid-feedback">
+            Please add a purok.
+          </div>
+        </div>
+      </div>
+      <div class="form-row mb-4">
+        <div class="d-flex align-items-center" style="padding-left:6px;">
+          {{ child_form_set.empty_form.nurse.label }}
+        </div>
+        <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6">
+          {{ child_form_set.empty_form.nurse }}
+          <div class="invalid-feedback">
+            Please add a midwife/nurse.
+          </div>
+        </div>
+      </div>
+      <!-- Child's name -->
+      <div class="form-row mt-5 mb-4">
+        <div class="col-md-4">
+          {{ child_form_set.empty_form.first_name.label }}
+          {{ child_form_set.empty_form.first_name }}
+          <div class="invalid-feedback">
+            Please add a first name.
+          </div>
+        </div>
+        <div class="col-md-4">
+          {{ child_form_set.empty_form.middle_name.label }}
+          {{ child_form_set.empty_form.middle_name }}
+          <div class="invalid-feedback">
+            Please add a middle name.
+          </div>
+        </div>
+        <div class="col-md-4">
+          {{ child_form_set.empty_form.last_name.label }}
+          {{ child_form_set.empty_form.last_name }}
+          <div class="invalid-feedback">
+            Please add a last name.
+          </div>
+        </div>
+      </div>
+      <!-- End of Child's name -->
+      <div class="form-row mb-4">
+        <div class="col-xlg-1 col-lg-2  col-md-6">
+          {{ child_form_set.empty_form.birthdate.label }}
+          {{ child_form_set.empty_form.birthdate }}
+          <div class="invalid-feedback">
+            Please add a birthdate.
+          </div>
+        </div>
+        <div class="col-xlg-1 col-lg-1 col-md-6">
+          {{ child_form_set.empty_form.years_old.label }}
+          {{ child_form_set.empty_form.years_old }}
+          {% if child_form_set.empty_form.years_old.errors %}
+          <div class="errorlist position-relative">
+            {% for error in child_form_set.empty_form.years_old.errors %}
+            <span class="small text-danger">{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+        <div class="col-xlg-1 col-lg-1 col-md-6">
+          {{ child_form_set.empty_form.months_old.label }}
+          {{ child_form_set.empty_form.months_old }}
+          {% if child_form_set.empty_form.months_old.errors %}
+          <div class="errorlist position-relative">
+            {% for error in child_form_set.empty_form.months_old.errors %}
+            <span class="small text-danger">{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="form-row mb-4">
+        <div class="col-xlg-1 col-lg-1 col-md-6 col-sm-6">
+          {{ child_form_set.empty_form.gender.label }}
+          {{ child_form_set.empty_form.gender }}
+        </div>
+
+      </div>
+      <div class="form-row mb-4">
+        <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6" style="padding-left:6px;">
+          <div class="custom-file">
+            {{ child_form_set.empty_form.image }}
+            <label class="custom-file-label">Choose image</label>
+          </div>
+          <img id="imagePreview" src="#" class="img-thumbnail d-none" style="width: 150px;" alt="Image Preview">
+
+          {% if gallery %}
+          <img id="dbImagePreview" src="{{ gallery.image.url }}" class="img-thumbnail" alt="{{ gallery.image.name }}"
+            style="width: 150px;">
+          {% endif %}
+        </div>
+      </div>
+      <!-- Child's Vaccines -->
+      <div class="form-row mb-4">
+        <div class="col-xlg-1 col-lg-3 col-md-6">
+          {{ child_form_set.empty_form.bcg.label }}
+          {{ child_form_set.empty_form.bcg }}
+        </div>
+        <div class="col-xlg-1 col-lg-3 col-md-6">
+          {{ child_form_set.empty_form.hepa_b.label }}
+          {{ child_form_set.empty_form.hepa_b }}
+        </div>
+        <div class="col-xlg-1 col-lg-3 col-md-6">
+          {{ child_form_set.empty_form.penta_1.label }}
+          {{ child_form_set.empty_form.penta_1 }}
+        </div>
+        <div class="col-xlg-1 col-lg-3 col-md-6">
+          {{ child_form_set.empty_form.penta_2.label }}
+          {{ child_form_set.empty_form.penta_2 }}
+        </div>
+        <div class="col-xlg-1 col-lg-3 col-md-6">
+          {{ child_form_set.empty_form.penta_3.label }}
+          {{ child_form_set.empty_form.penta_3 }}
+        </div>
+        <div class="col-xlg-1 col-lg-3 col-md-6">
+          {{ child_form_set.empty_form.opv_1.label }}
+          {{ child_form_set.empty_form.opv_1 }}
+        </div>
+        <div class="col-xlg-1 col-lg-3 col-md-6">
+          {{ child_form_set.empty_form.opv_2.label }}
+          {{ child_form_set.empty_form.opv_2 }}
+        </div>
+        <div class="col-xlg-1 col-lg-3 col-md-6">
+          {{ child_form_set.empty_form.opv_3.label }}
+          {{ child_form_set.empty_form.opv_3 }}
+        </div>
+        <div class="col-xlg-1 col-lg-3 col-md-6">
+          {{ child_form_set.empty_form.ipv_1.label }}
+          {{ child_form_set.empty_form.ipv_1 }}
+        </div>
+        <div class="col-xlg-1 col-lg-3 col-md-6">
+          {{ child_form_set.empty_form.ipv_2.label }}
+          {{ child_form_set.empty_form.ipv_2 }}
+        </div>
+        <div class="col-xlg-1 col-lg-3 col-md-6">
+          {{ child_form_set.empty_form.pcv_1.label }}
+          {{ child_form_set.empty_form.pcv_1 }}
+        </div>
+        <div class="col-xlg-1 col-lg-3 col-md-6">
+          {{ child_form_set.empty_form.pcv_2.label }}
+          {{ child_form_set.empty_form.pcv_2 }}
+        </div>
+        <div class="col-xlg-1 col-lg-3 col-md-6">
+          {{ child_form_set.empty_form.pcv_3.label }}
+          {{ child_form_set.empty_form.pcv_3 }}
+        </div>
+        <div class="col-xlg-1 col-lg-3 col-md-6">
+          {{ child_form_set.empty_form.mcv_1.label }}
+          {{ child_form_set.empty_form.mcv_1 }}
+        </div>
+        <div class="col-xlg-1 col-lg-3 col-md-6">
+          {{ child_form_set.empty_form.mcv_2.label }}
+          {{ child_form_set.empty_form.mcv_2 }}
+        </div>
+      </div>
+      <!-- End of Child's Vaccines -->
+      <div class="form-row">
+        <div class="col-xlg-1 col-lg-3 col-md-6">
+          {{ child_form_set.empty_form.remarks.label }}
+          {{ child_form_set.empty_form.remarks }}
+        </div>
+      </div>
+
+
+
+    </div>
+  </div>
+</div>
+
+<div class="d-none" id="empty-guardian-form">
+  <div class="card shadow">
+    <div class="card-header py-3 d-flex justify-content-between">
+      <h6 class="m-0 font-weight-bold text-primary">Guardian</h6>
+      <div class="form-check form-check-inline ml-auto">
+        <i role="button" onclick="deleteForm(this,'guardian')" class="fa-solid fa-circle-xmark"></i>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="form-row mb-4">
+        <div class="col-md-4">
+          {{ guardian_form_set.empty_form.first_name.label }}
+          {{ guardian_form_set.empty_form.first_name }}
+          <div class="invalid-feedback">
+            Please add a first name.
+          </div>
+        </div>
+        <div class="col-md-4">
+          {{ guardian_form_set.empty_form.middle_name.label }}
+          {{ guardian_form_set.empty_form.middle_name }}
+          <div class="invalid-feedback">
+            Please add a middle name.
+          </div>
+        </div>
+        <div class="col-md-4">
+          {{ guardian_form_set.empty_form.last_name.label }}
+          {{ guardian_form_set.empty_form.last_name }}
+          <div class="invalid-feedback">
+            Please add a last name.
+          </div>
+        </div>
+      </div>
+      <div class="form-row mb-4">
+        <div class="d-flex align-items-center" style="padding-left:6px;">
+          {{ guardian_form_set.empty_form.username.label }}
+        </div>
+        <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6">
+          {{ guardian_form_set.empty_form.username }}
+          <div class="invalid-feedback">
+            Please add a username.
+          </div>
+        </div>
+      </div>
+      <div class="form-row mb-4">
+        <div class="d-flex align-items-center" style="padding-left:6px;">
+          {{ guardian_form_set.empty_form.password.label }}
+        </div>
+        <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6">
+          {{ guardian_form_set.empty_form.password }}
+          <div class="invalid-feedback">
+            Please add a password.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <!-- Date picker CSS -->
 <link href="{% static 'vendor/datepicker/datepicker.min.css' %}" rel="stylesheet">
 <!-- Date picker -->

@@ -1,30 +1,25 @@
 {% extends 'LCHIS/admin/index.html' %} {% block content %}
 <div class="container-fluid">
 
-    <!-- Topbar Search -->
-    <form class="mb-4">
-      <div class="input-group">
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Search for..."
-          aria-label="Search"
-          aria-describedby="basic-addon2"
-        />
-        <div class="input-group-append">
-          <button class="btn btn-primary" type="button">
-            <i class="fas fa-search fa-sm"></i>
-          </button>
-        </div>
+  <!-- Topbar Search -->
+  <form class="mb-4">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Search for..." aria-label="Search"
+        aria-describedby="basic-addon2" />
+      <div class="input-group-append">
+        <button class="btn btn-primary" type="button">
+          <i class="fas fa-search fa-sm"></i>
+        </button>
       </div>
-    </form>
-   <div class="d-flex justify-content-end mb-3">
+    </div>
+  </form>
+  <div class="d-flex justify-content-end mb-3">
     <h1 class="h4 mb-0 text-gray-800 align-self-start mr-auto">Select child to change</h1>
-        <a class="btn btn-primary"  href="{% url 'child_detail' %}">
-            <i class="fa fa-plus"></i>
-                Add Child
-        </a>
-   </div>
+    <a class="btn btn-primary" href="{% url 'child_detail' %}">
+      <i class="fa fa-plus"></i>
+      Add Child
+    </a>
+  </div>
   {% if guardians %}
 
   <form method="post" id="childForm">
@@ -54,38 +49,38 @@
             <input type="checkbox" id="select-all">
             <label for="select-all">Select All</label>
           </th>
-          </tr>
+        </tr>
       </thead>
       <tbody>
         {% for guardian in page_obj %}
-            {% for child in guardian.children.all %}
-               <tr>
-                  <td><a href="" class="nav-link text-dark p-0 m-0">{{ child.first_name }}</a></td>
-                  <td><a href="" class="nav-link text-dark p-0 m-0">{{ child.middle_name }}</a></td>
-                  <td><a href="" class="nav-link text-dark p-0 m-0">{{ child.last_name }}</a></td>
-                  <td>
-                      <a href="" class="nav-link text-dark p-0 m-0">{{guardian.first_name}}</a>
-                  </td>
-                  <td class="align-middle">
-                    <input type="checkbox" name="image_to_delete" value="{{ gallery.pk }}">
-                  </td>
-              </tr>
-  
-              {% endfor %}
-          
+        {% for child in guardian.children.all %}
+        <tr>
+          <td><a href="" class="nav-link text-dark p-0 m-0">{{ child.first_name }}</a></td>
+          <td><a href="" class="nav-link text-dark p-0 m-0">{{ child.middle_name }}</a></td>
+          <td><a href="" class="nav-link text-dark p-0 m-0">{{ child.last_name }}</a></td>
+          <td>
+            <a href="" class="nav-link text-dark p-0 m-0">{{guardian.first_name}}</a>
+          </td>
+          <td class="align-middle">
+            <input type="checkbox" name="child_to_delete" value="{{ child.pk }}">
+          </td>
+        </tr>
+
         {% endfor %}
-        
+
+        {% endfor %}
+
       </tbody>
     </table>
   </form>
 
-    {% else %} 
-   
+  {% else %}
+
   <table class="table">
     <thead>
-        <th>
-            No items
-        </th>
+      <th>
+        No items
+      </th>
     </thead>
   </table>
   {% endif %}
@@ -93,40 +88,40 @@
 
 <nav aria-label="Page navigation example">
   <ul class="pagination justify-content-center">
-    
+
     {% if page_obj.has_previous %}
-      <li class="page-item">
-        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
-      </li>
+    <li class="page-item">
+      <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+    </li>
     {% else %}
-      <li class="page-item disabled">
-        <a class="page-link" href="#">Previous</a>
-      </li>
+    <li class="page-item disabled">
+      <a class="page-link" href="#">Previous</a>
+    </li>
     {% endif %}
-    
+
     <li class="page-item">
       <span class="page-link text-dark" href="#">{{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
-    </li>   
-      
+    </li>
+
 
     {% if page_obj.has_next %}
 
-      <li class="page-item">
-        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
-      </li>
+    <li class="page-item">
+      <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+    </li>
     {% else %}
-      <li class="page-item disabled">
-        <a class="page-link" href="#">Next</a>
-      </li>
+    <li class="page-item disabled">
+      <a class="page-link" href="#">Next</a>
+    </li>
     {% endif %}
-      
-    
+
+
   </ul>
 </nav>
 
 <script>
   const selectAll = document.getElementById('select-all')
-  selectAll.addEventListener('change', function() {
+  selectAll.addEventListener('change', function () {
     var checkboxes = document.querySelectorAll('input[name="image_to_delete"]');
 
     for (var i = 0; i < checkboxes.length; i++) {
@@ -137,14 +132,14 @@
   const goButton = document.getElementById('go')
   const optionSelect = document.querySelector('select#option')
 
-  goButton.addEventListener('click', (event)=>{
+  goButton.addEventListener('click', (event) => {
     event.preventDefault()
     goButton.blur()
 
     const selectedIndex = optionSelect.selectedIndex;
     const selectedValue = optionSelect.options[selectedIndex].value;
     console.log(selectedValue)
-    if (selectedValue == 'Delete'){
+    if (selectedValue == 'Delete') {
       document.getElementById('childForm').submit()
     }
 

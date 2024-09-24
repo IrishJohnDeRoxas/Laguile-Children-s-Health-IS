@@ -64,6 +64,13 @@ def child_list(request):
     )
     # ChildModel.objects.all().delete()
     # guardians.delete()
+    
+    if request.method == 'POST':
+        selected_images = request.POST.getlist('child_to_delete') 
+        if selected_images:
+            for pk in selected_images:
+                child = ChildModel.objects.get(pk=pk)
+                child.delete()
     paginator = Paginator(guardians, 10)
     page_number = request.GET.get('page')
     if page_number:
@@ -81,8 +88,7 @@ def child_list(request):
 
 @login_required(login_url='/login/')
 def child_detail(request, child_id = None):
-    # TODO Add child info
-    # TODO Populate form when clicked on 
+    # TODO Edit function of child, Populate form when clicked on 
     ChildFormSet = formset_factory(ChildModelForm, extra=0 ,min_num=1)
     GuardianFormSet = formset_factory(GuardianModelForm, extra=0 ,min_num=1)
     
@@ -95,6 +101,7 @@ def child_detail(request, child_id = None):
     if request.method == 'POST':
         child_form_set = ChildFormSet(request.POST, request.FILES, prefix='child')
         guardian_form_set = GuardianFormSet(request.POST, request.FILES, prefix='guardian')
+        print(child_form_set.errors)
         print(guardian_form_set.errors)
         
         if child_form_set.is_valid() and guardian_form_set.is_valid():

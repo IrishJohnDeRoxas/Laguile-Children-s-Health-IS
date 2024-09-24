@@ -4,8 +4,12 @@
 <link href="{% static 'vendor/datepicker/datepicker.min.css' %}" rel="stylesheet">
 <!-- Date picker -->
 <script src="{% static 'vendor/datepicker/datepicker.min.js' %}"></script>
-<!-- TODO Use bootstrap 4 for form validation -->
-<!-- TODO Use bootstrap 4 progress bar -->
+
+<div class="d-flex justify-content-center align-items-center" style="height: 85vh;" id="pre-loader">
+    <div style="width: 100px;">
+        <img src="{% static 'img/svg/tube-spinner.svg' %}" alt="pre-loader">
+    </div>
+</div>
 <div class="modal fade" id="confirmDelete" tabindex="-1" aria-labelledby="confirmDelete" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -25,9 +29,9 @@
         </div>
     </div>
 </div>
-<div class="container-fluid">
+<div class="container-fluid d-none" id="galleryForm">
     <h1 class="h4 mb-0 text-gray-800 mb-5">Add image</h1>
-    <form method="post" class="form-group" enctype="multipart/form-data" id="gallery-form">
+    <form method="post" class="form-group needs-validation" enctype="multipart/form-data" id="gallery-form" novalidate>
         {% csrf_token %}
 
         <input id="saveAndAdd" type="hidden" value="0" name="saveAndAdd">
@@ -44,6 +48,9 @@
                         <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6 mb-4">
                             <div class="custom-file mb-3">
                                 {{ form.image }}
+                                <div class="invalid-feedback">
+                                    Please add a type.
+                                </div>
                                 <label class="custom-file-label">Choose image</label>
                             </div>
                             <img id="imagePreview" src="#" class="img-thumbnail d-none" style="width: 150px;"
@@ -68,15 +75,11 @@
                                     {{ form.type.label }}
                                     <div class="form-group">
                                         {{ form.type }}
+                                        <div class="invalid-feedback">
+                                            Please select a type.
+                                        </div>
+                                    </div>
 
-                                    </div>
-                                    {% if form.type.errors %}
-                                    <div class="errorlist position-relative">
-                                        {% for error in form.type.errors %}
-                                        <span class="small text-danger">{{ error }}</span>
-                                        {% endfor %}
-                                    </div>
-                                    {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -85,13 +88,9 @@
                                 <div class="col-xlg-1 col-lg-2 col-md-6 col-sm-6">
                                     {{ form.date.label }}
                                     {{ form.date }}
-                                    {% if form.date.errors %}
-                                    <div class="errorlist position-relative">
-                                        {% for error in form.date.errors %}
-                                        <span class="small text-danger">{{ error }}</span>
-                                        {% endfor %}
+                                    <div class="invalid-feedback">
+                                        Please add a date.
                                     </div>
-                                    {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -99,28 +98,30 @@
                 </div>
             </div>
         </div>
-    </form>
-    <div class="card shadow mb-4">
-        <div class="card-header">
-            <h6 class="m-0">Controls</h6>
-        </div>
-        <div class="card-body">
-            <div class="controls">
 
-                {% if gallery %}
-                <button id="save" type="button" class="btn btn-primary mr-2">Save</button>
-                <button id="delete" type="button" class="btn btn-danger mr-2" data-toggle="modal"
-                    data-target="#confirmDelete">Delete</button>
-                {% else %}
-                <button id="save" type="button" class="btn btn-primary mr-2">Save</button>
-                <button id="save-and-add-another" type="button" class="btn btn-primary mr-2">Save and add
-                    another</button>
-                <button type="button" id="save-and-edit-another" class="btn btn-primary">Save and continue
-                    editing</button>
-                {% endif %}
+        <div class="card shadow mb-4">
+            <div class="card-header">
+                <h6 class="m-0">Controls</h6>
+            </div>
+            <div class="card-body">
+                <div class="controls">
+
+                    {% if gallery %}
+                    <button id="save" type="submit" class="btn btn-primary mr-2">Save</button>
+                    <button id="delete" type="button" class="btn btn-danger mr-2" data-toggle="modal"
+                        data-target="#confirmDelete">Delete</button>
+                    {% else %}
+                    <button id="save" type="submit" class="btn btn-primary mr-2">Save</button>
+                    <button id="save-and-add-another" type="button" class="btn btn-primary mr-2">Save and add
+                        another</button>
+                    <button type="button" id="save-and-edit-another" class="btn btn-primary">Save and continue
+                        editing</button>
+                    {% endif %}
+                </div>
             </div>
         </div>
-    </div>
+    </form>
+
 </div>
 
 <script>
@@ -130,10 +131,11 @@
     const saveAndAddButton = document.querySelector("button#save-and-add-another")
     const saveAndEditButton = document.querySelector("button#save-and-edit-another")
     const confirmDeleteButton = document.querySelector("button#confirmDelete")
-
+    const preLoader = document.getElementById('pre-loader')
     const saveAndAddInput = document.getElementById("saveAndAdd")
     const saveAndEditInput = document.getElementById("saveAndEdit")
     const confirmDeleteInput = document.querySelector("input#confirmDelete")
+    const galleryForm = document.getElementById('galleryForm')
 
     let formSubmitted = false;
     let dateInput = document.getElementsByName('date')
@@ -147,11 +149,6 @@
             input.value = value; // => 'September/1/2099'
         },
     })
-
-    saveButton.addEventListener("click", function () {
-        formSubmitted = true;
-        document.getElementById("gallery-form").submit();
-    });
 
     if (saveAndAddButton) {
         saveAndAddButton.addEventListener("click", function () {
@@ -184,26 +181,7 @@
         }
     });
 
-    if (errorLists) {
-        // Iterate over each error list
-        errorLists.forEach((errorList) => {
-            // Get the parent element of the error list (the div)
-            const parentDiv = errorList.parentElement;
 
-            // Find the input element within the div
-            const input = parentDiv.querySelector('input');
-            const select = parentDiv.querySelector('select');
-
-            // Check if an input element was found
-            if (input) {
-                // Add a CSS class (e.g., "error") to the input to change its style
-                input.classList.add('is-invalid');
-            }
-            if (select) {
-                select.classList.add('is-invalid')
-            }
-        });
-    }
 
     const customFile = document.getElementById('imageInput');
     const customFileLabel = document.querySelector('.custom-file-label');
@@ -224,6 +202,24 @@
         imagePreview.classList.add('d-block')
         dbImagePreview.classList.add('d-none')
     });
+
+    window.addEventListener('load', () => {
+        galleryForm.classList.remove('d-none')
+        preLoader.remove()
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.getElementsByClassName('needs-validation');
+        // Loop over them and prevent submission
+        var validation = Array.prototype.filter.call(forms, function (form) {
+            form.addEventListener('submit', function (event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })
 
 </script>
 {% endblock %}
