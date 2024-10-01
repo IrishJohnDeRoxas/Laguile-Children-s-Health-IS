@@ -72,6 +72,8 @@
         <i class="fas fa-angle-up"></i>
     </a>
 
+    {% include 'LCHIS/component/admin_delete_image_modal.html' %}
+
     <!-- Logout Modal-->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
@@ -108,9 +110,7 @@
 
     <script src="{% static 'vendor/htmx/htmx.min.js' %}"></script>
 
-    <!-- Page level custom scripts -->
-    <script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
-    <script src="{% static 'js/demo/chart-pie-demo.js' %}"></script>
+
 
 </body>
 

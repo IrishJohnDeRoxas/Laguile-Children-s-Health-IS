@@ -8,3 +8,9 @@
 #     inlines = [ChildInline]
 
 # admin.site.register(Child, GuardianAdmin)
+
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from .models import GuardianModel
+
+admin.site.register(GuardianModel, UserAdmin)

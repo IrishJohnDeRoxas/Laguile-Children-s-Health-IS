@@ -1,0 +1,132 @@
+<section id="child-information" class="team">
+
+    <!--  Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+        <h2>Child Information</h2>
+        <p>
+            Necessitatibus eius consequatur ex aliquid fuga eum quidem sint
+            consectetur velit
+        </p>
+    </div>
+    <!-- End Section Title -->
+
+    <div class="container">
+        <div class="p-5" data-aos="fade-up" data-aos-delay="200" style="background-color: #ffffff;">
+            <div class="row">
+                {% if child.image %}
+                <img id="dbImagePreview" src="{{ child.image.url }}" class="img-thumbnail" alt="{{ child.image.name }}"
+                    style="width: 300px;">
+                <br>
+                {% endif %}
+            </div>
+            <div class="row">
+                <p><b>First Name:</b> {{child.child_first_name}}</p>
+            </div>
+            <div class="row">
+                <p><b>Middle Name:</b> {{child.child_middle_name}}</p>
+            </div>
+            <div class="row">
+                <p><b>Last Name:</b> {{child.child_last_name}}</p>
+            </div>
+            <div class="row">
+                <p><b>Gender:</b> {{child.gender}}</p>
+            </div>
+            <div class="row">
+                <p><b>Height:</b> {{child.height}}</p>
+            </div>
+            <div class="row">
+                <p><b>Weight:</b> {{child.weight}}</p>
+            </div>
+            <div class="row">
+                <p><b>Condition:</b> {{child.condition}}</p>
+            </div>
+            <div class="row">
+                <p><b>Birthdate:</b> {{child.birthdate}}</p>
+            </div>
+
+            {% if child.years_old > 0 %}
+            <div class="row">
+                <p><b>Year's:</b> {{child.years_old}} old</p>
+            </div>
+            {% endif %}
+            {% if child.months_old > 0 %}
+            <div class="row">
+                <p><b>{{child.months_old}} </b> month's old</p>
+            </div>
+            {% endif %}
+
+            <div class="row mt-3">
+                <p><b>Barangay:</b> {{child.barangay}}</p>
+            </div>
+            <div class="row">
+                <p><b>BHW:</b> {{child.name_of_bhw}}</p>
+            </div>
+            <div class="row">
+                <p><b>Purok:</b> {{child.purok}}</p>
+            </div>
+            <div class="row">
+                <p><b>Nurse:</b> {{child.nurse}}</p>
+            </div>
+            <div class="row mt-3">
+                <p><b>Mother's Name:</b> {{child.name_of_mother}}</p>
+            </div>
+            <div class="row">
+                <p><b>Mother Health History:</b> {{child.mother_history}}</p>
+            </div>
+            <div class="row">
+                <p><b>Father's Name:</b> {{child.name_of_father}}</p>
+            </div>
+            <div class="row">
+                <p><b>Father HealthHistory:</b> {{child.father_history}}</p>
+            </div>
+
+            <!-- Vaccines -->
+            <table class="table table-bordered mt-3">
+                <thead>
+                    <tr>
+                        <th scope="col">BCG</th>
+                        <th scope="col">Hepa B</th>
+                        <th scope="col">Penta 1</th>
+                        <th scope="col">Penta 2</th>
+                        <th scope="col">Penta 3</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{child.bcg}}</td>
+                        <td>{{child.hepa_b}}</td>
+                        <td>{{child.penta_1}}</td>
+                        <td>{{child.penta_2}}</td>
+                        <td>{{child.penta_3}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="table table-bordered mt-3">
+                <thead>
+                    <tr>
+                        <th scope="col">Opv 1</th>
+                        <th scope="col">Opv 2</th>
+                        <th scope="col">Opv 3</th>
+                        <th scope="col">Ipv 1</th>
+                        <th scope="col">Ipv 2</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{child.opv_1}}</td>
+                        <td>{{child.opv_2}}</td>
+                        <td>{{child.opv_3}}</td>
+                        <td>{{child.ipv_1}}</td>
+                        <td>{{child.ipv_2}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- TODO Show the vaccines -->
+            <!-- End of Vaccines -->
+
+        </div>
+
+    </div>
+</section>

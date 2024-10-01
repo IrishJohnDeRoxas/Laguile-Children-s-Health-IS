@@ -18,14 +18,23 @@ class ChildModelForm(forms.ModelForm):
         'purok':TextInput( attrs={'class':'form-control', 'required':''}),
         'nurse':TextInput( attrs={'class':'form-control', 'required':''}),
         
-        'first_name':TextInput( attrs={'class':'form-control', 'required':''}),
-        'middle_name':TextInput( attrs={'class':'form-control', 'required':''}),
-        'last_name':TextInput( attrs={'class':'form-control', 'required':''}),
+        'child_first_name':TextInput( attrs={'class':'form-control', 'required':''}),
+        'child_middle_name':TextInput( attrs={'class':'form-control', 'required':''}),
+        'child_last_name':TextInput( attrs={'class':'form-control', 'required':''}),
         'birthdate':TextInput( attrs={'class':'form-control', 'required':'', 'autocomplete': 'off'}),
         'image':FileInput(attrs={'class': 'custom-file-input', 'id':'imageInput'}),
+        
+        'height':TextInput( attrs={'class':'form-control', 'required':''}),
+        'weight':TextInput( attrs={'class':'form-control', 'required':''}),
+        'condition':Textarea( attrs={'class':'form-control', 'required':''}),
         'years_old':TextInput( attrs={'class':'form-control', 'required':'', 'readonly':'true'}),
         'months_old':TextInput( attrs={'class':'form-control', 'required':'', 'readonly':'true'}),
         'gender':Select(attrs={'class': 'custom-select'}),
+        
+        'name_of_mother':TextInput( attrs={'class':'form-control'}),
+        'mother_history':Textarea( attrs={'class':'form-control'}),
+        'name_of_father':TextInput( attrs={'class':'form-control'}),
+        'father_history':Textarea( attrs={'class':'form-control'}),
         
         'bcg':TextInput( attrs={'class':'form-control date-picker'}),
         'hepa_b':TextInput( attrs={'class':'form-control date-picker'}),
@@ -47,6 +56,9 @@ class ChildModelForm(forms.ModelForm):
         }
       labels = {
         'barangay':'Barangay:',
+        'child_first_name':'First name',
+        'child_middle_name':'Middle name',
+        'child_last_name':'Last name',
         'nurse':'Name of Widwife/Nurse:',
         'name_of_bhw':'Name of BHW:',
         'purok':'Purok:',
@@ -65,6 +77,7 @@ class GuardianModelForm(forms.ModelForm):
         'username': TextInput( attrs={'class': 'form-control', 'required':''}),
         'password': TextInput( attrs={'class': 'form-control', 'required':''}),
       }
+
  
 class GalleryModelForm(forms.ModelForm):
   class Meta:

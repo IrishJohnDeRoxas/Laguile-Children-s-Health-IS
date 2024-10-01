@@ -44,8 +44,7 @@
                 </div>
             </li> -->
 
-    <li
-        class="nav-item {% if request.path == '/admin/child' or request.path == '/admin/child_detail/' %}active{% endif %}">
+    <li class="nav-item {% if '/child' in request.path  %}active{% endif %}">
         <a class="nav-link" href="{% url 'child_list' %}">
             <i class="fas fa-fw fa-child"></i>
             <span>Child</span>

@@ -1,13 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
-from django.db.models import Prefetch
-from django.forms import formset_factory
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import Paginator
+from django.contrib.auth import get_user_model
+
 from .forms import LoginForm, ChildModelForm, GuardianModelForm, GalleryModelForm
 from .models import ChildModel,GuardianModel, GalleryModel
 import os
-
 
 def index(request):
     gallery_list = GalleryModel.objects.all()
@@ -16,8 +16,9 @@ def index(request):
         'gallery_list': gallery_list
     }
 
-    return render(request, 'LCHIS/index.html', arguments)
-
+    return render(request, 'LCHIS/base.html', arguments)
+from django.contrib.auth.mixins import UserPassesTestMixin
+    
 def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -25,31 +26,33 @@ def login_view(request):
             # Process the form data
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
-            
-            user = authenticate(username = username, password = password)
-            
+            user = authenticate(username=username, password=password)
+            print(user)
             if user is not None and user.is_superuser:
-                login( request, user )
-
+                login(request, user)
                 return redirect(admin_dashboard)
+            elif user is not None:
+                login(request, user)
+                return redirect(user_dashboard)
             else:
                 form = LoginForm(request.POST)
                 arguments = {
                         'form': form,
                         'error': 'Invalid username or password'
                     }
-                return render(request, 'LCHIS/login.html', arguments)
+                return render(request, 'LCHIS/component/login.html', arguments)
     else:
         form = LoginForm()
         arguments = {
             'form': form
         }
-    return render(request, 'LCHIS/login.html', arguments)
+    return render(request, 'LCHIS/component/login.html', arguments)
 
 def logout_view(request):
     logout(request)
     return redirect(index)
 
+@permission_required('is_superuser', login_url = '/login/')
 @login_required(login_url = '/login/')
 def admin_dashboard(request):
     arguments = {
@@ -59,9 +62,7 @@ def admin_dashboard(request):
 
 @login_required(login_url = '/login/')
 def child_list(request):
-    guardians = GuardianModel.objects.prefetch_related(
-        Prefetch('children', queryset=ChildModel.objects.all())
-    )
+    children = ChildModel.objects.all()
     # ChildModel.objects.all().delete()
     # guardians.delete()
     
@@ -70,8 +71,11 @@ def child_list(request):
         if selected_images:
             for pk in selected_images:
                 child = ChildModel.objects.get(pk=pk)
+                guardian = GuardianModel.objects.get(child=child.pk)
                 child.delete()
-    paginator = Paginator(guardians, 10)
+                guardian.delete()
+                
+    paginator = Paginator(children, 10)
     page_number = request.GET.get('page')
     if page_number:
         page_obj = paginator.get_page(page_number)
@@ -81,45 +85,82 @@ def child_list(request):
     
     arguments = {
         'current_user': request.user.username.capitalize,
-        'guardians': guardians,
+        'children': children,
         'page_obj': page_obj
     }
     return render(request, 'LCHIS/admin/child_list.html', arguments)
 
 @login_required(login_url='/login/')
-def child_detail(request, child_id = None):
-    # TODO Edit function of child, Populate form when clicked on 
-    ChildFormSet = formset_factory(ChildModelForm, extra=0 ,min_num=1)
-    GuardianFormSet = formset_factory(GuardianModelForm, extra=0 ,min_num=1)
+def child_detail(request, pk = None, delete_image = None):
+    
+    child_form = ChildModelForm()
+    guardian_form = GuardianModelForm()
     
     arguments = {
         'current_user': request.user.username.capitalize(),
-        'child_form_set': ChildFormSet(prefix='child'),
-        'guardian_form_set': GuardianFormSet(prefix='guardian'),
+        'child_form': child_form,
+        'guardian_form': guardian_form,
     }
-
-    if request.method == 'POST':
-        child_form_set = ChildFormSet(request.POST, request.FILES, prefix='child')
-        guardian_form_set = GuardianFormSet(request.POST, request.FILES, prefix='guardian')
-        print(child_form_set.errors)
-        print(guardian_form_set.errors)
-        
-        if child_form_set.is_valid() and guardian_form_set.is_valid():
-            
-            for guardian_form in guardian_form_set:
-                guardian_instance = guardian_form.save()
-                
-            for child_form in child_form_set:
-                child_instance = child_form.save()   
-                guardian_instance.children.add(child_instance)  
-                     
     
-            arguments['message'] = 'success'
-            return redirect(child_list)
+    
+    if pk:
+        child = ChildModel.objects.get(pk=pk) 
+        guardian = GuardianModel.objects.get(child=child)
+        arguments['child_form'] = ChildModelForm(instance=child)
+        arguments['child'] = child
+        arguments['guardian_form'] = GuardianModelForm(instance=guardian)
+        if request.method == 'POST':
+            child_form = ChildModelForm(request.POST, request.FILES, instance=child)
+            guardian_form = GuardianModelForm(request.POST, instance=guardian)
+            if child_form.is_valid() and guardian_form.is_valid():
+                
+                # print(guardian_form.cleaned_data['first_name'])
+                update_guardian = GuardianModel.objects.get(child=child)
+                print(update_guardian.first_name)
+                update_guardian.username=guardian_form.cleaned_data['username']
+                update_guardian.password=guardian_form.cleaned_data['password']
+                update_guardian.first_name=guardian_form.cleaned_data['first_name']
+                update_guardian.middle_name=guardian_form.cleaned_data['middle_name']
+                update_guardian.last_name=guardian_form.cleaned_data['last_name']
+                update_guardian.child=child
+                update_guardian.save()
+                child_form.save()
+                # guardian_ = guardian_form.save(commit=False)
+                # guardian_.child = child
+                # guardian_.save()
+                return redirect(child_list)
+    
+    if pk and delete_image:
+        child = ChildModel.objects.get(pk=pk)
+        child.delete_image()
+        return redirect(child_detail, pk=pk)
+    
+    if request.method == 'POST':
+        child_form = ChildModelForm(request.POST, request.FILES)
+        guardian_form = GuardianModelForm(request.POST)
+        User = get_user_model()
+        
+      
+        if child_form.is_valid() and guardian_form.is_valid():
+            child = child_form.save()
+            # guardian = guardian_form.save(commit=False)
+            # guardian.child = child
+            # guardian.save()
+            guardian = User.objects.create_user(
+                username=guardian_form.cleaned_data['username'],
+                password=guardian_form.cleaned_data['password'],
+                first_name=guardian_form.cleaned_data['first_name'],
+                middle_name=guardian_form.cleaned_data['middle_name'],
+                last_name=guardian_form.cleaned_data['last_name'],
+                child=child
+            )
+            guardian.save()
+
+            return redirect('child_list')
         else:
-            arguments['child_form_set'] = child_form_set
-            arguments['guardian_form_set'] = guardian_form_set
-            arguments['error'] = 'Invalid form data'
+
+            arguments['child_form'] = child_form
+            arguments['guardian_form'] = guardian_form
             return render(request, 'LCHIS/admin/child_detail.html', arguments)
     else:
         return render(request, 'LCHIS/admin/child_detail.html', arguments)
@@ -195,6 +236,15 @@ def gallery_detail(request, pk=0):
         else:
             arguments['form'] = gallery_form
 
-
-        
     return render(request, 'LCHIS/admin/gallery_detail.html', arguments)
+
+@login_required(login_url='/login/')
+def user_dashboard(request):
+    child_id = request.user.child_id
+    print(child_id)
+    child = ChildModel.objects.get(pk=child_id)
+    arguments = {
+        'current_user': request.user.first_name.capitalize,
+        'child':child
+    }
+    return render(request, 'LCHIS/user/home.html', arguments)

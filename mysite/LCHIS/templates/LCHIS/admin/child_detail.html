@@ -3,6 +3,7 @@
 {% load static %}
 <script src="{% static 'vendor/htmx/htmx.min.js' %}"></script>
 
+
 <div class="d-flex justify-content-center align-items-center" style="height: 85vh;" id="pre-loader">
   <div style="width: 100px;">
     <img src="{% static 'img/svg/tube-spinner.svg' %}" alt="pre-loader">
@@ -13,11 +14,12 @@
 
   <h1 class="h4 mb-0 text-gray-800 mb-5">Add child</h1>
 
-  <form method="post" class="form-group needs-validation" enctype="multipart/form-data" novalidate>
+  <form method="post" class="form-group needs-validation" enctype="multipart/form-data" novalidate id="childForm">
     {% csrf_token %}
-    {{ child_form_set.management_form }}
+    {{ child_form.errors }}
+    {{ guardian_form.errors }}
     <div id="child-form-card">
-      {% for child_form in child_form_set %}
+
       <div class="card shadow mb-4 child-form" id="id_child_card_form-0">
         <div class="card-header py-3 d-flex justify-content-between">
           <h6 class="m-0 font-weight-bold text-primary">Child</h6>
@@ -70,28 +72,75 @@
           <!-- Child's name -->
           <div class="form-row mt-5 mb-4">
             <div class="col-md-4">
-              {{ child_form.first_name.label }}
-              {{ child_form.first_name }}
+              {{ child_form.child_first_name.label }}
+              {{ child_form.child_first_name }}
               <div class="invalid-feedback">
                 Please add a first name.
               </div>
             </div>
             <div class="col-md-4">
-              {{ child_form.middle_name.label }}
-              {{ child_form.middle_name }}
+              {{ child_form.child_middle_name.label }}
+              {{ child_form.child_middle_name }}
               <div class="invalid-feedback">
                 Please add a middle name.
               </div>
             </div>
             <div class="col-md-4">
-              {{ child_form.last_name.label }}
-              {{ child_form.last_name }}
+              {{ child_form.child_last_name.label }}
+              {{ child_form.child_last_name }}
               <div class="invalid-feedback">
                 Please add a last name.
               </div>
             </div>
           </div>
           <!-- End of Child's name -->
+          <div class="form-row mb-4">
+            <div class="col-md-3">
+              {{ child_form.height.label }}
+              {{ child_form.height }}
+              <div class="invalid-feedback">
+                Please add height.
+              </div>
+            </div>
+            <div class="col-md-3">
+              {{ child_form.weight.label }}
+              {{ child_form.weight }}
+              <div class="invalid-feedback">
+                Please add weight.
+              </div>
+            </div>
+          </div>
+          <div class="form-row mb-4">
+            <div class="col-md-4">
+              {{ child_form.condition.label }}
+              {{ child_form.condition }}
+              <div class="invalid-feedback">
+                Please add condition.
+              </div>
+            </div>
+          </div>
+          <div class="form-row mb-4">
+            <div class="col-md-3">
+              {{ child_form.name_of_mother.label }}
+              {{ child_form.name_of_mother }}
+            </div>
+            <div class="col-md-3">
+              {{ child_form.name_of_father.label }}
+              {{ child_form.name_of_father }}
+            </div>
+          </div>
+          <div class="form-row mb-4">
+            <div class="col-md-4">
+              {{ child_form.mother_history.label }}
+              {{ child_form.mother_history }}
+            </div>
+          </div>
+          <div class="form-row mb-4">
+            <div class="col-md-4">
+              {{ child_form.father_history.label }}
+              {{ child_form.father_history }}
+            </div>
+          </div>
           <div class="form-row mb-4">
             <div class="col-xlg-1 col-lg-2  col-md-6">
               {{ child_form.birthdate.label }}
@@ -137,10 +186,17 @@
                 <label class="custom-file-label">Choose image</label>
               </div>
               <img id="imagePreview" src="#" class="img-thumbnail d-none" style="width: 150px;" alt="Image Preview">
+              <button class="btn btn-primary d-none">
+                Delete Image
+              </button>
 
-              {% if gallery %}
-              <img id="dbImagePreview" src="{{ gallery.image.url }}" class="img-thumbnail"
-                alt="{{ gallery.image.name }}" style="width: 150px;">
+              {% if child and child.image.url %}
+              <img id="dbImagePreview" src="{{ child.image.url }}" class="img-thumbnail" alt="{{ child.image.name }}"
+                style="width: 150px;">
+              <br>
+              <a class="btn btn-primary mt-2" href="#" data-toggle="modal" data-target="#deleteImageModal">
+                Delete
+              </a>
               {% endif %}
             </div>
           </div>
@@ -216,20 +272,10 @@
           </div>
         </div>
       </div>
-      {% endfor %}
+
     </div>
 
-
-
-
-
-
-    <button onclick="addForm(this,'child')" type="button" class="btn btn-primary shadow mb-3">Add another child
-      form</button>
-
-    {{ guardian_form_set.management_form }}
     <div id="guardian-form-card">
-      {% for guardian_form in guardian_form_set %}
       <div class="card shadow mb-4 guardian-form" id="id_guardian_card_form-0">
         <div class="card-header py-3 d-flex justify-content-between">
           <h6 class="m-0 font-weight-bold text-primary">Guardian</h6>
@@ -283,15 +329,7 @@
         </div>
 
       </div>
-      {% endfor %}
     </div>
-
-
-
-
-    <button onclick="addForm(this,'guardian')" type="button" class="btn btn-primary shadow mb-5">Add another guardian
-      form</button>
-
 
     <div class="card shadow mb-4">
       <div class="card-header">
@@ -299,285 +337,23 @@
       </div>
       <div class="card-body">
         <div class="controls">
+
+          {% if child %}
+          <button id="save" type="submit" class="btn btn-primary mr-2">Save</button>
+          <button type="button" class="btn btn-danger mr-2">Delete</button>
+          {% else %}
           <button id="save" type="submit" class="btn btn-primary mr-2">Save</button>
           <button type="button" class="btn btn-primary mr-2">Save and add another</button>
           <button type="button" class="btn btn-primary">Save and continue editing</button>
+          {% endif %}
+
         </div>
       </div>
     </div>
   </form>
 
-
-
-
 </div>
 
-<div class="d-none" id="empty-child-form">
-  <div class="card shadow">
-    <div class="card-header py-3 d-flex justify-content-between">
-      <h6 class="m-0 font-weight-bold text-primary">Child</h6>
-      <div class="form-check form-check-inline ml-auto">
-        <i role="button" onclick="deleteForm(this,'child')" class="fa-solid fa-circle-xmark"></i>
-      </div>
-    </div>
-    <div class="card-body">
-
-      <div class="form-row mb-4">
-        <div class="d-flex align-items-center" style="padding-left:6px;">
-          {{ child_form_set.empty_form.barangay.label }}
-        </div>
-        <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6">
-          {{ child_form_set.empty_form.barangay }}
-          <div class="invalid-feedback">
-            Please add a barangay.
-          </div>
-        </div>
-      </div>
-      <div class="form-row mb-4">
-        <div class="d-flex align-items-center" style="padding-left:6px;">
-          {{ child_form_set.empty_form.name_of_bhw.label }}
-        </div>
-        <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6">
-          {{ child_form_set.empty_form.name_of_bhw }}
-          <div class="invalid-feedback">
-            Please add a BHW name.
-          </div>
-        </div>
-      </div>
-      <div class="form-row mb-4">
-        <div class="d-flex align-items-center" style="padding-left:6px;">
-          {{ child_form_set.empty_form.purok.label }}
-        </div>
-        <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6">
-          {{ child_form_set.empty_form.purok }}
-          <div class="invalid-feedback">
-            Please add a purok.
-          </div>
-        </div>
-      </div>
-      <div class="form-row mb-4">
-        <div class="d-flex align-items-center" style="padding-left:6px;">
-          {{ child_form_set.empty_form.nurse.label }}
-        </div>
-        <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6">
-          {{ child_form_set.empty_form.nurse }}
-          <div class="invalid-feedback">
-            Please add a midwife/nurse.
-          </div>
-        </div>
-      </div>
-      <!-- Child's name -->
-      <div class="form-row mt-5 mb-4">
-        <div class="col-md-4">
-          {{ child_form_set.empty_form.first_name.label }}
-          {{ child_form_set.empty_form.first_name }}
-          <div class="invalid-feedback">
-            Please add a first name.
-          </div>
-        </div>
-        <div class="col-md-4">
-          {{ child_form_set.empty_form.middle_name.label }}
-          {{ child_form_set.empty_form.middle_name }}
-          <div class="invalid-feedback">
-            Please add a middle name.
-          </div>
-        </div>
-        <div class="col-md-4">
-          {{ child_form_set.empty_form.last_name.label }}
-          {{ child_form_set.empty_form.last_name }}
-          <div class="invalid-feedback">
-            Please add a last name.
-          </div>
-        </div>
-      </div>
-      <!-- End of Child's name -->
-      <div class="form-row mb-4">
-        <div class="col-xlg-1 col-lg-2  col-md-6">
-          {{ child_form_set.empty_form.birthdate.label }}
-          {{ child_form_set.empty_form.birthdate }}
-          <div class="invalid-feedback">
-            Please add a birthdate.
-          </div>
-        </div>
-        <div class="col-xlg-1 col-lg-1 col-md-6">
-          {{ child_form_set.empty_form.years_old.label }}
-          {{ child_form_set.empty_form.years_old }}
-          {% if child_form_set.empty_form.years_old.errors %}
-          <div class="errorlist position-relative">
-            {% for error in child_form_set.empty_form.years_old.errors %}
-            <span class="small text-danger">{{ error }}</span>
-            {% endfor %}
-          </div>
-          {% endif %}
-        </div>
-        <div class="col-xlg-1 col-lg-1 col-md-6">
-          {{ child_form_set.empty_form.months_old.label }}
-          {{ child_form_set.empty_form.months_old }}
-          {% if child_form_set.empty_form.months_old.errors %}
-          <div class="errorlist position-relative">
-            {% for error in child_form_set.empty_form.months_old.errors %}
-            <span class="small text-danger">{{ error }}</span>
-            {% endfor %}
-          </div>
-          {% endif %}
-        </div>
-      </div>
-      <div class="form-row mb-4">
-        <div class="col-xlg-1 col-lg-1 col-md-6 col-sm-6">
-          {{ child_form_set.empty_form.gender.label }}
-          {{ child_form_set.empty_form.gender }}
-        </div>
-
-      </div>
-      <div class="form-row mb-4">
-        <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6" style="padding-left:6px;">
-          <div class="custom-file">
-            {{ child_form_set.empty_form.image }}
-            <label class="custom-file-label">Choose image</label>
-          </div>
-          <img id="imagePreview" src="#" class="img-thumbnail d-none" style="width: 150px;" alt="Image Preview">
-
-          {% if gallery %}
-          <img id="dbImagePreview" src="{{ gallery.image.url }}" class="img-thumbnail" alt="{{ gallery.image.name }}"
-            style="width: 150px;">
-          {% endif %}
-        </div>
-      </div>
-      <!-- Child's Vaccines -->
-      <div class="form-row mb-4">
-        <div class="col-xlg-1 col-lg-3 col-md-6">
-          {{ child_form_set.empty_form.bcg.label }}
-          {{ child_form_set.empty_form.bcg }}
-        </div>
-        <div class="col-xlg-1 col-lg-3 col-md-6">
-          {{ child_form_set.empty_form.hepa_b.label }}
-          {{ child_form_set.empty_form.hepa_b }}
-        </div>
-        <div class="col-xlg-1 col-lg-3 col-md-6">
-          {{ child_form_set.empty_form.penta_1.label }}
-          {{ child_form_set.empty_form.penta_1 }}
-        </div>
-        <div class="col-xlg-1 col-lg-3 col-md-6">
-          {{ child_form_set.empty_form.penta_2.label }}
-          {{ child_form_set.empty_form.penta_2 }}
-        </div>
-        <div class="col-xlg-1 col-lg-3 col-md-6">
-          {{ child_form_set.empty_form.penta_3.label }}
-          {{ child_form_set.empty_form.penta_3 }}
-        </div>
-        <div class="col-xlg-1 col-lg-3 col-md-6">
-          {{ child_form_set.empty_form.opv_1.label }}
-          {{ child_form_set.empty_form.opv_1 }}
-        </div>
-        <div class="col-xlg-1 col-lg-3 col-md-6">
-          {{ child_form_set.empty_form.opv_2.label }}
-          {{ child_form_set.empty_form.opv_2 }}
-        </div>
-        <div class="col-xlg-1 col-lg-3 col-md-6">
-          {{ child_form_set.empty_form.opv_3.label }}
-          {{ child_form_set.empty_form.opv_3 }}
-        </div>
-        <div class="col-xlg-1 col-lg-3 col-md-6">
-          {{ child_form_set.empty_form.ipv_1.label }}
-          {{ child_form_set.empty_form.ipv_1 }}
-        </div>
-        <div class="col-xlg-1 col-lg-3 col-md-6">
-          {{ child_form_set.empty_form.ipv_2.label }}
-          {{ child_form_set.empty_form.ipv_2 }}
-        </div>
-        <div class="col-xlg-1 col-lg-3 col-md-6">
-          {{ child_form_set.empty_form.pcv_1.label }}
-          {{ child_form_set.empty_form.pcv_1 }}
-        </div>
-        <div class="col-xlg-1 col-lg-3 col-md-6">
-          {{ child_form_set.empty_form.pcv_2.label }}
-          {{ child_form_set.empty_form.pcv_2 }}
-        </div>
-        <div class="col-xlg-1 col-lg-3 col-md-6">
-          {{ child_form_set.empty_form.pcv_3.label }}
-          {{ child_form_set.empty_form.pcv_3 }}
-        </div>
-        <div class="col-xlg-1 col-lg-3 col-md-6">
-          {{ child_form_set.empty_form.mcv_1.label }}
-          {{ child_form_set.empty_form.mcv_1 }}
-        </div>
-        <div class="col-xlg-1 col-lg-3 col-md-6">
-          {{ child_form_set.empty_form.mcv_2.label }}
-          {{ child_form_set.empty_form.mcv_2 }}
-        </div>
-      </div>
-      <!-- End of Child's Vaccines -->
-      <div class="form-row">
-        <div class="col-xlg-1 col-lg-3 col-md-6">
-          {{ child_form_set.empty_form.remarks.label }}
-          {{ child_form_set.empty_form.remarks }}
-        </div>
-      </div>
-
-
-
-    </div>
-  </div>
-</div>
-
-<div class="d-none" id="empty-guardian-form">
-  <div class="card shadow">
-    <div class="card-header py-3 d-flex justify-content-between">
-      <h6 class="m-0 font-weight-bold text-primary">Guardian</h6>
-      <div class="form-check form-check-inline ml-auto">
-        <i role="button" onclick="deleteForm(this,'guardian')" class="fa-solid fa-circle-xmark"></i>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="form-row mb-4">
-        <div class="col-md-4">
-          {{ guardian_form_set.empty_form.first_name.label }}
-          {{ guardian_form_set.empty_form.first_name }}
-          <div class="invalid-feedback">
-            Please add a first name.
-          </div>
-        </div>
-        <div class="col-md-4">
-          {{ guardian_form_set.empty_form.middle_name.label }}
-          {{ guardian_form_set.empty_form.middle_name }}
-          <div class="invalid-feedback">
-            Please add a middle name.
-          </div>
-        </div>
-        <div class="col-md-4">
-          {{ guardian_form_set.empty_form.last_name.label }}
-          {{ guardian_form_set.empty_form.last_name }}
-          <div class="invalid-feedback">
-            Please add a last name.
-          </div>
-        </div>
-      </div>
-      <div class="form-row mb-4">
-        <div class="d-flex align-items-center" style="padding-left:6px;">
-          {{ guardian_form_set.empty_form.username.label }}
-        </div>
-        <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6">
-          {{ guardian_form_set.empty_form.username }}
-          <div class="invalid-feedback">
-            Please add a username.
-          </div>
-        </div>
-      </div>
-      <div class="form-row mb-4">
-        <div class="d-flex align-items-center" style="padding-left:6px;">
-          {{ guardian_form_set.empty_form.password.label }}
-        </div>
-        <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6">
-          {{ guardian_form_set.empty_form.password }}
-          <div class="invalid-feedback">
-            Please add a password.
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
 
 <!-- Date picker CSS -->
 <link href="{% static 'vendor/datepicker/datepicker.min.css' %}" rel="stylesheet">
@@ -587,15 +363,17 @@
 <script>
   const childFormCards = document.getElementById('child-form-cards')
   const preLoader = document.getElementById('pre-loader')
-  const errorLists = document.querySelectorAll('.errorlist');
   const saveButton = document.getElementById("save")
   const form = document.querySelector('form.needs-validation')
   const datePickerFields = document.getElementsByClassName('date-picker')
+  const birthdate = document.getElementById('id_birthdate')
+  const years_old = document.getElementById('id_years_old')
+  const months_old = document.getElementById('id_months_old')
 
+  const password = document.getElementById('id_password')
+  const username = document.getElementById('id_username')
 
   for (const element of datePickerFields) {
-    // Access element
-    console.log(element);
     const datepickerInstance = datepicker(element, {
       formatter: (input, date, instance) => {
         const value = date.toLocaleDateString('en-US', {
@@ -609,115 +387,71 @@
   }
 
 
-  function initializeBirthdateInput() {
-    const birthdateCount = document.getElementsByClassName('birthdate').length + 1
-    let i = 0
-    while (i < birthdateCount) {
-      var birthdateInput = document.getElementById(`id_child-${i}-birthdate`);
-      var yearInput = document.getElementById(`id_child-${i}-years_old`)
-      var monthInput = document.getElementById(`id_child-${i}-months_old`)
-      initializeDatepicker(birthdateInput, yearInput, monthInput);
-      i++
-    }
-  }
+  datepicker(birthdate, {
+    formatter: (input, date, instance) => {
+      const value = date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+      input.value = value; // => 'September/1/2099'
+    },
+    onSelect: (instance, date) => {
+      let today = new Date();
+      let birthYear = date.getFullYear();
+      let age = today.getFullYear() - birthYear;
 
-  initializeBirthdateInput()
-
-  function addForm(button, prefix) {
-
-    button.blur()
-    const totalNewForms = document.getElementById(`id_${prefix}-TOTAL_FORMS`);
-    const currentChildForms = document.getElementsByClassName(`${prefix}-form`);
-    const currentFormCount = currentChildForms.length;
-
-
-    const formCopyTarget = document.getElementById(`${prefix}-form-card`);
-    console.log(formCopyTarget);
-
-    const copyEmptyFormEl = document.getElementById(`empty-${prefix}-form`).cloneNode(true);
-    copyEmptyFormEl.setAttribute('class', `card shadow mb-5 ${prefix}-form`);
-
-    if (document.getElementById(`form-${currentFormCount}`)) {
-      copyEmptyFormEl.setAttribute('id', `id_${prefix}_card_form-${currentFormCount + 1}`);
-    } else {
-      copyEmptyFormEl.setAttribute('id', `id_${prefix}_card_form-${currentFormCount}`);
-    }
-
-    const regex = new RegExp('__prefix__', 'g');
-    copyEmptyFormEl.innerHTML = copyEmptyFormEl.innerHTML.replace(regex, currentFormCount);
-
-
-    totalNewForms.setAttribute('value', currentFormCount + 1);
-
-    formCopyTarget.appendChild(copyEmptyFormEl);
-
-    // Add new datepicker to the new form
-    if (prefix === 'child') {
-      const newBirthdateInput = copyEmptyFormEl.querySelector(`input#id_${prefix}-${currentFormCount}-birthdate`);
-      const newYearInput = copyEmptyFormEl.querySelector(`input#id_${prefix}-${currentFormCount}-years_old`);
-      const newMonthInput = copyEmptyFormEl.querySelector(`input#id_${prefix}-${currentFormCount}-months_old`);
-
-      initializeDatepicker(newBirthdateInput, newYearInput, newMonthInput);
-    }
-
-    const datePickerFields = copyEmptyFormEl.getElementsByClassName('date-picker')
-
-
-    for (const element of datePickerFields) {
-      initializeDatepicker(element)
-    }
-
-  }
-
-  function deleteForm(button, prefix) {
-    var card = button.closest(`div.${prefix}-form`);
-    card.remove();
-    const totalNewForms = document.getElementById(`id_${prefix}-TOTAL_FORMS`);
-    const currentChildForms = document.getElementsByClassName(`${prefix}-form`);
-    const currentFormCount = currentChildForms.length + 1
-    totalNewForms.setAttribute('value', currentFormCount - 1)
-  }
-
-  function initializeDatepicker(datePickerField, yearInput = "", monthInput = "") {
-    const datepickerInstance = datepicker(datePickerField, {
-      formatter: (input, date, instance) => {
-        const value = date.toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
-        });
-        input.value = value; // => 'September/1/2099'
-      },
-      onSelect: (instance, date) => {
-        let today = new Date();
-        let birthYear = date.getFullYear();
-        let age = today.getFullYear() - birthYear;
-
-        let monthsPassed = (today.getMonth() - date.getMonth()) + (today.getFullYear() - birthYear) * 12;
-        if (today.getMonth() < date.getMonth() || (today.getMonth() === date.getMonth() && today.getDate() < date.getDate())) {
-          age--;
-          monthsPassed--;
-        }
-        if (yearInput && monthInput) {
-          yearInput.value = age;
-          monthInput.value = monthsPassed;
-        }
-
+      let monthsPassed = (today.getMonth() - date.getMonth()) + (today.getFullYear() - birthYear) * 12;
+      if (today.getMonth() < date.getMonth() || (today.getMonth() === date.getMonth() && today.getDate() < date.getDate())) {
+        age--;
+        monthsPassed--;
       }
-    });
-    return datepickerInstance;
-  }
+      years_old.value = age;
+      months_old.value = monthsPassed;
 
-
-  saveButton.addEventListener("click", function () {
-    saveButton.blur()
+    }
   });
 
-  // window.addEventListener('beforeunload', (event) => {
-  //   if (!formSubmitted) {
-  //     event.preventDefault(); // Prevent the default reload message
-  //   }
-  // });
+
+  const customFile = document.getElementById('imageInput');
+  const customFileLabel = document.querySelector('.custom-file-label');
+  const imagePreview = document.getElementById('imagePreview');
+  const dbImagePreview = document.getElementById('dbImagePreview');
+  customFile.addEventListener('change', function (event) {
+    const selectedFile = event.target.files[0];
+    const fileName = event.target.files[0].name;
+    customFileLabel.textContent = fileName;
+
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      imagePreview.src = event.target.result;
+    };
+
+    reader.readAsDataURL(selectedFile);
+    imagePreview.classList.add('d-block')
+    dbImagePreview.classList.add('d-none')
+  });
+
+
+  if (password.value) {
+    const passwordDiv = password.closest('div.form-row')
+    const usernameDiv = username.closest('div.form-row')
+
+    passwordDiv.classList.add('d-none')
+    usernameDiv.classList.add('d-none')
+  }
+  window.addEventListener('beforeunload', (event) => {
+
+    const form = document.getElementById('childForm')
+    if (!form.classList.contains('was-validated')) {
+      event.preventDefault();
+    }
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  });
 
   window.addEventListener('load', () => {
     childFormCards.classList.remove('d-none')
@@ -736,6 +470,9 @@
       }, false);
     });
   })
+
+
+
 </script>
 
 {% endblock %}
