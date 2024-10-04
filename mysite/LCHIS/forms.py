@@ -1,5 +1,5 @@
 from django import forms
-from .models import ChildModel, GuardianModel, GalleryModel
+from .models import ChildModel, GuardianModel, GalleryModel, VitaminModel
 from django.forms.widgets import FileInput, TextInput, Textarea, Select
 
 class LoginForm(forms.Form):
@@ -78,7 +78,6 @@ class GuardianModelForm(forms.ModelForm):
         'password': TextInput( attrs={'class': 'form-control', 'required':''}),
       }
 
- 
 class GalleryModelForm(forms.ModelForm):
   class Meta:
     model = GalleryModel
@@ -88,5 +87,13 @@ class GalleryModelForm(forms.ModelForm):
           'type': Select(attrs={'class': 'custom-select', 'required':''}),
           'date': TextInput( attrs={'class': 'form-control date', 'required':'', 'autocomplete': 'off'})
         }
-
-
+    
+class VitaminModelForm(forms.ModelForm):
+  class Meta:
+    model = VitaminModel
+    fields = '__all__'
+    widgets = {
+          'image': FileInput(attrs={'class': 'custom-file-input', 'id':'imageInput', 'required':''}),
+          'name': TextInput( attrs={'class': 'form-control', 'required':''}),
+          'description':Textarea( attrs={'class':'form-control', 'required':''}),
+        }

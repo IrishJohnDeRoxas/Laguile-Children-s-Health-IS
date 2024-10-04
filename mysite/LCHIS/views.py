@@ -5,15 +5,17 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import Paginator
 from django.contrib.auth import get_user_model
 
-from .forms import LoginForm, ChildModelForm, GuardianModelForm, GalleryModelForm
-from .models import ChildModel,GuardianModel, GalleryModel
+from .forms import LoginForm, ChildModelForm, GuardianModelForm, GalleryModelForm, VitaminModelForm
+from .models import ChildModel,GuardianModel, GalleryModel, VitaminModel
 import os
 
 def index(request):
     gallery_list = GalleryModel.objects.all()
+    vitamins = VitaminModel.objects.all()
     arguments = {
         'current_user': request.user.username.capitalize,
-        'gallery_list': gallery_list
+        'gallery_list': gallery_list,
+        'vitamins': vitamins,
     }
 
     return render(request, 'LCHIS/base.html', arguments)
@@ -52,15 +54,15 @@ def logout_view(request):
     logout(request)
     return redirect(index)
 
-@permission_required('is_superuser', login_url = '/login/')
-@login_required(login_url = '/login/')
+@permission_required('is_superuser', login_url = '/admin/login')
+@login_required(login_url = '/admin/login')
 def admin_dashboard(request):
     arguments = {
         'current_user': request.user.username.capitalize,
     }
     return render(request, 'LCHIS/admin/dashboard.html', arguments)
 
-@login_required(login_url = '/login/')
+@login_required(login_url = '/admin/login')
 def child_list(request):
     children = ChildModel.objects.all()
     # ChildModel.objects.all().delete()
@@ -90,7 +92,7 @@ def child_list(request):
     }
     return render(request, 'LCHIS/admin/child_list.html', arguments)
 
-@login_required(login_url='/login/')
+@login_required(login_url='/admin/login')
 def child_detail(request, pk = None, delete_image = None):
     
     child_form = ChildModelForm()
@@ -165,7 +167,7 @@ def child_detail(request, pk = None, delete_image = None):
     else:
         return render(request, 'LCHIS/admin/child_detail.html', arguments)
 
-@login_required(login_url='/login/')
+@login_required(login_url='/admin/login')
 def gallery_list(request):
     gallery_list = GalleryModel.objects.all()
     
@@ -190,7 +192,7 @@ def gallery_list(request):
     }
     return render(request, 'LCHIS/admin/gallery_list.html', arguments)
 
-@login_required(login_url='/login/')
+@login_required(login_url='/admin/login')
 def gallery_detail(request, pk=0):
     form = GalleryModelForm
     arguments = {
@@ -238,13 +240,88 @@ def gallery_detail(request, pk=0):
 
     return render(request, 'LCHIS/admin/gallery_detail.html', arguments)
 
-@login_required(login_url='/login/')
+@login_required(login_url='/admin/login')
 def user_dashboard(request):
     child_id = request.user.child_id
     print(child_id)
     child = ChildModel.objects.get(pk=child_id)
+    vitamins = VitaminModel.objects.all()
     arguments = {
         'current_user': request.user.first_name.capitalize,
-        'child':child
+        'child':child,
+        'vitamins': vitamins,
     }
     return render(request, 'LCHIS/user/home.html', arguments)
+
+@login_required(login_url='/admin/login')
+def vitamin_list(request):
+    vitamin_list = VitaminModel.objects.all()
+    
+    # item = VitaminModel.objects.get(pk=22)
+    # item.delete()
+    if request.method == 'POST':
+        selected_images = request.POST.getlist('image_to_delete') 
+        if selected_images:
+            for pk in selected_images:
+                item = VitaminModel.objects.get(pk=pk)
+                item.delete()
+    paginator = Paginator(vitamin_list, 10)
+    page_number = request.GET.get('page')
+    if page_number:
+        page_obj = paginator.get_page(page_number)
+    else:
+        page_obj = paginator.get_page(1)
+    
+    arguments = {
+        'current_user': request.user.username.capitalize,
+        'page_obj':page_obj
+    }
+    return render(request, 'LCHIS/admin/vitamin_list.html', arguments)
+
+@login_required(login_url='/admin/login')
+def vitamin_detail(request, pk=0):
+    form = VitaminModelForm
+    arguments = {
+        'current_user': request.user.username.capitalize,
+        'form': form
+    }
+
+    if pk != 0:
+        item = VitaminModel.objects.get(pk=pk)
+        arguments['form'] = VitaminModelForm(instance=item)
+        arguments['vitamin'] = item
+        if request.method == 'POST':
+            confirmDelete = int(request.POST['confirmDelete']) 
+            if (confirmDelete):
+                item.delete()
+                return redirect(vitamin_list)
+            form = VitaminModelForm(request.POST, request.FILES, instance=item)
+            if request.FILES:
+                path = item.image.path
+                os.remove(path)
+            if form.is_valid():
+                form.save()
+                return redirect(vitamin_list)
+        
+    if request.method == 'POST' and pk == 0:
+        vitamin_form = VitaminModelForm(request.POST, request.FILES)
+        saveAndAddAnother = int(request.POST['saveAndAdd']) 
+        saveAndEditAnother = int(request.POST['saveAndEdit']) 
+
+        if vitamin_form.is_valid():
+            vitaminInstance = vitamin_form.save()
+            if (saveAndAddAnother ==1):
+                print('saveAndAddAnother')
+                return redirect(vitamin_detail)
+            elif(saveAndEditAnother==1):
+                arguments['form'] = vitamin_form
+
+                print('saveAndEditAnother')
+
+                return redirect(vitamin_detail, pk=vitaminInstance.pk)
+            else:
+                return redirect(vitamin_list)
+        else:
+            arguments['form'] = vitamin_form
+
+    return render(request, 'LCHIS/admin/vitamin_detail.html', arguments)

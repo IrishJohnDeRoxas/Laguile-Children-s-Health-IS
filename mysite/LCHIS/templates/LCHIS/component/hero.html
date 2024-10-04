@@ -8,7 +8,7 @@
       <div class="col-lg-10">
         <h2 data-aos="fade-up" data-aos-delay="100">Laguile Children Health Medical Record</h2>
 
-        {% if current_user %}
+        {% if '/user' in request.path %}
         <p data-aos="fade-up" data-aos-delay="200">Hello! {{current_user}}</p>
         {% endif %}
       </div>

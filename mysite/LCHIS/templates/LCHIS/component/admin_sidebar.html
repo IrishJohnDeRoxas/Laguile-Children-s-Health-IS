@@ -59,6 +59,14 @@
 
     </li>
 
+    <li class="nav-item {% if '/vitamin' in request.path  %}active{% endif %}">
+        <a class="nav-link" href="{% url 'vitamin_list' %}">
+            <i class="fas fa-fw fa-syringe"></i>
+            <span>Vitamin</span>
+        </a>
+
+    </li>
+
     <!-- Nav Item - Utilities Collapse Menu -->
     <!-- <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"

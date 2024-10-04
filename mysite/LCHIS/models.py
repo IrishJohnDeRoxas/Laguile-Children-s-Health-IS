@@ -111,18 +111,10 @@ class GuardianModel(AbstractUser):
     date_joined = models.DateField(default=timezone.now, null=True, blank=True)
     middle_name = models.CharField(max_length=200, blank=False)
 
-    
-# TODO About us model
-# TODO Vitamins model
-
 class GalleryModel(models.Model):
     typeChoices = (
         ('health-center', 'Health Center'),
-        ('barangay-hall', 'Barangay Hall'),
-        ('school', 'School'),
-        ('basketball-court', 'Basketball Court'),
-        ('church', 'Church'),
-        ('other', 'Other'),
+        ('program', 'Program'),
     )
 
     image = models.ImageField(null=True, upload_to='gallery/')
@@ -134,3 +126,20 @@ class GalleryModel(models.Model):
             if os.path.isfile(self.image.path):
                 os.remove(self.image.path)
         super().delete(*args, **kwargs)
+        
+class VitaminModel(models.Model):
+    image = models.ImageField(null=True, upload_to='vitamins/')
+    name = models.CharField(max_length=200, blank=False)
+    description = models.TextField()
+
+    def delete(self, *args, **kwargs):
+        if self.image:
+            if os.path.isfile(self.image.path):
+                os.remove(self.image.path)
+        super().delete(*args, **kwargs)
+        
+# TODO Finish up the about us feature
+class AboutUsModel(models.Model):
+    header = models.CharField(max_length=200, blank=False)
+    description = models.TextField()
+    is_main = models.BooleanField(default=False)

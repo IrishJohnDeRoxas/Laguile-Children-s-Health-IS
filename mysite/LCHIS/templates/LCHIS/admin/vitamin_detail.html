@@ -10,6 +10,7 @@
         <img src="{% static 'img/svg/tube-spinner.svg' %}" alt="pre-loader">
     </div>
 </div>
+
 <div class="modal fade" id="confirmDelete" tabindex="-1" aria-labelledby="confirmDelete" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -29,8 +30,9 @@
         </div>
     </div>
 </div>
+
 <div class="container-fluid d-none" id="galleryForm">
-    <h1 class="h4 mb-0 text-gray-800 mb-5">Add image</h1>
+    <h1 class="h4 mb-0 text-gray-800 mb-5">Add vitamin</h1>
     <form method="post" class="form-group needs-validation" enctype="multipart/form-data" id="gallery-form" novalidate>
         {% csrf_token %}
 
@@ -49,16 +51,16 @@
                             <div class="custom-file mb-3">
                                 {{ form.image }}
                                 <div class="invalid-feedback">
-                                    Please add a type.
+                                    Please add a image.
                                 </div>
                                 <label class="custom-file-label">Choose image</label>
                             </div>
                             <img id="imagePreview" src="#" class="img-thumbnail d-none" style="width: 150px;"
                                 alt="Image Preview">
 
-                            {% if gallery %}
-                            <img id="dbImagePreview" src="{{ gallery.image.url }}" class="img-thumbnail"
-                                alt="{{ gallery.image.name }}" style="width: 150px;">
+                            {% if vitamin %}
+                            <img id="dbImagePreview" src="{{ vitamin.image.url }}" class="img-thumbnail"
+                                alt="{{ vitamin.image.name }}" style="width: 150px;">
                             {% endif %}
 
                             {% if form.image.errors %}
@@ -72,24 +74,25 @@
                         <div class="col-md-12">
                             <div class="form-row mb-4">
                                 <div class="col-xlg-1 col-lg-3 col-md-6 col-sm-6">
-                                    {{ form.type.label }}
+                                    {{ form.name.label }}
                                     <div class="form-group">
-                                        {{ form.type }}
+                                        {{ form.name }}
                                         <div class="invalid-feedback">
-                                            Please select a type.
+                                            Please add name.
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-row mb-4">
-                                <div class="col-xlg-1 col-lg-2 col-md-6 col-sm-6">
-                                    {{ form.date.label }}
-                                    {{ form.date }}
-                                    <div class="invalid-feedback">
-                                        Please add a date.
+                                <div class="col-12">
+                                    {{ form.description.label }}
+                                    <div class="form-group">
+                                        {{ form.description }}
+                                        <div class="invalid-feedback">
+                                            Please add description.
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -138,17 +141,7 @@
     const galleryForm = document.getElementById('galleryForm')
 
     let formSubmitted = false;
-    let dateInput = document.getElementsByName('date')
-    const datepickerInstance = datepicker(dateInput[0], {
-        formatter: (input, date, instance) => {
-            const value = date.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-            input.value = value; // => 'September/1/2099'
-        },
-    })
+
 
     if (saveAndAddButton) {
         saveAndAddButton.addEventListener("click", function () {

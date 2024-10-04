@@ -1,10 +1,10 @@
 {% extends 'LCHIS/admin/admin_base.html' %} {% block content %}
 <div class="container-fluid">
   <div class="d-flex justify-content-end mb-3">
-    <h1 class="h4 mb-0 text-gray-800 align-self-start mr-auto">Select image to change</h1>
-    <a class="btn btn-primary" href="{% url 'gallery_detail' %}">
+    <h1 class="h4 mb-0 text-gray-800 align-self-start mr-auto">Select vitamin to change</h1>
+    <a class="btn btn-primary" href="{% url 'vitamin_detail' %}">
       <i class="fa fa-plus"></i>
-      Add Image to Gallery
+      Add Vitamin
     </a>
   </div>
   {% if page_obj %}
@@ -28,8 +28,7 @@
       <thead>
         <tr>
           <th scope="col">Image</th>
-          <th scope="col">Type</th>
-          <th scope="col">Date</th>
+          <th scope="col">Name</th>
           <th scope="col">
             <input type="checkbox" id="select-all">
             <label for="select-all">Select All</label>
@@ -37,23 +36,20 @@
         </tr>
       </thead>
       <tbody>
-        {% for gallery in page_obj %}
+        {% for vitamin in page_obj %}
         <tr>
           <td>
-            <a href="{% url 'gallery_detail' gallery.pk %}" class="nav-link text-dark p-0 m-0">
-              <img src="{{ gallery.image.url }}" class="img-thumbnail" alt="{{ gallery.image.name }}"
+            <a href="{% url 'vitamin_detail' vitamin.pk %}" class="nav-link text-dark p-0 m-0">
+              <img src="{{ vitamin.image.url }}" class="img-thumbnail" alt="{{ vitamin.image.name }}"
                 style="width: 150px;">
             </a>
           </td>
           <td class="align-middle">
-            <a href="{% url 'gallery_detail' gallery.pk %}" class="nav-link text-dark p-0 m-0 h-100">{{
-              gallery.get_type_display }}</a>
+            <a href="{% url 'vitamin_detail' vitamin.pk %}" class="nav-link text-dark p-0 m-0 h-100">
+              {{vitamin.name }}</a>
           </td>
           <td class="align-middle">
-            <a href="{% url 'gallery_detail' gallery.pk %}" class="nav-link text-dark p-0 m-0">{{ gallery.date }}</a>
-          </td>
-          <td class="align-middle">
-            <input type="checkbox" name="image_to_delete" value="{{ gallery.pk }}">
+            <input type="checkbox" name="image_to_delete" value="{{ vitamin.pk }}">
           </td>
         </tr>
         {% endfor %}
@@ -105,13 +101,16 @@
 </nav>
 <script>
   const selectAll = document.getElementById('select-all')
-  selectAll.addEventListener('change', function () {
-    var checkboxes = document.querySelectorAll('input[name="image_to_delete"]');
+  if (selectAll) {
+    selectAll.addEventListener('change', function () {
+      var checkboxes = document.querySelectorAll('input[name="image_to_delete"]');
 
-    for (var i = 0; i < checkboxes.length; i++) {
-      checkboxes[i].checked = this.checked;
-    }
-  });
+      for (var i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = this.checked;
+      }
+    });
+  }
+
 
   const goButton = document.getElementById('go')
   const optionSelect = document.querySelector('select#option')
