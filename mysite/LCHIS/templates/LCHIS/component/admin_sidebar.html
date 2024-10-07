@@ -67,6 +67,14 @@
 
     </li>
 
+    <li class="nav-item {% if '/about_us' in request.path  %}active{% endif %}">
+        <a class="nav-link" href="{% url 'about_us_list' %}">
+            <i class="fas fa-fw fa-gear"></i>
+            <span>About us</span>
+        </a>
+
+    </li>
+
     <!-- Nav Item - Utilities Collapse Menu -->
     <!-- <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"

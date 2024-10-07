@@ -21,4 +21,8 @@ urlpatterns = [
     path("admin/vitamin", views.vitamin_list, name="vitamin_list"),
     path("admin/vitamin_detail/pk=<int:pk>/", views.vitamin_detail, name="vitamin_detail"),
     path("admin/vitamin_detail", views.vitamin_detail, name="vitamin_detail"),
+    
+    path("admin/about_us", views.about_us_list, name="about_us_list"),
+    path("admin/about_us_detail/pk=<int:pk>/", views.about_us_detail, name="about_us_detail"),
+    path("admin/about_us_detail", views.about_us_detail, name="about_us_detail"),
 ]

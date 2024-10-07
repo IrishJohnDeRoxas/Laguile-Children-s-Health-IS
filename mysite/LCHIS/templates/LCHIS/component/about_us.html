@@ -1,31 +1,29 @@
 <!-- About Section - Home Page -->
 <section id="about" class="about">
-
   <div class="container" data-aos="fade-up" data-aos-delay="100">
     <div class="row align-items-xl-center gy-5">
-
       <div class="col-xl-5 content">
-        <h3>About Us</h3>
-        <h2>Ducimus rerum libero reprehenderit cumque</h2>
-        <p>Ipsa sint sit. Quis ducimus tempore dolores impedit et dolor cumque alias maxime. Enim reiciendis minus et
-          rerum hic non. Dicta quas cum quia maiores iure. Quidem nulla qui assumenda incidunt voluptatem tempora
-          deleniti soluta.</p>
-        <!-- <a href="#" class="read-more"><span>Read More</span><i class="bi bi-arrow-right"></i></a> -->
+        {% for on_left_about in on_left_abouts %}
+        <div class="mt-3">
+          <h3>{{on_left_about.header}}</h3>
+          <p>{{on_left_about.description}}</p>
+        </div>
+        {% endfor %}
       </div>
-
       <div class="col-xl-7">
-        <div class="row gy-4 icon-boxes">
+        <div class="row gy-4 icon-boxes ">
+          {%for on_right_about in on_right_abouts %}
 
           <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
             <div class="icon-box">
-              <h3>Eius provident</h3>
-              <p>Magni repellendus vel ullam hic officia accusantium ipsa dolor omnis dolor voluptatem</p>
+              <h3>{{on_right_about.header}}</h3>
+              <p>{{on_right_about.description}}</p>
             </div>
           </div> <!-- End Icon Box -->
+          {%endfor %}
+
         </div>
       </div>
-
     </div>
   </div>
-
 </section>

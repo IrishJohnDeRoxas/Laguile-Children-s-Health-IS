@@ -1,6 +1,6 @@
 from django import forms
-from .models import ChildModel, GuardianModel, GalleryModel, VitaminModel
-from django.forms.widgets import FileInput, TextInput, Textarea, Select
+from .models import ChildModel, GuardianModel, GalleryModel, VitaminModel, AboutUsModel
+from django.forms.widgets import FileInput, TextInput, Textarea, Select, CheckboxInput
 
 class LoginForm(forms.Form):
     username = forms.CharField(label='Username',
@@ -83,7 +83,7 @@ class GalleryModelForm(forms.ModelForm):
     model = GalleryModel
     fields = '__all__'
     widgets = {
-          'image': FileInput(attrs={'class': 'custom-file-input', 'id':'imageInput', 'required':''}),
+          'image': FileInput(attrs={'class': 'custom-file-input', 'id':'imageInput'}),
           'type': Select(attrs={'class': 'custom-select', 'required':''}),
           'date': TextInput( attrs={'class': 'form-control date', 'required':'', 'autocomplete': 'off'})
         }
@@ -93,7 +93,16 @@ class VitaminModelForm(forms.ModelForm):
     model = VitaminModel
     fields = '__all__'
     widgets = {
-          'image': FileInput(attrs={'class': 'custom-file-input', 'id':'imageInput', 'required':''}),
+          'image': FileInput(attrs={'class': 'custom-file-input', 'id':'imageInput',}),
           'name': TextInput( attrs={'class': 'form-control', 'required':''}),
           'description':Textarea( attrs={'class':'form-control', 'required':''}),
+        }
+    
+class AboutUsModelForm(forms.ModelForm):
+  class Meta:
+    model = AboutUsModel
+    fields = '__all__'
+    widgets = {
+          'header': TextInput( attrs={'class': 'form-control', 'required':''}),
+          'description': Textarea( attrs={'class': 'form-control', 'required':''}),
         }

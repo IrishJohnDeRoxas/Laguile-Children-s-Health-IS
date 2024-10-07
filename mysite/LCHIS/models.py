@@ -138,8 +138,7 @@ class VitaminModel(models.Model):
                 os.remove(self.image.path)
         super().delete(*args, **kwargs)
         
-# TODO Finish up the about us feature
 class AboutUsModel(models.Model):
     header = models.CharField(max_length=200, blank=False)
     description = models.TextField()
-    is_main = models.BooleanField(default=False)
+    on_left = models.BooleanField(default=False)

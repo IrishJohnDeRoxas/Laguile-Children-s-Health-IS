@@ -15,13 +15,13 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Delete the image?</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Delete the item?</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                This will permanently delete the image, confirm to delete the image.
+                This will permanently delete the item, confirm to delete the item.
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -32,7 +32,7 @@
 </div>
 
 <div class="container-fluid d-none" id="galleryForm">
-    <h1 class="h4 mb-0 text-gray-800 mb-5">Add vitamin</h1>
+    <h1 class="h4 mb-0 text-gray-800 mb-5">Add About us</h1>
     <form method="post" class="form-group needs-validation" enctype="multipart/form-data" id="gallery-form" novalidate>
         {% csrf_token %}
 
@@ -47,38 +47,14 @@
                 </div>
                 <div class="card-body">
                     <div class="form-row">
-                        <div class="col-xlg-2 col-lg-3 col-md-6 col-sm-6 mb-4">
-                            <div class="custom-file mb-3">
-                                {{ form.image }}
-                                <div class="invalid-feedback">
-                                    Please add a image.
-                                </div>
-                                <label class="custom-file-label">Choose image</label>
-                            </div>
-                            <img id="imagePreview" src="#" class="img-thumbnail d-none" style="width: 150px;"
-                                alt="Image Preview">
-
-                            {% if vitamin %}
-                            <img id="dbImagePreview" src="{{ vitamin.image.url }}" class="img-thumbnail"
-                                alt="{{ vitamin.image.name }}" style="width: 150px;">
-                            {% endif %}
-
-                            {% if form.image.errors %}
-                            <div class="errorlist position-relative">
-                                {% for error in form.image.errors %}
-                                <span class="small text-danger">{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                            {% endif %}
-                        </div>
                         <div class="col-md-12">
                             <div class="form-row mb-4">
                                 <div class="col-xlg-1 col-lg-3 col-md-6 col-sm-6">
-                                    {{ form.name.label }}
+                                    {{ form.header.label }}
                                     <div class="form-group">
-                                        {{ form.name }}
+                                        {{ form.header }}
                                         <div class="invalid-feedback">
-                                            Please add name.
+                                            Please add header.
                                         </div>
                                     </div>
                                 </div>
@@ -93,6 +69,17 @@
                                         <div class="invalid-feedback">
                                             Please add description.
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-row mb-4">
+                                <div class="col-12">
+                                    {{ form.on_left.label }}
+                                    <div class="form-group">
+                                        {{ form.on_left }}
+
                                     </div>
                                 </div>
                             </div>
@@ -177,28 +164,6 @@
             event.preventDefault();
             event.stopPropagation();
         }
-    });
-
-
-
-    const customFile = document.getElementById('imageInput');
-    const customFileLabel = document.querySelector('.custom-file-label');
-    const imagePreview = document.getElementById('imagePreview');
-    const dbImagePreview = document.getElementById('dbImagePreview');
-    customFile.addEventListener('change', function (event) {
-        const selectedFile = event.target.files[0];
-        const fileName = event.target.files[0].name;
-        customFileLabel.textContent = fileName;
-
-        const reader = new FileReader();
-
-        reader.onload = (event) => {
-            imagePreview.src = event.target.result;
-        };
-
-        reader.readAsDataURL(selectedFile);
-        imagePreview.classList.add('d-block')
-        dbImagePreview.classList.add('d-none')
     });
 
     window.addEventListener('load', () => {

@@ -5,22 +5,42 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import Paginator
 from django.contrib.auth import get_user_model
 
-from .forms import LoginForm, ChildModelForm, GuardianModelForm, GalleryModelForm, VitaminModelForm
-from .models import ChildModel,GuardianModel, GalleryModel, VitaminModel
+from .forms import LoginForm, ChildModelForm, GuardianModelForm, GalleryModelForm, VitaminModelForm, AboutUsModelForm
+from .models import ChildModel,GuardianModel, GalleryModel, VitaminModel, AboutUsModel
 import os
 
 def index(request):
     gallery_list = GalleryModel.objects.all()
     vitamins = VitaminModel.objects.all()
+    on_left_abouts = AboutUsModel.objects.filter(on_left = True)
+    on_right_abouts = AboutUsModel.objects.filter(on_left = False)
     arguments = {
         'current_user': request.user.username.capitalize,
         'gallery_list': gallery_list,
         'vitamins': vitamins,
+        'on_left_abouts': on_left_abouts,
+        'on_right_abouts': on_right_abouts,
     }
 
     return render(request, 'LCHIS/base.html', arguments)
 from django.contrib.auth.mixins import UserPassesTestMixin
-    
+
+@login_required(login_url='/admin/login')
+def user_dashboard(request):
+    child_id = request.user.child_id
+    child = ChildModel.objects.get(pk=child_id)
+    vitamins = VitaminModel.objects.all()
+    on_left_abouts = AboutUsModel.objects.filter(on_left = True)
+    on_right_abouts = AboutUsModel.objects.filter(on_left = False)
+    arguments = {
+        'current_user': request.user.first_name.capitalize,
+        'child':child,
+        'vitamins': vitamins,
+        'on_left_abouts': on_left_abouts,
+        'on_right_abouts': on_right_abouts,
+    }
+    return render(request, 'LCHIS/user/home.html', arguments)
+
 def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -241,19 +261,6 @@ def gallery_detail(request, pk=0):
     return render(request, 'LCHIS/admin/gallery_detail.html', arguments)
 
 @login_required(login_url='/admin/login')
-def user_dashboard(request):
-    child_id = request.user.child_id
-    print(child_id)
-    child = ChildModel.objects.get(pk=child_id)
-    vitamins = VitaminModel.objects.all()
-    arguments = {
-        'current_user': request.user.first_name.capitalize,
-        'child':child,
-        'vitamins': vitamins,
-    }
-    return render(request, 'LCHIS/user/home.html', arguments)
-
-@login_required(login_url='/admin/login')
 def vitamin_list(request):
     vitamin_list = VitaminModel.objects.all()
     
@@ -325,3 +332,76 @@ def vitamin_detail(request, pk=0):
             arguments['form'] = vitamin_form
 
     return render(request, 'LCHIS/admin/vitamin_detail.html', arguments)
+
+@login_required(login_url='/admin/login')
+def about_us_list(request):
+    about_us_list_list = AboutUsModel.objects.all()
+    
+    # item = AboutUsModel.objects.get(pk=22)
+    # item.delete()
+    if request.method == 'POST':
+        selected_items = request.POST.getlist('item_to_delete') 
+        if selected_items:
+            for pk in selected_items:
+                item = AboutUsModel.objects.get(pk=pk)
+                item.delete()
+    paginator = Paginator(about_us_list_list, 10)
+    page_number = request.GET.get('page')
+    if page_number:
+        page_obj = paginator.get_page(page_number)
+    else:
+        page_obj = paginator.get_page(1)
+    
+    arguments = {
+        'current_user': request.user.username.capitalize,
+        'page_obj':page_obj
+    }
+    return render(request, 'LCHIS/admin/about_us_list.html', arguments)
+
+@login_required(login_url='/admin/login')
+def about_us_detail(request, pk=0):
+    form = AboutUsModelForm
+    arguments = {
+        'current_user': request.user.username.capitalize,
+        'form': form
+    }
+
+    if pk != 0:
+        item = AboutUsModel.objects.get(pk=pk)
+        arguments['form'] = AboutUsModelForm(instance=item)
+        arguments['vitamin'] = item
+        if request.method == 'POST':
+            confirmDelete = int(request.POST['confirmDelete']) 
+            if (confirmDelete):
+                item.delete()
+                return redirect(about_us_list)
+            form = AboutUsModelForm(request.POST, request.FILES, instance=item)
+            if request.FILES:
+                path = item.image.path
+                os.remove(path)
+            if form.is_valid():
+                form.save()
+                return redirect(about_us_list)
+        
+    if request.method == 'POST' and pk == 0:
+        about_us_form = AboutUsModelForm(request.POST, request.FILES)
+        saveAndAddAnother = int(request.POST['saveAndAdd']) 
+        saveAndEditAnother = int(request.POST['saveAndEdit']) 
+
+        if about_us_form.is_valid():
+            vitaminInstance = about_us_form.save()
+            if (saveAndAddAnother ==1):
+                print('saveAndAddAnother')
+                return redirect(about_us_detail)
+            elif(saveAndEditAnother==1):
+                arguments['form'] = about_us_form
+
+                print('saveAndEditAnother')
+
+                return redirect(about_us_detail, pk=vitaminInstance.pk)
+            else:
+                return redirect(about_us_list)
+        else:
+            arguments['form'] = about_us_form
+
+    return render(request, 'LCHIS/admin/about_us_detail.html', arguments)
