@@ -104,41 +104,25 @@
 
       <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
         <div class="row gy-4">
-          <div class="col-lg-3 col-md-6">
+          <!-- <div class="col-lg-3 col-md-6">
             <div class="stats-item text-center w-100 h-100">
               <span data-purecounter-start="0" data-purecounter-end="0" data-purecounter-duration="1"
                 class="purecounter"></span>
               <p>Children</p>
             </div>
-          </div>
+          </div> -->
           <!-- End Stats Item -->
 
-          <div class="col-lg-3 col-md-6">
+          <!-- <div class="col-lg-3 col-md-6">
             <div class="stats-item text-center w-100 h-100">
               <span data-purecounter-start="0" data-purecounter-end="0" data-purecounter-duration="1"
                 class="purecounter"></span>
               <p>Age under 5</p>
             </div>
-          </div>
+          </div> -->
           <!-- End Stats Item -->
 
-          <div class="col-lg-3 col-md-6">
-            <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="0" data-purecounter-duration="1"
-                class="purecounter"></span>
-              <p>Age under 2</p>
-            </div>
-          </div>
-          <!-- End Stats Item -->
 
-          <div class="col-lg-3 col-md-6">
-            <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="0" data-purecounter-duration="1"
-                class="purecounter"></span>
-              <p>Age under 1</p>
-            </div>
-          </div>
-          <!-- End Stats Item -->
         </div>
       </div>
     </section>
@@ -146,50 +130,7 @@
 
     {% include 'LCHIS/component/child_info.html' %}
 
-    <!-- Gallery Section - Home Page -->
-    <section id="portfolio" class="portfolio">
-      <!--  Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <h2>Gallery</h2>
-        <p>
-          Current facilities of the barangay boasts a wide range of essential facilities that cater to the needs of the
-          residents.
-        </p>
-      </div>
-      <!-- End Section Title -->
-
-      <div class="container">
-        <div class="isotope-layout" data-default-filter=".filter-health-center" data-layout="masonry"
-          data-sort="original-order">
-          <ul class="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="100">
-            <li data-filter="*">All</li>
-            <li data-filter=".filter-health-center" class="filter-active">Health Center</li>
-            <li data-filter=".filter-barangay-hall">Barangay Hall</li>
-            <li data-filter=".filter-school">School</li>
-            <li data-filter=".filter-basketball-court">Basketball Court</li>
-            <li data-filter=".filter-church">Churches</li>
-            <li data-filter=".filter-other">Others</li>
-          </ul>
-          <!-- End Portfolio Filters -->
-
-          <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
-            {% for gallery in gallery_list %}
-            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-{{ gallery.type }}">
-              <img src="{{ gallery.image.url }}" class="img-fluid" alt="" />
-              <div class="portfolio-info">
-                <h4>{{ gallery.get_type_display }}</h4>
-                <p>{{ gallery.date }}</p>
-              </div>
-            </div>
-            <!-- End Portfolio Item -->
-            {% endfor %}
-
-          </div>
-          <!-- End Portfolio Container -->
-        </div>
-      </div>
-    </section>
-    <!-- End Gallery Section -->
+    {% include 'LCHIS/component/gallery.html' %}
 
     {% include 'LCHIS/component/vitamins.html' %}
 

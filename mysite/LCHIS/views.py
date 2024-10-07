@@ -10,13 +10,13 @@ from .models import ChildModel,GuardianModel, GalleryModel, VitaminModel, AboutU
 import os
 
 def index(request):
-    gallery_list = GalleryModel.objects.all()
+    gallery = GalleryModel.objects.all()
     vitamins = VitaminModel.objects.all()
     on_left_abouts = AboutUsModel.objects.filter(on_left = True)
     on_right_abouts = AboutUsModel.objects.filter(on_left = False)
     arguments = {
         'current_user': request.user.username.capitalize,
-        'gallery_list': gallery_list,
+        'gallery': gallery,
         'vitamins': vitamins,
         'on_left_abouts': on_left_abouts,
         'on_right_abouts': on_right_abouts,
@@ -29,12 +29,14 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 def user_dashboard(request):
     child_id = request.user.child_id
     child = ChildModel.objects.get(pk=child_id)
+    gallery = GalleryModel.objects.all()
     vitamins = VitaminModel.objects.all()
     on_left_abouts = AboutUsModel.objects.filter(on_left = True)
     on_right_abouts = AboutUsModel.objects.filter(on_left = False)
     arguments = {
         'current_user': request.user.first_name.capitalize,
         'child':child,
+        'gallery': gallery,
         'vitamins': vitamins,
         'on_left_abouts': on_left_abouts,
         'on_right_abouts': on_right_abouts,
@@ -80,7 +82,7 @@ def admin_dashboard(request):
     arguments = {
         'current_user': request.user.username.capitalize,
     }
-    return render(request, 'LCHIS/admin/dashboard.html', arguments)
+    return render(request, 'LCHIS/admin/child_list.html', arguments)
 
 @login_required(login_url = '/admin/login')
 def child_list(request):
