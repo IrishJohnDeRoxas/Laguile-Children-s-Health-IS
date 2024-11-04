@@ -34,10 +34,15 @@
 </head>
 
 <body>
+  {% if 'admin/' in request.path %}
+  <div onclick="history.back()" class="go-back p-5 position-absolute d-none">
+    <i class="bi bi-arrow-left-square pe-auto accent-color" style="font-size: 50px; cursor:pointer;"></i>
+  </div>
+  {% else %}
   <div onclick="history.back()" class="go-back p-5 position-absolute">
     <i class="bi bi-arrow-left-square pe-auto accent-color" style="font-size: 50px; cursor:pointer;"></i>
   </div>
-
+  {% endif %}
 
   <section class="vh-100">
     <div class="container py-5 h-100">
