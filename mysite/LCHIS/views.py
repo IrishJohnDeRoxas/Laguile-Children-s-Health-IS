@@ -5,6 +5,13 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import Paginator
 from django.contrib.auth import get_user_model
 
+# TODO add contact us feature
+# TODO add dashboard about count of kids and available vitamins
+# TODO modify the vitamins model, add available or not
+
+# TODO years and months
+# TODO add logo
+
 from .forms import LoginForm, ChildModelForm, GuardianModelForm, GalleryModelForm, VitaminModelForm, AboutUsModelForm
 from .models import ChildModel,GuardianModel, GalleryModel, VitaminModel, AboutUsModel
 import os
