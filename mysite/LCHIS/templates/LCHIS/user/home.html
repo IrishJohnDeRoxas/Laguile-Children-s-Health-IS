@@ -50,79 +50,58 @@
 
     <!-- Clients Section - Home Page -->
     <section id="clients" class="clients">
-      <div class="container-fluid" data-aos="fade-up">
-        <div class="row gy-4">
-          <div class="col-xl-2 col-md-3 col-6 client-logo">
-            <a href="">
-              <img src="{% static 'img/logo/bootstrap.png' %} " class="img-fluid" alt="" />
-            </a>
-          </div>
-          <!-- End Client Item -->
+      <div class="container-fluid" data-aos="fade-up" style="height: 280px;">
 
-          <div class="col-xl-2 col-md-3 col-6 client-logo">
-            <a href="">
-              <img src="{% static 'img/logo/bootstrap-icon.png' %} " class="img-fluid" alt="" />
-            </a>
-          </div>
-          <!-- End Client Item -->
-
-          <div class="col-xl-2 col-md-3 col-6 client-logo">
-            <a href="">
-              <img src="{% static 'img/logo/swiper.png' %} " class="img-fluid" alt="" />
-            </a>
-          </div>
-          <!-- End Client Item -->
-
-          <div class="col-xl-2 col-md-3 col-6 client-logo">
-            <a href="">
-              <img src="{% static 'img/logo/aos.png' %} " class="img-fluid" alt="" />
-            </a>
-          </div>
-          <!-- End Client Item -->
-
-          <div class="col-xl-2 col-md-3 col-6 client-logo">
-            <a href="">
-              <img src="{% static 'img/logo/isotope.png' %} " class="img-fluid" alt="" />
-            </a>
-          </div>
-          <!-- End Client Item -->
-
-          <div class="col-xl-2 col-md-3 col-6 client-logo">
-            <a href="">
-              <img src="{% static 'img/logo/django-python-logo.png' %} " class="img-fluid" alt="" />
-            </a>
-          </div>
-          <!-- End Client Item -->
-        </div>
       </div>
     </section>
     <!-- End Clients Section -->
 
-    <!-- Stats Section - Home Page -->
+    <!-- About Section - Home Page -->
+
     <section id="stats" class="stats">
       <img src="{% static 'img/stats-bg.jpg' %}" alt="" data-aos="fade-in" />
 
       <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
-        <div class="row gy-4">
-          <!-- <div class="col-lg-3 col-md-6">
+        <div class="row justify-content-center">
+          <div class="col-lg-2 col-md-6">
             <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="0" data-purecounter-duration="1"
+              <span data-purecounter-start="0" data-purecounter-end="{{child_count}}" data-purecounter-duration="1"
                 class="purecounter"></span>
-              <p>Children</p>
+              <p>Total number of child</p>
             </div>
-          </div> -->
-          <!-- End Stats Item -->
+          </div>
 
-          <!-- <div class="col-lg-3 col-md-6">
+          <div class="col-lg-2 col-md-6">
             <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="0" data-purecounter-duration="1"
-                class="purecounter"></span>
-              <p>Age under 5</p>
+              <span data-purecounter-start="0" data-purecounter-end="{{five_old_child_count}}"
+                data-purecounter-duration="1" class="purecounter"></span>
+              <p>Number of child age 5</p>
             </div>
-          </div> -->
-          <!-- End Stats Item -->
+          </div>
 
+          <div class="col-lg-2 col-md-6">
+            <div class="stats-item text-center w-100 h-100">
+              <span data-purecounter-start="0" data-purecounter-end="{{two_old_child_count}}"
+                data-purecounter-duration="1" class="purecounter"></span>
+              <p>Number of child age 2</p>
+            </div>
+          </div>
 
+          <div class="col-lg-2 col-md-6">
+            <div class="stats-item text-center w-100 h-100">
+              <span data-purecounter-start="0" data-purecounter-end="{{one_old_child_count}}"
+                data-purecounter-duration="1" class="purecounter"></span>
+              <p>Count of Age under 1</p>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-6">
+            <div class="stats-item text-center w-100 h-100">
+              <span data-purecounter-start="0" data-purecounter-end="{{vitamin_count}}" data-purecounter-duration="1"
+                class="purecounter"></span>
+              <p>Count of Available Vitamins</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
