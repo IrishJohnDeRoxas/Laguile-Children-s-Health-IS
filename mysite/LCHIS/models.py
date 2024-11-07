@@ -143,3 +143,13 @@ class AboutUsModel(models.Model):
     header = models.CharField(max_length=200, blank=False)
     description = models.TextField()
     on_left = models.BooleanField(default=False)
+    
+class ContactUsModel(models.Model):
+    typeChoices = (
+        ('address', 'Address'),
+        ('contact_number', 'Contact Number'),
+        ('email', 'Email'),
+    )
+    contact_type = models.CharField(max_length=200, blank=False, choices=typeChoices, default='address')
+    header = models.CharField(max_length=200, blank=False)
+    description = models.TextField()

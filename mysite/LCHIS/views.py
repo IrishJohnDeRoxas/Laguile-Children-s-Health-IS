@@ -7,8 +7,8 @@ from django.contrib.auth import get_user_model
 
 # TODO add contact us feature
 
-from .forms import LoginForm, ChildModelForm, GuardianModelForm, GalleryModelForm, VitaminModelForm, AboutUsModelForm
-from .models import ChildModel, GuardianModel, GalleryModel, VitaminModel, AboutUsModel
+from .forms import LoginForm, ChildModelForm, GuardianModelForm, GalleryModelForm, VitaminModelForm, AboutUsModelForm, ContactUsModelForm
+from .models import ChildModel, GuardianModel, GalleryModel, VitaminModel, AboutUsModel, ContactUsModel
 import os
 
 def index(request):
@@ -22,6 +22,7 @@ def index(request):
     one_old_child_count = ChildModel.objects.filter(years_old__lte=1).count()
     vitamin_count = VitaminModel.objects.filter(quantity__gt=0).count()
     
+    contacts = ContactUsModel.objects.all()
     arguments = {
         'current_user': request.user.username.capitalize,
         'gallery': gallery,
@@ -33,6 +34,7 @@ def index(request):
         'five_old_child_count': five_old_child_count,
         'two_old_child_count': two_old_child_count,
         'one_old_child_count': one_old_child_count,
+        'contacts': contacts,
     }
 
     return render(request, 'LCHIS/base.html', arguments)
@@ -47,7 +49,12 @@ def user_dashboard(request):
     on_left_abouts = AboutUsModel.objects.filter(on_left = True)
     on_right_abouts = AboutUsModel.objects.filter(on_left = False)
     child_count = ChildModel.objects.count()
+    five_old_child_count = ChildModel.objects.filter(years_old=5).count()
+    two_old_child_count = ChildModel.objects.filter(years_old=2).count()
+    one_old_child_count = ChildModel.objects.filter(years_old__lte=1).count()
     vitamin_count = VitaminModel.objects.filter(quantity__gt=0).count()
+    
+    contacts = ContactUsModel.objects.all()
     arguments = {
         'current_user': request.user.first_name.capitalize,
         'child':child,
@@ -57,6 +64,10 @@ def user_dashboard(request):
         'on_right_abouts': on_right_abouts,
         'child_count': child_count,
         'vitamin_count': vitamin_count,
+        'five_old_child_count': five_old_child_count,
+        'two_old_child_count': two_old_child_count,
+        'one_old_child_count': one_old_child_count,
+        'contacts': contacts,
     }
     return render(request, 'LCHIS/user/home.html', arguments)
 
@@ -424,3 +435,75 @@ def about_us_detail(request, pk=0):
             arguments['form'] = about_us_form
 
     return render(request, 'LCHIS/admin/about_us_detail.html', arguments)
+
+
+@login_required(login_url='/admin/login')
+def contact_us_list(request):
+    contact_us_list_list = ContactUsModel.objects.all()
+
+    if request.method == 'POST':
+        selected_items = request.POST.getlist('item_to_delete') 
+        if selected_items:
+            for pk in selected_items:
+                item = AboutUsModel.objects.get(pk=pk)
+                item.delete()
+    paginator = Paginator(contact_us_list_list, 10)
+    page_number = request.GET.get('page')
+    if page_number:
+        page_obj = paginator.get_page(page_number)
+    else:
+        page_obj = paginator.get_page(1)
+    
+    arguments = {
+        'current_user': request.user.username.capitalize,
+        'page_obj':page_obj
+    }
+    return render(request, 'LCHIS/admin/contact_us_list.html', arguments)
+
+@login_required(login_url='/admin/login')
+def contact_us_detail(request, pk=0):
+    form = ContactUsModelForm
+    arguments = {
+        'current_user': request.user.username.capitalize,
+        'form': form
+    }
+
+    if pk != 0:
+        item = ContactUsModel.objects.get(pk=pk)
+        arguments['form'] = ContactUsModelForm(instance=item)
+        arguments['vitamin'] = item
+        if request.method == 'POST':
+            confirmDelete = int(request.POST['confirmDelete']) 
+            if (confirmDelete):
+                item.delete()
+                return redirect(contact_us_list)
+            form = ContactUsModelForm(request.POST, request.FILES, instance=item)
+            if request.FILES:
+                path = item.image.path
+                os.remove(path)
+            if form.is_valid():
+                form.save()
+                return redirect(contact_us_list)
+        
+    if request.method == 'POST' and pk == 0:
+        contact_us_form = ContactUsModelForm(request.POST, request.FILES)
+        saveAndAddAnother = int(request.POST['saveAndAdd']) 
+        saveAndEditAnother = int(request.POST['saveAndEdit']) 
+
+        if contact_us_form.is_valid():
+            vitaminInstance = contact_us_form.save()
+            if (saveAndAddAnother ==1):
+                print('saveAndAddAnother')
+                return redirect(contact_us_detail)
+            elif(saveAndEditAnother==1):
+                arguments['form'] = contact_us_form
+
+                print('saveAndEditAnother')
+
+                return redirect(contact_us_detail, pk=vitaminInstance.pk)
+            else:
+                return redirect(contact_us_list)
+        else:
+            arguments['form'] = contact_us_form
+
+    return render(request, 'LCHIS/admin/contact_us_detail.html', arguments)

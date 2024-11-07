@@ -32,7 +32,7 @@
 </div>
 
 <div class="container-fluid d-none" id="galleryForm">
-    <h1 class="h4 mb-0 text-gray-800 mb-5">Add About us</h1>
+    <h1 class="h4 mb-0 text-gray-800 mb-5">Add Contact us</h1>
     <form method="post" class="form-group needs-validation" enctype="multipart/form-data" id="gallery-form" novalidate>
         {% csrf_token %}
 
@@ -43,12 +43,20 @@
         <div id="gallery-form-card">
             <div class="card shadow mb-5 child-form" id="id_child_card_form-0">
                 <div class="card-header py-3 d-flex justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">About us</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Contact Us</h6>
                 </div>
                 <div class="card-body">
                     <div class="form-row">
                         <div class="col-md-12">
                             <div class="form-row mb-4">
+                                <div class="col-xlg-1 col-lg-3 col-md-6 col-sm-6">
+                                    {{ form.contact_type.label }}
+                                    <div class="form-group">
+                                        {{ form.contact_type }}
+
+                                    </div>
+                                </div>
+
                                 <div class="col-xlg-1 col-lg-3 col-md-6 col-sm-6">
                                     {{ form.header.label }}
                                     <div class="form-group">
@@ -69,17 +77,6 @@
                                         <div class="invalid-feedback">
                                             Please add description.
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-1">
-                            <div class="form-row mb-4">
-                                <div class="col-12">
-                                    {{ form.on_left.label }}
-                                    <div class="form-group">
-                                        {{ form.on_left }}
-
                                     </div>
                                 </div>
                             </div>

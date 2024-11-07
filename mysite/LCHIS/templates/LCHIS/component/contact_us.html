@@ -1,0 +1,27 @@
+<div class="col-lg-6">
+    <div class="row gy-4">
+        {% for contact in contacts %}
+        <div class="col-md-6">
+            <div class="info-item" data-aos="fade" data-aos-delay="200">
+                <i class="
+                            {% if contact.contact_type == 'address' %}
+                                bi bi-geo-alt
+                            {% endif %}
+
+                            {% if contact.contact_type == 'contact_number' %}
+                                bi bi-telephone
+                            {% endif %}
+
+                            {% if contact.contact_type == 'email' %}
+                                bi bi-envelope
+                            {% endif %}
+
+                        ">
+                </i>
+                <h3>{{contact.header}}</h3>
+                <p>{{contact.description}}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>

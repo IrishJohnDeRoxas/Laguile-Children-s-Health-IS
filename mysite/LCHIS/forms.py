@@ -1,5 +1,5 @@
 from django import forms
-from .models import ChildModel, GuardianModel, GalleryModel, VitaminModel, AboutUsModel
+from .models import ChildModel, GuardianModel, GalleryModel, VitaminModel, AboutUsModel, ContactUsModel
 from django.forms.widgets import FileInput, TextInput, Textarea, Select, CheckboxInput, NumberInput
 
 class LoginForm(forms.Form):
@@ -104,6 +104,16 @@ class AboutUsModelForm(forms.ModelForm):
     model = AboutUsModel
     fields = '__all__'
     widgets = {
+          'header': TextInput( attrs={'class': 'form-control', 'required':''}),
+          'description': Textarea( attrs={'class': 'form-control', 'required':''}),
+        }
+    
+class ContactUsModelForm(forms.ModelForm):
+  class Meta:
+    model = ContactUsModel
+    fields = '__all__'
+    widgets = {
+          'contact_type': Select(attrs={'class': 'custom-select'}),
           'header': TextInput( attrs={'class': 'form-control', 'required':''}),
           'description': Textarea( attrs={'class': 'form-control', 'required':''}),
         }
