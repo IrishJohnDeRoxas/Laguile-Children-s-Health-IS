@@ -5,8 +5,6 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import Paginator
 from django.contrib.auth import get_user_model
 
-# TODO add contact us feature
-
 from .forms import LoginForm, ChildModelForm, GuardianModelForm, GalleryModelForm, VitaminModelForm, AboutUsModelForm, ContactUsModelForm
 from .models import ChildModel, GuardianModel, GalleryModel, VitaminModel, AboutUsModel, ContactUsModel
 import os
