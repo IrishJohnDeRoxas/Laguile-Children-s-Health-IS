@@ -19,6 +19,7 @@ def index(request):
     two_old_child_count = ChildModel.objects.filter(years_old=2).count()
     one_old_child_count = ChildModel.objects.filter(years_old__lte=1).count()
     vitamin_count = VitaminModel.objects.filter(quantity__gt=0).count()
+    not_available_vitamin_count = VitaminModel.objects.filter(quantity__lt=1).count()
     
     contacts = ContactUsModel.objects.all()
     arguments = {
@@ -33,6 +34,7 @@ def index(request):
         'two_old_child_count': two_old_child_count,
         'one_old_child_count': one_old_child_count,
         'contacts': contacts,
+        'not_available_vitamin_count': not_available_vitamin_count,
     }
 
     return render(request, 'LCHIS/base.html', arguments)
@@ -51,6 +53,7 @@ def user_dashboard(request):
     two_old_child_count = ChildModel.objects.filter(years_old=2).count()
     one_old_child_count = ChildModel.objects.filter(years_old__lte=1).count()
     vitamin_count = VitaminModel.objects.filter(quantity__gt=0).count()
+    not_available_vitamin_count = VitaminModel.objects.filter(quantity__lt=1).count()
     
     contacts = ContactUsModel.objects.all()
     arguments = {
@@ -66,6 +69,7 @@ def user_dashboard(request):
         'two_old_child_count': two_old_child_count,
         'one_old_child_count': one_old_child_count,
         'contacts': contacts,
+        'not_available_vitamin_count': not_available_vitamin_count,
     }
     return render(request, 'LCHIS/user/home.html', arguments)
 
