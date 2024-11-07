@@ -1,6 +1,6 @@
 from django import forms
 from .models import ChildModel, GuardianModel, GalleryModel, VitaminModel, AboutUsModel
-from django.forms.widgets import FileInput, TextInput, Textarea, Select, CheckboxInput
+from django.forms.widgets import FileInput, TextInput, Textarea, Select, CheckboxInput, NumberInput
 
 class LoginForm(forms.Form):
     username = forms.CharField(label='Username',
@@ -59,11 +59,11 @@ class ChildModelForm(forms.ModelForm):
         'child_first_name':'First name',
         'child_middle_name':'Middle name',
         'child_last_name':'Last name',
-        'nurse':'Name of Widwife/Nurse:',
+        'nurse':'Name of Midwife/Nurse:',
         'name_of_bhw':'Name of BHW:',
         'purok':'Purok:',
-        'months_old':'Months\'s',
-        'years_old':'Year\'s',
+        'months_old':'Months',
+        'years_old':'Years',
       }     
 
 class GuardianModelForm(forms.ModelForm):
@@ -96,6 +96,7 @@ class VitaminModelForm(forms.ModelForm):
           'image': FileInput(attrs={'class': 'custom-file-input', 'id':'imageInput',}),
           'name': TextInput( attrs={'class': 'form-control', 'required':''}),
           'description':Textarea( attrs={'class':'form-control', 'required':''}),
+          'quantity':NumberInput( attrs={'class':'form-control', 'required':''}),
         }
     
 class AboutUsModelForm(forms.ModelForm):

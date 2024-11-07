@@ -6,14 +6,9 @@ from django.core.paginator import Paginator
 from django.contrib.auth import get_user_model
 
 # TODO add contact us feature
-# TODO add dashboard about count of kids and available vitamins
-# TODO modify the vitamins model, add available or not
-
-# TODO years and months
-# TODO add logo
 
 from .forms import LoginForm, ChildModelForm, GuardianModelForm, GalleryModelForm, VitaminModelForm, AboutUsModelForm
-from .models import ChildModel,GuardianModel, GalleryModel, VitaminModel, AboutUsModel
+from .models import ChildModel, GuardianModel, GalleryModel, VitaminModel, AboutUsModel
 import os
 
 def index(request):
@@ -21,12 +16,23 @@ def index(request):
     vitamins = VitaminModel.objects.all()
     on_left_abouts = AboutUsModel.objects.filter(on_left = True)
     on_right_abouts = AboutUsModel.objects.filter(on_left = False)
+    child_count = ChildModel.objects.count()
+    five_old_child_count = ChildModel.objects.filter(years_old=5).count()
+    two_old_child_count = ChildModel.objects.filter(years_old=2).count()
+    one_old_child_count = ChildModel.objects.filter(years_old__lte=1).count()
+    vitamin_count = VitaminModel.objects.filter(quantity__gt=0).count()
+    
     arguments = {
         'current_user': request.user.username.capitalize,
         'gallery': gallery,
         'vitamins': vitamins,
         'on_left_abouts': on_left_abouts,
         'on_right_abouts': on_right_abouts,
+        'child_count': child_count,
+        'vitamin_count': vitamin_count,
+        'five_old_child_count': five_old_child_count,
+        'two_old_child_count': two_old_child_count,
+        'one_old_child_count': one_old_child_count,
     }
 
     return render(request, 'LCHIS/base.html', arguments)
@@ -40,6 +46,8 @@ def user_dashboard(request):
     vitamins = VitaminModel.objects.all()
     on_left_abouts = AboutUsModel.objects.filter(on_left = True)
     on_right_abouts = AboutUsModel.objects.filter(on_left = False)
+    child_count = ChildModel.objects.count()
+    vitamin_count = VitaminModel.objects.filter(quantity__gt=0).count()
     arguments = {
         'current_user': request.user.first_name.capitalize,
         'child':child,
@@ -47,6 +55,8 @@ def user_dashboard(request):
         'vitamins': vitamins,
         'on_left_abouts': on_left_abouts,
         'on_right_abouts': on_right_abouts,
+        'child_count': child_count,
+        'vitamin_count': vitamin_count,
     }
     return render(request, 'LCHIS/user/home.html', arguments)
 

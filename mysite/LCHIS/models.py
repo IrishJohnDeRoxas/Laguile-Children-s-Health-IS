@@ -131,6 +131,7 @@ class VitaminModel(models.Model):
     image = models.ImageField(null=True, upload_to='vitamins/')
     name = models.CharField(max_length=200, blank=False)
     description = models.TextField()
+    quantity = models.IntegerField(default=0)
 
     def delete(self, *args, **kwargs):
         if self.image:
