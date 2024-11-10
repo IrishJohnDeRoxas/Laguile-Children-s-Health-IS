@@ -23,7 +23,9 @@
         <li>
           <a href="{% url 'gallery' %}" class="{% if '/gallery' in request.path %} active {% endif %}">Gallery</a>
         </li>
-        <li><a href="#team">Vitamins</a></li>
+        <li>
+          <a href="{% url 'vitamins' %}" class="{% if '/vitamins' in request.path %} active {% endif %}">Vitamins</a>
+        </li>
         <li><a href="#about">About Us</a></li>
         <li><a href="#contact">Contact Us</a></li>
       </ul>

@@ -91,6 +91,13 @@ def gallery(request):
     }
     return render(request, 'LCHIS/component/gallery.html', arguments)
 
+def vitamins(request):
+    vitamins = VitaminModel.objects.all()
+    arguments = {
+        'vitamins': vitamins,
+    }
+    return render(request, 'LCHIS/component/vitamins.html', arguments)
+
 def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)

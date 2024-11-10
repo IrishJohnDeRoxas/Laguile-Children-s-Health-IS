@@ -30,8 +30,10 @@ urlpatterns = [
     path("admin/contact_us_detail/pk=<int:pk>/", views.contact_us_detail, name="contact_us_detail"),
     path("admin/contact_us_detail", views.contact_us_detail, name="contact_us_detail"),
     
-    path("gallery/", views.gallery, name="gallery"),
+    # User paths
     path("home/", views.home, name="home"),
+    path("gallery/", views.gallery, name="gallery"),
+    path("vitamins/", views.vitamins, name="vitamins"),
     
 
 ]
