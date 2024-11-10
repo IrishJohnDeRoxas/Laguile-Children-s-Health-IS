@@ -29,4 +29,9 @@ urlpatterns = [
     path("admin/contact_us", views.contact_us_list, name="contact_us_list"),
     path("admin/contact_us_detail/pk=<int:pk>/", views.contact_us_detail, name="contact_us_detail"),
     path("admin/contact_us_detail", views.contact_us_detail, name="contact_us_detail"),
+    
+    path("gallery/", views.gallery, name="gallery"),
+    path("home/", views.home, name="home"),
+    
+
 ]

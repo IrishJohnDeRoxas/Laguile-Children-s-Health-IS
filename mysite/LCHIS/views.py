@@ -40,7 +40,7 @@ def index(request):
     return render(request, 'LCHIS/base.html', arguments)
 from django.contrib.auth.mixins import UserPassesTestMixin
 
-@login_required(login_url='/admin/login')
+@login_required(login_url='/login')
 def user_dashboard(request):
     child_id = request.user.child_id
     child = ChildModel.objects.get(pk=child_id)
@@ -72,6 +72,24 @@ def user_dashboard(request):
         'not_available_vitamin_count': not_available_vitamin_count,
     }
     return render(request, 'LCHIS/user/home.html', arguments)
+
+def home(request):
+    gallery = GalleryModel.objects.all()
+    contacts = ContactUsModel.objects.all()
+    arguments = {
+        'gallery': gallery,
+        'contacts': contacts,
+    }
+    return render(request, 'LCHIS/component/home.html', arguments)
+
+def gallery(request):
+    gallery = GalleryModel.objects.all()
+    contacts = ContactUsModel.objects.all()
+    arguments = {
+        'gallery': gallery,
+        'contacts': contacts,
+    }
+    return render(request, 'LCHIS/component/gallery.html', arguments)
 
 def login_view(request):
     if request.method == 'POST':

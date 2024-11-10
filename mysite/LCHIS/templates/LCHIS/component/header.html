@@ -14,11 +14,18 @@
     <!-- Nav Menu -->
     <nav id="navmenu" class="navmenu">
       <ul>
-        <li><a href="#hero" class="active">Home</a></li>
-        <li><a href="#portfolio">Gallery</a></li>
+
+
+
+        <li>
+          <a href="{% url 'home' %}" class="{% if '/home' in request.path %} active {% endif %}">Home</a>
+        </li>
+        <li>
+          <a href="{% url 'gallery' %}" class="{% if '/gallery' in request.path %} active {% endif %}">Gallery</a>
+        </li>
         <li><a href="#team">Vitamins</a></li>
-        <li><a href="#about">About us</a></li>
-        <li><a href="#contact">Contact us</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#contact">Contact Us</a></li>
       </ul>
 
       <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>

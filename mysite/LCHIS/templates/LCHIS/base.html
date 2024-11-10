@@ -5,7 +5,7 @@
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
-  <title>LCHIS</title>
+  <title>{% block title %}{% endblock %}</title>
   <meta content="" name="description" />
   <meta content="" name="keywords" />
 
@@ -40,85 +40,37 @@
   ======================================================== -->
 </head>
 
-<body class="index-page" data-bs-spy="scroll" data-bs-target="#navmenu">
+<!-- <body class="index-page" data-bs-spy="scroll" data-bs-target="#navmenu"> -->
+
+<body class="index-page">
   {% include 'LCHIS/component/header.html' %}
 
+  {% include 'LCHIS/component/logout_modal.html' %}
   <main id="main">
-    {% include 'LCHIS/component/hero.html' %}
-    <!-- Clients Section - Home Page -->
-    <section id="clients" class="clients">
-      <div class="container-fluid" data-aos="fade-up" style="height: 280px;">
 
-      </div>
-    </section>
-    <!-- End Clients Section -->
+    <section id="hero" class="hero">
+      <img src="{% static 'img/hero-bg.jpeg' %}" alt="" data-aos="fade-in">
 
-    <!-- About Section - Home Page -->
-
-    <section id="stats" class="stats">
-      <img src="{% static 'img/stats-bg.jpg' %}" alt="" data-aos="fade-in" />
-
-      <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
-        <div class="row justify-content-center">
-          <div class="col-lg-2 col-md-6">
-            <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="{{child_count}}" data-purecounter-duration="1"
-                class="purecounter"></span>
-              <p>Total number of child</p>
-            </div>
-          </div>
-
-          <div class="col-lg-2 col-md-6">
-            <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="{{five_old_child_count}}"
-                data-purecounter-duration="1" class="purecounter"></span>
-              <p>Number of child age 5</p>
-            </div>
-          </div>
-
-          <div class="col-lg-2 col-md-6">
-            <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="{{two_old_child_count}}"
-                data-purecounter-duration="1" class="purecounter"></span>
-              <p>Number of child age 2</p>
-            </div>
-          </div>
-
-          <div class="col-lg-2 col-md-6">
-            <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="{{one_old_child_count}}"
-                data-purecounter-duration="1" class="purecounter"></span>
-              <p>Number of child under age of 1</p>
-            </div>
-          </div>
-
-          <div class="col-lg-2 col-md-6">
-            <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="{{vitamin_count}}" data-purecounter-duration="1"
-                class="purecounter"></span>
-              <p>Count of Available Vitamins</p>
-            </div>
-          </div>
-
-          <div class="col-lg-2 col-md-6">
-            <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="{{not_available_vitamin_count}}"
-                data-purecounter-duration="1" class="purecounter"></span>
-              <p>Count of Not Available Vitamins</p>
-            </div>
-          </div>
-
+      <div class="container text-center">
+        <div class="row">
+          <h2 data-aos="fade-up" data-aos-delay="100">
+            {% block page_title %}{% endblock %}
+          </h2>
         </div>
+
+        {% if '/user' in request.path %}
+        <div class="row pt-5">
+          <p data-aos="fade-up" data-aos-delay="200">Hello! {{current_user}}</p>
+        </div>
+        {% endif %}
+
       </div>
     </section>
-    <!-- End Stats Section -->
-
-    {% include 'LCHIS/component/gallery.html' %}
-
-    {% include 'LCHIS/component/vitamins.html' %}
+    {% block main_content %}
+    {% endblock %}
 
     <!-- Call-to-action Section - Home Page -->
-    <section id="call-to-action" class="call-to-action">
+    <!-- <section id="call-to-action" class="call-to-action">
       <img src="{% static 'img/cta-bg.jpg' %}" alt="" />
 
       <div class="container">
@@ -129,7 +81,7 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
     <!-- End Call-to-action Section -->
 
     <!-- End About Section -->
