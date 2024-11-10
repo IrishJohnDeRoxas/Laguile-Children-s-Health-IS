@@ -1,0 +1,60 @@
+{% extends 'LCHIS/base.html' %}
+{% load static %}
+{% block title %}LCHIS - Gallery{% endblock %}
+
+{% block page_title %}
+Laguile Children Health Medical Record
+{% endblock %}
+
+{% block main_content %}
+<!-- About Section - Home Page -->
+<section id="stats" class="stats" style="margin-top: 10%;">
+    <img src="{% static 'img/stats-bg.jpg' %}" alt="" data-aos="fade-in" />
+
+    <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
+        <div class="row justify-content-center">
+            <div class="col-lg-2 col-md-6">
+                <div class="stats-item text-center w-100 h-100">
+                    <span data-purecounter-start="0" data-purecounter-end="{{child_count}}"
+                        data-purecounter-duration="1" class="purecounter"></span>
+                    <p>Total number of child</p>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-6">
+                <div class="stats-item text-center w-100 h-100">
+                    <span data-purecounter-start="0" data-purecounter-end="{{five_old_child_count}}"
+                        data-purecounter-duration="1" class="purecounter"></span>
+                    <p>Number of child age 5</p>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-6">
+                <div class="stats-item text-center w-100 h-100">
+                    <span data-purecounter-start="0" data-purecounter-end="{{two_old_child_count}}"
+                        data-purecounter-duration="1" class="purecounter"></span>
+                    <p>Number of child age 2</p>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-6">
+                <div class="stats-item text-center w-100 h-100">
+                    <span data-purecounter-start="0" data-purecounter-end="{{one_old_child_count}}"
+                        data-purecounter-duration="1" class="purecounter"></span>
+                    <p>Number of child under age of 1</p>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-6">
+                <div class="stats-item text-center w-100 h-100">
+                    <span data-purecounter-start="0" data-purecounter-end="{{vitamin_count}}"
+                        data-purecounter-duration="1" class="purecounter"></span>
+                    <p>Count of Available Vitamins</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!-- End Stats Section -->
+{% endblock %}

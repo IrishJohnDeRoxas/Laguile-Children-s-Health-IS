@@ -10,35 +10,8 @@ from .models import ChildModel, GuardianModel, GalleryModel, VitaminModel, About
 import os
 
 def index(request):
-    gallery = GalleryModel.objects.all()
-    vitamins = VitaminModel.objects.all()
-    on_left_abouts = AboutUsModel.objects.filter(on_left = True)
-    on_right_abouts = AboutUsModel.objects.filter(on_left = False)
-    child_count = ChildModel.objects.count()
-    five_old_child_count = ChildModel.objects.filter(years_old=5).count()
-    two_old_child_count = ChildModel.objects.filter(years_old=2).count()
-    one_old_child_count = ChildModel.objects.filter(years_old__lte=1).count()
-    vitamin_count = VitaminModel.objects.filter(quantity__gt=0).count()
-    not_available_vitamin_count = VitaminModel.objects.filter(quantity__lt=1).count()
-    
-    contacts = ContactUsModel.objects.all()
-    arguments = {
-        'current_user': request.user.username.capitalize,
-        'gallery': gallery,
-        'vitamins': vitamins,
-        'on_left_abouts': on_left_abouts,
-        'on_right_abouts': on_right_abouts,
-        'child_count': child_count,
-        'vitamin_count': vitamin_count,
-        'five_old_child_count': five_old_child_count,
-        'two_old_child_count': two_old_child_count,
-        'one_old_child_count': one_old_child_count,
-        'contacts': contacts,
-        'not_available_vitamin_count': not_available_vitamin_count,
-    }
+    return redirect(home)
 
-    return render(request, 'LCHIS/base.html', arguments)
-from django.contrib.auth.mixins import UserPassesTestMixin
 
 @login_required(login_url='/login')
 def user_dashboard(request):
@@ -74,13 +47,21 @@ def user_dashboard(request):
     return render(request, 'LCHIS/user/home.html', arguments)
 
 def home(request):
-    gallery = GalleryModel.objects.all()
-    contacts = ContactUsModel.objects.all()
+    child_count = ChildModel.objects.count()
+    five_old_child_count = ChildModel.objects.filter(years_old=5).count()
+    two_old_child_count = ChildModel.objects.filter(years_old=2).count()
+    one_old_child_count = ChildModel.objects.filter(years_old__lte=1).count()
+    vitamin_count = VitaminModel.objects.filter(quantity__gt=0).count()
+    not_available_vitamin_count = VitaminModel.objects.filter(quantity__lt=1).count()
     arguments = {
-        'gallery': gallery,
-        'contacts': contacts,
+        'child_count': child_count,
+        'vitamin_count': vitamin_count,
+        'five_old_child_count': five_old_child_count,
+        'two_old_child_count': two_old_child_count,
+        'one_old_child_count': one_old_child_count,
+        'not_available_vitamin_count': not_available_vitamin_count,
     }
-    return render(request, 'LCHIS/component/home.html', arguments)
+    return render(request, 'LCHIS/pages/home.html', arguments)
 
 def gallery(request):
     gallery = GalleryModel.objects.all()
@@ -89,14 +70,38 @@ def gallery(request):
         'gallery': gallery,
         'contacts': contacts,
     }
-    return render(request, 'LCHIS/component/gallery.html', arguments)
+    return render(request, 'LCHIS/pages/gallery.html', arguments)
 
 def vitamins(request):
     vitamins = VitaminModel.objects.all()
     arguments = {
         'vitamins': vitamins,
     }
-    return render(request, 'LCHIS/component/vitamins.html', arguments)
+    return render(request, 'LCHIS/pages/vitamins.html', arguments)
+
+def about_us(request):
+    on_left_abouts = AboutUsModel.objects.filter(on_left = True)
+    on_right_abouts = AboutUsModel.objects.filter(on_left = False)
+    arguments = {
+        'on_left_abouts': on_left_abouts,
+        'on_right_abouts': on_right_abouts,
+    }
+    return render(request, 'LCHIS/pages/about_us.html', arguments)
+
+def contact_us(request):
+    contacts = ContactUsModel.objects.all()
+    arguments = {
+        'contacts': contacts,
+    }
+    return render(request, 'LCHIS/pages/contact_us.html', arguments)
+
+def child_info(request):
+    child_id = request.user.child_id
+    child = ChildModel.objects.get(pk=child_id)
+    arguments = {
+        'child':child,
+    }
+    return render(request, 'LCHIS/pages/child_info.html', arguments)
 
 def login_view(request):
     if request.method == 'POST':
@@ -109,7 +114,7 @@ def login_view(request):
             print(user)
             if user is not None and user.is_superuser:
                 login(request, user)
-                return redirect(admin_dashboard)
+                return redirect(login_view)
             elif user is not None:
                 login(request, user)
                 return redirect(user_dashboard)
