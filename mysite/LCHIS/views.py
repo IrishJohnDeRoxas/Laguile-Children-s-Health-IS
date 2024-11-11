@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import Paginator
+from django.db.models import Q
 from django.contrib.auth import get_user_model
 
 from .forms import LoginForm, ChildModelForm, GuardianModelForm, GalleryModelForm, VitaminModelForm, AboutUsModelForm, ContactUsModelForm
@@ -48,18 +49,19 @@ def user_dashboard(request):
 
 def home(request):
     child_count = ChildModel.objects.count()
-    five_old_child_count = ChildModel.objects.filter(years_old=5).count()
-    two_old_child_count = ChildModel.objects.filter(years_old=2).count()
-    one_old_child_count = ChildModel.objects.filter(years_old__lte=1).count()
+    zero_to_one_old_child = ChildModel.objects.filter(years_old__lt=1).count()
+    one_to_six_old_child = ChildModel.objects.filter(Q(years_old__gte=1) & Q(years_old__lte=6)).count()
+    six_to_nine_old_child = ChildModel.objects.filter(Q(years_old__gte=6) & Q(years_old__lte=9)).count()
+    nine_to_nineteen_old_child = ChildModel.objects.filter(Q(years_old__gte=9) & Q(years_old__lte=19)).count()
+    
     vitamin_count = VitaminModel.objects.filter(quantity__gt=0).count()
-    not_available_vitamin_count = VitaminModel.objects.filter(quantity__lt=1).count()
     arguments = {
         'child_count': child_count,
+        'zero_to_one_old_child': zero_to_one_old_child,
+        'one_to_six_old_child': one_to_six_old_child,
+        'six_to_nine_old_child': six_to_nine_old_child,
+        'nine_to_nineteen_old_child': nine_to_nineteen_old_child,
         'vitamin_count': vitamin_count,
-        'five_old_child_count': five_old_child_count,
-        'two_old_child_count': two_old_child_count,
-        'one_old_child_count': one_old_child_count,
-        'not_available_vitamin_count': not_available_vitamin_count,
     }
     return render(request, 'LCHIS/pages/home.html', arguments)
 
