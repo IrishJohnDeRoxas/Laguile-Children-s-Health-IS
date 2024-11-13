@@ -52,7 +52,7 @@ def home(request):
     zero_to_one_old_child = ChildModel.objects.filter(years_old__lt=1).count()
     one_to_six_old_child = ChildModel.objects.filter(Q(years_old__gte=1) & Q(years_old__lte=6)).count()
     six_to_nine_old_child = ChildModel.objects.filter(Q(years_old__gte=6) & Q(years_old__lte=9)).count()
-    nine_to_nineteen_old_child = ChildModel.objects.filter(Q(years_old__gte=9) & Q(years_old__lte=12)).count()
+    nine_to_twelve_old_child = ChildModel.objects.filter(Q(years_old__gte=9) & Q(years_old__lte=12)).count()
     
     vitamin_count = VitaminModel.objects.filter(quantity__gt=0).count()
     arguments = {
@@ -60,7 +60,7 @@ def home(request):
         'zero_to_one_old_child': zero_to_one_old_child,
         'one_to_six_old_child': one_to_six_old_child,
         'six_to_nine_old_child': six_to_nine_old_child,
-        'nine_to_nineteen_old_child': nine_to_nineteen_old_child,
+        'nine_to_twelve_old_child': nine_to_twelve_old_child,
         'vitamin_count': vitamin_count,
     }
     return render(request, 'LCHIS/pages/home.html', arguments)
