@@ -47,6 +47,47 @@ def user_dashboard(request):
     }
     return render(request, 'LCHIS/user/home.html', arguments)
 
+
+def user_registration(request):
+    
+    child_form = ChildModelForm()
+    guardian_form = GuardianModelForm()
+    
+    arguments = {
+        'current_user': request.user.username.capitalize(),
+        'child_form': child_form,
+        'guardian_form': guardian_form,
+    }
+    
+    if request.method == 'POST':
+        child_form = ChildModelForm(request.POST, request.FILES)
+        guardian_form = GuardianModelForm(request.POST)
+        User = get_user_model()
+      
+        if child_form.is_valid() and guardian_form.is_valid():
+            child = child_form.save()
+            # guardian = guardian_form.save(commit=False)
+            # guardian.child = child
+            # guardian.save()
+            guardian = User.objects.create_user(
+                username=guardian_form.cleaned_data['username'],
+                password=guardian_form.cleaned_data['password'],
+                first_name=guardian_form.cleaned_data['first_name'],
+                middle_name=guardian_form.cleaned_data['middle_name'],
+                last_name=guardian_form.cleaned_data['last_name'],
+                child=child
+            )
+            guardian.save()
+
+            return redirect('child_list')
+        else:
+            arguments['child_form'] = child_form
+            arguments['guardian_form'] = guardian_form
+            return render(request, 'LCHIS/pages/registration.html', arguments)
+    else:
+        return render(request, 'LCHIS/pages/registration.html', arguments)
+
+
 def home(request):
     child_count = ChildModel.objects.count()
     zero_to_one_old_child = ChildModel.objects.filter(years_old__lt=1).count()
@@ -119,7 +160,7 @@ def login_view(request):
                 return redirect(admin_dashboard)
             elif user is not None:
                 login(request, user)
-                return redirect(user_dashboard)
+                return redirect(home)
             else:
                 form = LoginForm(request.POST)
                 arguments = {
@@ -255,8 +296,6 @@ def child_detail(request, pk = None, delete_image = None):
 def gallery_list(request):
     gallery_list = GalleryModel.objects.all()
     
-    # item = GalleryModel.objects.get(pk=22)
-    # item.delete()
     if request.method == 'POST':
         selected_images = request.POST.getlist('image_to_delete') 
         if selected_images:
@@ -469,7 +508,6 @@ def about_us_detail(request, pk=0):
             arguments['form'] = about_us_form
 
     return render(request, 'LCHIS/admin/about_us_detail.html', arguments)
-
 
 @login_required(login_url='/admin/login')
 def contact_us_list(request):

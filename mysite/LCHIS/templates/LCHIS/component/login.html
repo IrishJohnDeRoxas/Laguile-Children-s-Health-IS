@@ -91,8 +91,15 @@
                     <button type="submit" class="btn btn-dark btn-lg btn-block">Login</button>
                   </form>
 
-                  <!-- <a class="small text-muted" href="#!">Forgot password?</a>
-                        <p class="mb-5 pb-lg-2" style="color: #393f81;">Don't have an account? <a href="#!">Register here</a></p> -->
+                  <!-- <a class="small text-muted" href="#!">Forgot password?</a> -->
+                  {% if 'login/' in request.path %}
+
+                  <p class="mb-5 pb-lg-2" style="color: #393f81;">Don't have an account? <a
+                      href="{% url 'registration' %}">Register
+                      here</a></p>
+
+                  {% endif %}
+
 
                 </div>
               </div>

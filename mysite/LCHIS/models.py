@@ -4,7 +4,9 @@ from django.contrib.auth.hashers import make_password
 from django.utils import timezone
 from django.contrib.auth.base_user import BaseUserManager
 from django.core.files.storage import default_storage
-
+from .validators import validate_today_date
+from django.core.exceptions import ValidationError
+from datetime import datetime
 import os
 # Create your models here.
 
@@ -37,21 +39,21 @@ class ChildModel(models.Model):
     name_of_father = models.CharField(max_length=200, blank=True)
     father_history = models.TextField(blank=True)
     
-    bcg = models.CharField(max_length=200, null=True, blank=True)
-    hepa_b = models.CharField(max_length=200, null=True, blank=True)
-    penta_1 = models.CharField(max_length=200, null=True, blank=True)
-    penta_2 = models.CharField(max_length=200, null=True, blank=True)
-    penta_3 = models.CharField(max_length=200, null=True, blank=True)
-    opv_1 = models.CharField(max_length=200, null=True, blank=True)
-    opv_2 = models.CharField(max_length=200, null=True, blank=True)
-    opv_3 = models.CharField(max_length=200, null=True, blank=True)
-    ipv_1 = models.CharField(max_length=200, null=True, blank=True)
-    ipv_2 = models.CharField(max_length=200, null=True, blank=True)
-    pcv_1 = models.CharField(max_length=200, null=True, blank=True)
-    pcv_2 = models.CharField(max_length=200, null=True, blank=True)
-    pcv_3 = models.CharField(max_length=200, null=True, blank=True)
-    mcv_1 = models.CharField(max_length=200, null=True, blank=True)
-    mcv_2 = models.CharField(max_length=200, null=True, blank=True)
+    bcg = models.CharField(max_length=200, null=True, blank=True, validators=[validate_today_date])
+    hepa_b = models.CharField(max_length=200, null=True, blank=True, validators=[validate_today_date])
+    penta_1 = models.CharField(max_length=200, null=True, blank=True, validators=[validate_today_date])
+    penta_2 = models.CharField(max_length=200, null=True, blank=True, validators=[validate_today_date])
+    penta_3 = models.CharField(max_length=200, null=True, blank=True, validators=[validate_today_date])
+    opv_1 = models.CharField(max_length=200, null=True, blank=True, validators=[validate_today_date])
+    opv_2 = models.CharField(max_length=200, null=True, blank=True, validators=[validate_today_date])
+    opv_3 = models.CharField(max_length=200, null=True, blank=True, validators=[validate_today_date])
+    ipv_1 = models.CharField(max_length=200, null=True, blank=True, validators=[validate_today_date])
+    ipv_2 = models.CharField(max_length=200, null=True, blank=True, validators=[validate_today_date])
+    pcv_1 = models.CharField(max_length=200, null=True, blank=True, validators=[validate_today_date])
+    pcv_2 = models.CharField(max_length=200, null=True, blank=True, validators=[validate_today_date])
+    pcv_3 = models.CharField(max_length=200, null=True, blank=True, validators=[validate_today_date])
+    mcv_1 = models.CharField(max_length=200, null=True, blank=True, validators=[validate_today_date])
+    mcv_2 = models.CharField(max_length=200, null=True, blank=True, validators=[validate_today_date])
     
     remarks = models.CharField(max_length=200, blank=False)
     
@@ -63,6 +65,7 @@ class ChildModel(models.Model):
         if self.image:
             self.image.delete(save=False)
         super().delete(*args, **kwargs)
+       
         
     def save(self, *args, **kwargs):
         if self.pk:  # Check if the instance is being updated
@@ -76,11 +79,14 @@ class ChildModel(models.Model):
 
         super().save(*args, **kwargs)
         
+
+        
     def delete_image(self):
         if self.image:
             default_storage.delete(self.image.name)
             self.image = None
             self.save()
+
 
 class GuardianManager(BaseUserManager):
     def create_user(self, username, password, **extra_fields):

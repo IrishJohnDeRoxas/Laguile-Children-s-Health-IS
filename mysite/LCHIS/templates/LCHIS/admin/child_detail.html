@@ -10,6 +10,8 @@
   </div>
 </div>
 
+
+
 <div class="container-fluid d-none" id="child-form-cards">
 
   <h1 class="h4 mb-0 text-gray-800 mb-5">Add child</h1>
@@ -17,7 +19,7 @@
   <form method="post" class="form-group needs-validation" enctype="multipart/form-data" novalidate id="childForm">
     {% csrf_token %}
     {{ child_form.errors }}
-    {{ guardian_form.errors }}
+    <!-- {{ guardian_form.errors }} -->
     <div id="child-form-card">
 
       <div class="card shadow mb-4 child-form" id="id_child_card_form-0">
@@ -201,66 +203,126 @@
             </div>
           </div>
           <!-- Child's Vaccines -->
-          <div class="form-row mb-4">
+          <div class="form-row mb-4" id="child-vaccines">
             <div class="col-xlg-1 col-lg-3 col-md-6">
               {{ child_form.bcg.label }}
               {{ child_form.bcg }}
+
+              <div class="small text-danger">
+                {{ child_form.bcg.errors }}
+              </div>
             </div>
             <div class="col-xlg-1 col-lg-3 col-md-6">
               {{ child_form.hepa_b.label }}
               {{ child_form.hepa_b }}
+
+              <div class="small text-danger">
+                {{ child_form.hepa_b.errors }}
+              </div>
             </div>
             <div class="col-xlg-1 col-lg-3 col-md-6">
               {{ child_form.penta_1.label }}
               {{ child_form.penta_1 }}
+
+              <div class="small text-danger">
+                {{ child_form.penta_1.errors }}
+              </div>
             </div>
             <div class="col-xlg-1 col-lg-3 col-md-6">
               {{ child_form.penta_2.label }}
               {{ child_form.penta_2 }}
+
+              <div class="small text-danger">
+                {{ child_form.penta_2.errors }}
+              </div>
             </div>
             <div class="col-xlg-1 col-lg-3 col-md-6">
               {{ child_form.penta_3.label }}
               {{ child_form.penta_3 }}
+
+              <div class="small text-danger">
+                {{ child_form.penta_3.errors }}
+              </div>
             </div>
             <div class="col-xlg-1 col-lg-3 col-md-6">
               {{ child_form.opv_1.label }}
               {{ child_form.opv_1 }}
+
+              <div class="small text-danger">
+                {{ child_form.opv_1.errors }}
+              </div>
             </div>
             <div class="col-xlg-1 col-lg-3 col-md-6">
               {{ child_form.opv_2.label }}
               {{ child_form.opv_2 }}
+
+              <div class="small text-danger">
+                {{ child_form.opv_2.errors }}
+              </div>
             </div>
             <div class="col-xlg-1 col-lg-3 col-md-6">
               {{ child_form.opv_3.label }}
               {{ child_form.opv_3 }}
+
+              <div class="small text-danger">
+                {{ child_form.opv_3.errors }}
+              </div>
             </div>
             <div class="col-xlg-1 col-lg-3 col-md-6">
               {{ child_form.ipv_1.label }}
               {{ child_form.ipv_1 }}
+
+              <div class="small text-danger">
+                {{ child_form.ipv_1.errors }}
+              </div>
             </div>
             <div class="col-xlg-1 col-lg-3 col-md-6">
               {{ child_form.ipv_2.label }}
               {{ child_form.ipv_2 }}
+
+              <div class="small text-danger">
+                {{ child_form.ipv_2.errors }}
+              </div>
             </div>
             <div class="col-xlg-1 col-lg-3 col-md-6">
               {{ child_form.pcv_1.label }}
               {{ child_form.pcv_1 }}
+
+              <div class="small text-danger">
+                {{ child_form.pcv_1.errors }}
+              </div>
             </div>
             <div class="col-xlg-1 col-lg-3 col-md-6">
               {{ child_form.pcv_2.label }}
               {{ child_form.pcv_2 }}
+
+              <div class="small text-danger">
+                {{ child_form.pcv_2.errors }}
+              </div>
             </div>
             <div class="col-xlg-1 col-lg-3 col-md-6">
               {{ child_form.pcv_3.label }}
               {{ child_form.pcv_3 }}
+
+              <div class="small text-danger">
+                {{ child_form.pcv_3.errors }}
+              </div>
             </div>
             <div class="col-xlg-1 col-lg-3 col-md-6">
               {{ child_form.mcv_1.label }}
               {{ child_form.mcv_1 }}
+
+              <div class="small text-danger">
+                {{ child_form.mcv_1.errors }}
+              </div>
             </div>
             <div class="col-xlg-1 col-lg-3 col-md-6">
               {{ child_form.mcv_2.label }}
               {{ child_form.mcv_2 }}
+
+              <div class="small text-danger">
+                {{ child_form.mcv_2.errors }}
+              </div>
             </div>
           </div>
           <!-- End of Child's Vaccines -->

@@ -31,6 +31,7 @@ urlpatterns = [
     path("admin/contact_us_detail", views.contact_us_detail, name="contact_us_detail"),
     
     # User paths
+    path("registration/", views.user_registration, name="registration"),
     path("home/", views.home, name="home"),
     path("gallery/", views.gallery, name="gallery"),
     path("vitamins/", views.vitamins, name="vitamins"),

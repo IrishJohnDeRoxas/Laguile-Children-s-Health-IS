@@ -34,9 +34,13 @@
     <!-- Page Wrapper -->
 
     <div id="wrapper">
+
+        {% if not 'registration/' in request.path %}
         <aside>
             {% include 'LCHIS/component/admin_sidebar.html' %}
         </aside>
+
+        {% endif %}
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
@@ -44,7 +48,11 @@
             <!-- Main Content -->
             <div id="content">
 
+                {% if not 'registration/' in request.path %}
+
                 {% include 'LCHIS/component/admin_topbar.html' %}
+
+                {% endif %}
 
                 {% block content %}
                 {% endblock %}
