@@ -31,7 +31,93 @@
 </div>
 <div class="container-fluid d-none" id="galleryForm">
     <h1 class="h4 mb-0 text-gray-800 mb-5">Add image</h1>
-    <form method="post" class="form-group needs-validation" enctype="multipart/form-data" id="gallery-form" novalidate>
+    <form method="post" class="form-group needs-validation form" enctype="multipart/form-data" id="gallery-form"
+        novalidate>
+
+        <!-- Modals -->
+        <div id="modals">
+            <div class="modal fade" id="confirmSave" tabindex="-1" aria-labelledby="confirmSave" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Done inputing data?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            This save the item, confirm to save the item.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="confirmSave">Confirm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="confirmSaveAndAdd" tabindex="-1" aria-labelledby="confirmSaveAndAdd"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Done inputing data?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            This save the item, confirm to save the item.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="save-and-add-another">Confirm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="confirmSaveAndEdit" tabindex="-1" aria-labelledby="confirmSaveAndAdd"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Done inputing data?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            This save the item, confirm to save the item.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="save-and-edit-another">Confirm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="confirmDelete" tabindex="-1" aria-labelledby="confirmDelete" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Delete the item?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            This will permanently delete the item, confirm to delete the item.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="confirmDelete">Confirm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modals end -->
         {% csrf_token %}
 
         <input id="saveAndAdd" type="hidden" value="0" name="saveAndAdd">
@@ -107,15 +193,25 @@
                 <div class="controls">
 
                     {% if gallery %}
-                    <button id="save" type="submit" class="btn btn-primary mr-2">Save</button>
+                    <button type="button" class="btn btn-primary mr-2" data-toggle="modal"
+                        data-target="#confirmSave">Save</button>
                     <button id="delete" type="button" class="btn btn-danger mr-2" data-toggle="modal"
                         data-target="#confirmDelete">Delete</button>
                     {% else %}
-                    <button id="save" type="submit" class="btn btn-primary mr-2">Save</button>
-                    <button id="save-and-add-another" type="button" class="btn btn-primary mr-2">Save and add
-                        another</button>
-                    <button type="button" id="save-and-edit-another" class="btn btn-primary">Save and continue
-                        editing</button>
+                    <button type="button" class="btn btn-primary mr-2" data-toggle="modal"
+                        data-target="#confirmSave">Save</button>
+
+                    <button type="button" class="btn btn-primary mr-2" data-toggle="modal"
+                        data-target="#confirmSaveAndAdd">
+                        Save and add
+                        another
+                    </button>
+
+                    <button type="button" class="btn btn-primary mr-2" data-toggle="modal"
+                        data-target="#confirmSaveAndEdit">
+                        Save and continue
+                        editing
+                    </button>
                     {% endif %}
                 </div>
             </div>
