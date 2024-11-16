@@ -25,14 +25,41 @@
     <!-- Custom styles for this template-->
     <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
 
-
-
-
 </head>
 
-<body id="page-top">
-    <!-- Page Wrapper -->
 
+
+
+<body id="page-top">
+    <!-- Modal -->
+    <div class="modal fade" id="confirmAdd" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">
+                        {% block modal_title %}
+
+                        {% endblock modal_title %}
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {% block modal_body %}
+
+                    {% endblock modal_body %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                    {% block save_button %}
+
+                    {% endblock save_button %}
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="wrapper">
 
         {% if not 'registration/' in request.path %}

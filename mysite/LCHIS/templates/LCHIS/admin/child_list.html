@@ -13,6 +13,17 @@
       </div>
     </div>
   </form> -->
+  <form class="mb-5" action="{% url 'child_search' %}" method="GET">
+    <div class="input-group">
+      <input type="text" class="form-control" name="q" placeholder="Search for..." aria-label="Search"
+        aria-describedby="basic-addon2" value="{% if query %}{{query}}{% endif %}" />
+      <div class="input-group-append">
+        <button class="btn btn-primary" type="submit">
+          <i class="fas fa-search fa-sm"></i>
+        </button>
+      </div>
+    </div>
+  </form>
   <div class="d-flex justify-content-end mb-3">
     <h1 class="h4 mb-0 text-gray-800 align-self-start mr-auto">Select child to change</h1>
     <a class="btn btn-primary" href="{% url 'child_detail' %}">

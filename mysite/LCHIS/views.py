@@ -189,9 +189,12 @@ def admin_dashboard(request):
 
 @login_required(login_url = '/admin/login')
 def child_list(request):
-    children = ChildModel.objects.all()
-    # ChildModel.objects.all().delete()
-    # guardians.delete()
+    query = request.GET.get('q')
+    
+    if query:
+        children = ChildModel.objects.filter(Q(child_first_name__icontains=query) | Q(child_middle_name__icontains=query) | Q(child_last_name__icontains=query) ).all()
+    else:
+        children = ChildModel.objects.all()
     
     if request.method == 'POST':
         selected_images = request.POST.getlist('child_to_delete') 
@@ -213,7 +216,8 @@ def child_list(request):
     arguments = {
         'current_user': request.user.username.capitalize,
         'children': children,
-        'page_obj': page_obj
+        'page_obj': page_obj,
+        'query': query
     }
     return render(request, 'LCHIS/admin/child_list.html', arguments)
 
@@ -294,7 +298,12 @@ def child_detail(request, pk = None, delete_image = None):
 
 @login_required(login_url='/admin/login')
 def gallery_list(request):
-    gallery_list = GalleryModel.objects.all()
+    query = request.GET.get('q')
+    
+    if query:
+        gallery_list = GalleryModel.objects.filter(Q(type__icontains=query) | Q(date__icontains=query)).all()
+    else:
+        gallery_list = GalleryModel.objects.all()
     
     if request.method == 'POST':
         selected_images = request.POST.getlist('image_to_delete') 
@@ -311,7 +320,8 @@ def gallery_list(request):
     
     arguments = {
         'current_user': request.user.username.capitalize,
-        'page_obj':page_obj
+        'page_obj':page_obj,
+        'query': query
     }
     return render(request, 'LCHIS/admin/gallery_list.html', arguments)
 
@@ -365,7 +375,12 @@ def gallery_detail(request, pk=0):
 
 @login_required(login_url='/admin/login')
 def vitamin_list(request):
-    vitamin_list = VitaminModel.objects.all()
+    query = request.GET.get('q')
+    
+    if query:
+        vitamin_list = VitaminModel.objects.filter(Q(name__icontains=query) | Q(description__icontains=query)).all()
+    else:
+        vitamin_list = VitaminModel.objects.all()
     
     # item = VitaminModel.objects.get(pk=22)
     # item.delete()
@@ -384,7 +399,8 @@ def vitamin_list(request):
     
     arguments = {
         'current_user': request.user.username.capitalize,
-        'page_obj':page_obj
+        'page_obj':page_obj,
+        'query': query
     }
     return render(request, 'LCHIS/admin/vitamin_list.html', arguments)
 
@@ -438,10 +454,13 @@ def vitamin_detail(request, pk=0):
 
 @login_required(login_url='/admin/login')
 def about_us_list(request):
-    about_us_list_list = AboutUsModel.objects.all()
+    query = request.GET.get('q')
     
-    # item = AboutUsModel.objects.get(pk=22)
-    # item.delete()
+    if query:
+        about_us_list_list = AboutUsModel.objects.filter(Q(header__icontains=query) | Q(description__icontains=query)).all()
+    else:
+        about_us_list_list = AboutUsModel.objects.all()
+        
     if request.method == 'POST':
         selected_items = request.POST.getlist('item_to_delete') 
         if selected_items:
@@ -457,7 +476,8 @@ def about_us_list(request):
     
     arguments = {
         'current_user': request.user.username.capitalize,
-        'page_obj':page_obj
+        'page_obj':page_obj,
+        'query':query
     }
     return render(request, 'LCHIS/admin/about_us_list.html', arguments)
 
@@ -511,7 +531,12 @@ def about_us_detail(request, pk=0):
 
 @login_required(login_url='/admin/login')
 def contact_us_list(request):
-    contact_us_list_list = ContactUsModel.objects.all()
+    query = request.GET.get('q')
+    
+    if query:
+        contact_us_list_list = ContactUsModel.objects.filter(Q(header__icontains=query) | Q(description__icontains=query)).all()
+    else:
+        contact_us_list_list = ContactUsModel.objects.all()
 
     if request.method == 'POST':
         selected_items = request.POST.getlist('item_to_delete') 
@@ -528,7 +553,8 @@ def contact_us_list(request):
     
     arguments = {
         'current_user': request.user.username.capitalize,
-        'page_obj':page_obj
+        'page_obj':page_obj,
+        'query': query
     }
     return render(request, 'LCHIS/admin/contact_us_list.html', arguments)
 

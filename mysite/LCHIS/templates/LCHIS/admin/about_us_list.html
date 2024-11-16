@@ -1,5 +1,17 @@
 {% extends 'LCHIS/admin/admin_base.html' %} {% block content %}
+
 <div class="container-fluid">
+  <form class="mb-5" action="{% url 'about_us_search' %}" method="GET">
+    <div class="input-group">
+      <input type="text" class="form-control" name="q" placeholder="Search for..." aria-label="Search"
+        aria-describedby="basic-addon2" value="{% if query %}{{query}}{% endif %}" />
+      <div class="input-group-append">
+        <button class="btn btn-primary" type="submit">
+          <i class="fas fa-search fa-sm"></i>
+        </button>
+      </div>
+    </div>
+  </form>
   <div class="d-flex justify-content-end mb-3">
     <h1 class="h4 mb-0 text-gray-800 align-self-start mr-auto">Select About us to change</h1>
     <a class="btn btn-primary" href="{% url 'about_us_detail' %}">
@@ -8,7 +20,30 @@
     </a>
   </div>
   {% if page_obj %}
+
+
   <form method="post" id="galleryForm">
+    <div class="modal fade" id="confirmDelete" tabindex="-1" aria-labelledby="confirmDelete" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Delete the item?</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            This will permanently delete the item, confirm to delete the item.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="go">Confirm</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
     {% csrf_token %}
     <div class="row">
       <div class="col-2">
@@ -19,7 +54,8 @@
         </select>
       </div>
       <div class="col-1 align-self-end">
-        <button type="button" class="btn btn-light mt-3 border" id="go">Go</button>
+        <button id="delete" type="button" class="btn btn-light mt-3 borde" data-toggle="modal"
+          data-target="#confirmDelete">Go</button>
       </div>
     </div>
 
