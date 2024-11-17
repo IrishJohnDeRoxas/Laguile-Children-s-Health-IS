@@ -79,7 +79,7 @@ def user_registration(request):
             )
             guardian.save()
 
-            return redirect('child_list')
+            return redirect(login_view)
         else:
             arguments['child_form'] = child_form
             arguments['guardian_form'] = guardian_form
@@ -157,7 +157,7 @@ def login_view(request):
             print(user)
             if user is not None and user.is_superuser:
                 login(request, user)
-                return redirect(admin_dashboard)
+                return redirect(child_list)
             elif user is not None:
                 login(request, user)
                 return redirect(home)
@@ -271,7 +271,39 @@ def child_detail(request, pk = None, delete_image = None):
         guardian_form = GuardianModelForm(request.POST)
         User = get_user_model()
         
-      
+        saveAndAddAnother = int(request.POST['saveAndAdd']) 
+        saveAndEditAnother = int(request.POST['saveAndEdit']) 
+        if saveAndAddAnother:
+            if child_form.is_valid() and guardian_form.is_valid():
+                child = child_form.save()
+                guardian = User.objects.create_user(
+                    username=guardian_form.cleaned_data['username'],
+                    password=guardian_form.cleaned_data['password'],
+                    first_name=guardian_form.cleaned_data['first_name'],
+                    middle_name=guardian_form.cleaned_data['middle_name'],
+                    last_name=guardian_form.cleaned_data['last_name'],
+                    child=child
+                )
+                guardian.save()
+
+                return redirect(child_detail)
+            
+        if saveAndEditAnother:
+            if child_form.is_valid() and guardian_form.is_valid():
+                child = child_form.save()
+                guardian = User.objects.create_user(
+                    username=guardian_form.cleaned_data['username'],
+                    password=guardian_form.cleaned_data['password'],
+                    first_name=guardian_form.cleaned_data['first_name'],
+                    middle_name=guardian_form.cleaned_data['middle_name'],
+                    last_name=guardian_form.cleaned_data['last_name'],
+                    child=child
+                )
+                guardian.save()
+
+                return redirect(child_detail, pk=child.pk)
+            
+        
         if child_form.is_valid() and guardian_form.is_valid():
             child = child_form.save()
             # guardian = guardian_form.save(commit=False)
@@ -495,6 +527,7 @@ def about_us_detail(request, pk=0):
         arguments['vitamin'] = item
         if request.method == 'POST':
             confirmDelete = int(request.POST['confirmDelete']) 
+
             if (confirmDelete):
                 item.delete()
                 return redirect(about_us_list)

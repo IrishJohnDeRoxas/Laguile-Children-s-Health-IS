@@ -502,7 +502,7 @@
           <button type="button" class="btn btn-primary mr-2" data-toggle="modal"
             data-target="#confirmSave">Save</button>
 
-          <!-- <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#confirmSaveAndAdd">
+          <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#confirmSaveAndAdd">
             Save and add
             another
           </button>
@@ -510,7 +510,7 @@
           <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#confirmSaveAndEdit">
             Save and continue
             editing
-          </button> -->
+          </button>
 
           {% endif %}
 
@@ -529,6 +529,8 @@
 
 <script>
   const childFormCards = document.getElementById('child-form-cards')
+  const saveAndAddButton = document.querySelector("button#save-and-add-another")
+  const saveAndEditButton = document.querySelector("button#save-and-edit-another")
   const preLoader = document.getElementById('pre-loader')
   const saveButton = document.getElementById("save")
   const form = document.querySelector('form.needs-validation')
@@ -536,6 +538,9 @@
   const birthdate = document.getElementById('id_birthdate')
   const years_old = document.getElementById('id_years_old')
   const months_old = document.getElementById('id_months_old')
+
+  const saveAndAddInput = document.getElementById("saveAndAdd")
+  const saveAndEditInput = document.getElementById("saveAndEdit")
 
   const password = document.getElementById('id_password')
   const username = document.getElementById('id_username')
@@ -579,6 +584,23 @@
     }
   });
 
+
+  if (saveAndAddButton) {
+    saveAndAddButton.addEventListener("click", function () {
+      saveAndAddInput.value = 1
+      formSubmitted = true;
+      document.querySelector(".form").submit();
+
+    });
+  }
+
+  if (saveAndEditButton) {
+    saveAndEditButton.addEventListener("click", function () {
+      saveAndEditInput.value = 1
+      formSubmitted = true;
+      document.querySelector(".form").submit();
+    });
+  }
 
   const customFile = document.getElementById('imageInput');
   const customFileLabel = document.querySelector('.custom-file-label');
