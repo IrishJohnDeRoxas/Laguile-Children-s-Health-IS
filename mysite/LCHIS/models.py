@@ -66,7 +66,43 @@ class ChildModel(models.Model):
             self.image.delete(save=False)
         super().delete(*args, **kwargs)
        
+    def clean(self):
+        field_names = [
+                    'bcg',
+                    'hepa_b',
+                    'penta_1',
+                    'penta_2',
+                    'penta_3',
+                    'opv_1',
+                    'opv_2',
+                    'opv_3',
+                    'ipv_1',
+                    'ipv_2',
+                    'pcv_1',
+                    'pcv_2',
+                    'pcv_3',
+                    'mcv_1',
+                    'mcv_2'
+                    ]
         
+        b_day = datetime.strptime(self.birthdate, '%B %d, %Y').date()
+
+        errors = {}
+        for field_name in field_names:
+            field_value = getattr(self, field_name)
+            if field_value:
+                try:
+                    field_date = datetime.strptime(field_value, '%B %d, %Y').date()
+                    if b_day > field_date:
+                        errors[field_name] = f"{field_name} should be older than the child's birthdate."
+                except ValueError:
+                    errors[field_name] = f"Invalid date format for {field_name}. Please use the format 'Month Day, Year'."
+
+        if errors:
+            raise ValidationError(errors)
+
+        return super().clean() 
+    
     def save(self, *args, **kwargs):
         if self.pk:  # Check if the instance is being updated
             try:
@@ -78,8 +114,6 @@ class ChildModel(models.Model):
                 default_storage.delete(old_image.name)
 
         super().save(*args, **kwargs)
-        
-
         
     def delete_image(self):
         if self.image:
