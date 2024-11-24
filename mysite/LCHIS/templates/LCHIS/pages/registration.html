@@ -1,8 +1,6 @@
 {% extends 'LCHIS/admin/admin_base.html' %}
 {% block content %}
 {% load static %}
-<script src="{% static 'vendor/htmx/htmx.min.js' %}"></script>
-
 
 <div class="d-flex justify-content-center align-items-center" style="height: 85vh;" id="pre-loader">
     <div style="width: 100px;">
@@ -16,9 +14,9 @@
 
         <form method="post" class="form-group needs-validation" enctype="multipart/form-data" novalidate id="childForm">
             {% csrf_token %}
-            {{ child_form.errors }}
+            <!-- {{ child_form.errors }} -->
             <!-- {{ guardian_form.errors }} -->
-            <div id="child-form-card">
+            <div id="child-form-card" style="display: none;">
 
                 <div class="card shadow mb-4 child-form" id="id_child_card_form-0">
                     <div class="card-header py-3 d-flex justify-content-between">
@@ -337,7 +335,7 @@
 
             </div>
 
-            <div id="guardian-form-card">
+            <div id="guardian-form-card" class="mt-5">
                 <div class="card shadow mb-4 guardian-form" id="id_guardian_card_form-0">
                     <div class="card-header py-3 d-flex justify-content-between">
                         <h6 class="m-0 font-weight-bold text-primary">Guardian</h6>
@@ -395,7 +393,7 @@
 
             <div class="card shadow mb-4">
                 <div class="card-header">
-                    <h6 class="m-0">Controls</h6>
+                    <!-- <h6 class="m-0">Controls</h6> -->
                 </div>
                 <div class="card-body">
                     <div class="controls">

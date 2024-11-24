@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.contrib.auth import get_user_model
+from datetime import date
 
 from .forms import LoginForm, ChildModelForm, GuardianModelForm, GalleryModelForm, VitaminModelForm, AboutUsModelForm, ContactUsModelForm
 from .models import ChildModel, GuardianModel, GalleryModel, VitaminModel, AboutUsModel, ContactUsModel
@@ -47,10 +48,22 @@ def user_dashboard(request):
     }
     return render(request, 'LCHIS/user/home.html', arguments)
 
-
 def user_registration(request):
-    
-    child_form = ChildModelForm()
+    today = date.today()
+    child_initial_data = {
+        'name_of_bhw': 'N/A',
+        'purok': 'N/A',
+        'nurse': 'N/A',
+        'child_first_name': 'N/A',
+        'child_middle_name': 'N/A',
+        'child_last_name': 'N/A',
+        'height': 'N/A',
+        'weight': 'N/A',
+        'condition': 'N/A',
+        'birthdate': today.strftime('%B %d, %Y'),
+        'remarks': 'N/A',
+    }
+    child_form = ChildModelForm(initial=child_initial_data)
     guardian_form = GuardianModelForm()
     
     arguments = {
@@ -60,12 +73,20 @@ def user_registration(request):
     }
     
     if request.method == 'POST':
+        guardian_form = GuardianModelForm(request.POST) 
         child_form = ChildModelForm(request.POST, request.FILES)
-        guardian_form = GuardianModelForm(request.POST)
         User = get_user_model()
       
         if child_form.is_valid() and guardian_form.is_valid():
+            guardian_first_name = guardian_form.cleaned_data['first_name']
+        
+            child_data = {
+                'child_first_name': f'{guardian_first_name}\'s child info',
+            }
             child = child_form.save()
+            child.child_first_name = f'{guardian_first_name}\'s child info'
+            child.save()
+            
             # guardian = guardian_form.save(commit=False)
             # guardian.child = child
             # guardian.save()
@@ -86,7 +107,6 @@ def user_registration(request):
             return render(request, 'LCHIS/pages/registration.html', arguments)
     else:
         return render(request, 'LCHIS/pages/registration.html', arguments)
-
 
 def home(request):
     child_count = ChildModel.objects.count()
@@ -174,6 +194,35 @@ def login_view(request):
             'form': form
         }
     return render(request, 'LCHIS/component/login.html', arguments)
+
+def admin_login_view(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            # Process the form data
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(username=username, password=password)
+            print(user)
+            if user is not None and user.is_superuser:
+                login(request, user)
+                return redirect(child_list)
+            elif user is not None:
+                login(request, user)
+                return redirect(home)
+            else:
+                form = LoginForm(request.POST)
+                arguments = {
+                        'form': form,
+                        'error': 'Invalid username or password'
+                    }
+                return render(request, 'LCHIS/component/admin_login.html', arguments)
+    else:
+        form = LoginForm()
+        arguments = {
+            'form': form
+        }
+    return render(request, 'LCHIS/component/admin_login.html', arguments)
 
 def logout_view(request):
     logout(request)

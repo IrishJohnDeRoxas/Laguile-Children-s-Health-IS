@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>LCHIS</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    {% load static %}
+    <!-- Favicons -->
+    <link href=" {% static 'img/favicon.ico' %}" rel="icon">
+    <link href=" {% static 'img/apple-touch-icon.png' %} " rel="apple-touch-icon">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
+        rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href=" {% static 'vendor/bootstrap/css/bootstrap.min.css ' %} " rel="stylesheet">
+    <link href=" {% static 'vendor/bootstrap-icons/bootstrap-icons.css' %} " rel="stylesheet">
+    <link href=" {% static 'vendor/glightbox/css/glightbox.min.css' %} " rel="stylesheet">
+    <link href=" {% static 'vendor/swiper/swiper-bundle.min.css' %} " rel="stylesheet">
+    <link href=" {% static 'vendor/aos/aos.css' %} " rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href=" {% static 'css/main.css' %} " rel="stylesheet">
+
+</head>
+
+<body>
+    {% if 'admin/' in request.path %}
+    <div onclick="history.back()" class="go-back p-5 position-absolute d-none">
+        <i class="bi bi-arrow-left-square pe-auto accent-color" style="font-size: 50px; cursor:pointer;"></i>
+    </div>
+    {% else %}
+    <div onclick="history.back()" class="go-back p-5 position-absolute">
+        <i class="bi bi-arrow-left-square pe-auto accent-color" style="font-size: 50px; cursor:pointer;"></i>
+    </div>
+    {% endif %}
+
+    <section class="vh-100">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col col-xl-10">
+                    <div class="card" style="border-radius: 1rem;">
+                        <div class="row g-0">
+                            <div class="col-md-6 col-lg-5 d-none d-md-block">
+
+
+                                {% if 'admin/' in request.path %}
+                                <img src="{% static 'img/cta-bg.jpg' %}" alt="login form" class="img-fluid"
+                                    style="border-radius: 1rem 0 0 1rem;" />
+                                {% else %}
+                                <img src="{% static 'img/login-form.jpeg' %}" alt="login form" class="img-fluid"
+                                    style="border-radius: 1rem 0 0 1rem;" />
+                                {% endif %}
+
+                            </div>
+                            <div class="col-md-6 col-lg-7 d-flex align-items-center">
+                                <div class="card-body p-4 p-lg-5 text-black">
+                                    <form method="post">
+                                        <div class="d-flex align-items-center mb-3 pb-1">
+                                            <i class="accent-color bi bi-boxes" style="font-size: 36px;"></i>
+
+                                            <span class="h1 fw-bold mb-0">Admin - Login Form</span>
+
+                                        </div>
+
+                                        <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your
+                                            account</h5>
+
+                                        {% if error %}
+                                        <ul class="errorlist">
+                                            <li>{{ error }}</li>
+                                        </ul>
+                                        {% endif %}
+                                        {% csrf_token %}
+                                        {{ form.as_p }}
+                                        <button type="submit" class="btn btn-dark btn-lg btn-block">Login</button>
+                                    </form>
+
+                                    <!-- <a class="small text-muted" href="#!">Forgot password?</a> -->
+                                    {% if 'login/' in request.path %}
+
+                                    <p class="mb-5 pb-lg-2" style="color: #393f81;">Don't have an account? <a
+                                            href="{% url 'registration' %}">Register
+                                            here</a></p>
+
+                                    {% endif %}
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

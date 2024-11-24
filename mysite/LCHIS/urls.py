@@ -8,7 +8,7 @@ urlpatterns = [
     
     path("user/dashboard/", views.user_dashboard, name="user_dashboard"),
     
-    path("admin/login", views.login_view, name="admin_login"),
+    path("admin/login", views.admin_login_view, name="admin_login"),
     path("admin/dashboard", views.admin_dashboard, name="admin_dashboard"),
     
     path("admin/child", views.child_list, name="child_list"),
