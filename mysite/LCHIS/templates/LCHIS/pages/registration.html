@@ -9,7 +9,7 @@
 </div>
 
 
-<div class="container">
+<div class="container" style="margin-bottom: 200px;">
     <div class="container-fluid d-none" id="child-form-cards">
 
         <form method="post" class="form-group needs-validation" enctype="multipart/form-data" novalidate id="childForm">
@@ -115,28 +115,6 @@
                                 <div class="invalid-feedback">
                                     Please add condition.
                                 </div>
-                            </div>
-                        </div>
-                        <div class="form-row mb-4">
-                            <div class="col-md-3">
-                                {{ child_form.name_of_mother.label }}
-                                {{ child_form.name_of_mother }}
-                            </div>
-                            <div class="col-md-3">
-                                {{ child_form.name_of_father.label }}
-                                {{ child_form.name_of_father }}
-                            </div>
-                        </div>
-                        <div class="form-row mb-4">
-                            <div class="col-md-4">
-                                {{ child_form.mother_history.label }}
-                                {{ child_form.mother_history }}
-                            </div>
-                        </div>
-                        <div class="form-row mb-4">
-                            <div class="col-md-4">
-                                {{ child_form.father_history.label }}
-                                {{ child_form.father_history }}
                             </div>
                         </div>
                         <div class="form-row mb-4">
@@ -338,32 +316,45 @@
             <div id="guardian-form-card" class="mt-5">
                 <div class="card shadow mb-4 guardian-form" id="id_guardian_card_form-0">
                     <div class="card-header py-3 d-flex justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-primary">Guardian</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Registration</h6>
                     </div>
                     <div class="card-body">
                         <div class="form-row mb-4">
                             <div class="col-md-4">
-                                {{ guardian_form.first_name.label }}
+                                Guardian First Name
                                 {{ guardian_form.first_name }}
                                 <div class="invalid-feedback">
                                     Please add a first name.
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                {{ guardian_form.middle_name.label }}
+                                Guardian Middle Name
                                 {{ guardian_form.middle_name }}
                                 <div class="invalid-feedback">
                                     Please add a middle name.
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                {{ guardian_form.last_name.label }}
+                                Guardian Last Name
                                 {{ guardian_form.last_name }}
                                 <div class="invalid-feedback">
                                     Please add a last name.
                                 </div>
                             </div>
                         </div>
+                        <div class="form-row mb-4">
+                            <div class="col-md-6">
+                                {{ child_form.name_of_mother.label }}
+                                {{ child_form.name_of_mother }}
+                            </div>
+                        </div>
+                        <div class="form-row mb-4">
+                            <div class="col-md-6">
+                                {{ child_form.name_of_father.label }}
+                                {{ child_form.name_of_father }}
+                            </div>
+                        </div>
+
                         <div class="form-row mb-4">
                             <div class="d-flex align-items-center" style="padding-left:6px;">
                                 {{ guardian_form.username.label }}
@@ -397,10 +388,7 @@
                 </div>
                 <div class="card-body">
                     <div class="controls">
-
                         <button id="save" type="submit" class="btn btn-primary mr-2">Submit</button>
-
-
                     </div>
                 </div>
             </div>
