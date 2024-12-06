@@ -165,8 +165,8 @@ class GuardianModel(AbstractUser):
   date_joined = models.DateField(default=timezone.now, null=True, blank=True)
   middle_name = models.CharField(max_length=200, blank=False)
   password = models.CharField(max_length=128, validators=[
-        MinLengthValidator(4),
-        MaxLengthValidator(6),
+        MinLengthValidator(6),
+        MaxLengthValidator(10),
     ], error_messages={
         'min_length': 'Password must be at least 4 characters long.',
         'max_length': 'Password cannot exceed 10 characters.'
