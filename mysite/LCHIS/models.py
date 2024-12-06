@@ -39,6 +39,14 @@ class ChildModel(models.Model):
     name_of_father = models.CharField(max_length=200, blank=True)
     father_history = models.TextField(blank=True)
     
+    mother_first_name = models.CharField(max_length=200, blank=False)
+    mother_middle_name = models.CharField(max_length=200, blank=False)
+    mother_last_name = models.CharField(max_length=200, blank=False)
+    
+    father_first_name = models.CharField(max_length=200, blank=False)
+    father_middle_name = models.CharField(max_length=200, blank=False)
+    father_last_name = models.CharField(max_length=200, blank=False)
+    
     bcg = models.CharField(max_length=200, null=True, blank=True, validators=[validate_today_date])
     hepa_b = models.CharField(max_length=200, null=True, blank=True, validators=[validate_today_date])
     penta_1 = models.CharField(max_length=200, null=True, blank=True, validators=[validate_today_date])

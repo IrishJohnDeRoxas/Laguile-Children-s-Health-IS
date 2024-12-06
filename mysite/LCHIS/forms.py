@@ -24,6 +24,14 @@ class ChildModelForm(forms.ModelForm):
         'birthdate':TextInput( attrs={'class':'form-control', 'required':'', 'autocomplete': 'off'}),
         'image':FileInput(attrs={'class': 'custom-file-input', 'id':'imageInput'}),
         
+        'mother_first_name':TextInput( attrs={'class':'form-control', 'required':''}),
+        'mother_middle_name':TextInput( attrs={'class':'form-control', 'required':''}),
+        'mother_last_name':TextInput( attrs={'class':'form-control', 'required':''}),
+        
+        'father_first_name':TextInput( attrs={'class':'form-control', 'required':''}),
+        'father_middle_name':TextInput( attrs={'class':'form-control', 'required':''}),
+        'father_last_name':TextInput( attrs={'class':'form-control', 'required':''}),
+        
         'height':TextInput( attrs={'class':'form-control', 'required':''}),
         'weight':TextInput( attrs={'class':'form-control', 'required':''}),
         'condition':Textarea( attrs={'class':'form-control', 'required':''}),
@@ -59,6 +67,12 @@ class ChildModelForm(forms.ModelForm):
         'child_first_name':'First name',
         'child_middle_name':'Middle name',
         'child_last_name':'Last name',
+        'mother_first_name':'Mother First name',
+        'mother_middle_name':'Mother Middle name',
+        'mother_last_name':'Mother Last name',
+        'father_first_name':'Father First name',
+        'father_middle_name':'Father Middle name',
+        'father_last_name':'Father Last name',
         'nurse':'Name of Midwife/Nurse:',
         'name_of_bhw':'Name of BHW:',
         'purok':'Purok:',
@@ -75,7 +89,7 @@ class GuardianModelForm(forms.ModelForm):
         'middle_name': TextInput( attrs={'class': 'form-control', 'required':''}),
         'last_name': TextInput( attrs={'class': 'form-control', 'required':''}),
         'username': TextInput( attrs={'class': 'form-control', 'required':''}),
-        'password': TextInput( attrs={'class': 'form-control', 'required':''}),
+        'password': TextInput( attrs={'class': 'form-control', 'required':'',"type": "password"}),
       }
 
 class GalleryModelForm(forms.ModelForm):

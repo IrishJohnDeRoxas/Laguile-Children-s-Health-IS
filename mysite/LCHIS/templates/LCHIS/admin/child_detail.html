@@ -214,16 +214,56 @@
               </div>
             </div>
           </div>
-          <div class="form-row mb-4">
-            <div class="col-md-3">
-              {{ child_form.name_of_mother.label }}
-              {{ child_form.name_of_mother }}
+          <div class="form-row mb-4 mt-5">
+            <div class="col-md-4">
+              {{ child_form.mother_first_name.label }}
+              {{ child_form.mother_first_name }}
+              <div class="invalid-feedback">
+                Please add a first name.
+              </div>
             </div>
-            <div class="col-md-3">
-              {{ child_form.name_of_father.label }}
-              {{ child_form.name_of_father }}
+            <div class="col-md-4">
+              {{ child_form.mother_middle_name.label }}
+              {{ child_form.mother_middle_name }}
+              <div class="invalid-feedback">
+                Please add a middle name.
+              </div>
             </div>
+            <div class="col-md-4">
+              {{ child_form.mother_last_name.label }}
+              {{ child_form.mother_last_name }}
+              <div class="invalid-feedback">
+                Please add a last name.
+              </div>
+            </div>
+
           </div>
+
+          <div class="form-row mb-4">
+            <div class="col-md-4">
+              {{ child_form.father_first_name.label }}
+              {{ child_form.father_first_name }}
+              <div class="invalid-feedback">
+                Please add a first name.
+              </div>
+            </div>
+            <div class="col-md-4">
+              {{ child_form.father_middle_name.label }}
+              {{ child_form.father_middle_name }}
+              <div class="invalid-feedback">
+                Please add a middle name.
+              </div>
+            </div>
+            <div class="col-md-4">
+              {{ child_form.father_last_name.label }}
+              {{ child_form.father_last_name }}
+              <div class="invalid-feedback">
+                Please add a last name.
+              </div>
+            </div>
+
+          </div>
+
           <div class="form-row mb-4">
             <div class="col-md-4">
               {{ child_form.mother_history.label }}
