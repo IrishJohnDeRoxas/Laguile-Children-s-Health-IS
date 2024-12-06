@@ -6,6 +6,7 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.core.files.storage import default_storage
 from .validators import validate_today_date
 from django.core.exceptions import ValidationError
+from django.core.validators import MinLengthValidator, MaxLengthValidator
 from datetime import datetime
 import os
 # Create your models here.
@@ -131,33 +132,45 @@ class ChildModel(models.Model):
 
 
 class GuardianManager(BaseUserManager):
-    def create_user(self, username, password, **extra_fields):
-        # Customize user creation logic (e.g., email validation)
-        if not username:
-            raise ValueError('The username field is required')
-        user = self.model(username=username, **extra_fields)
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
+  def create_user(self, username, password, **extra_fields):
+    # Customize user creation logic (e.g., email validation)
+    if not username:
+      raise ValueError('The username field is required')
 
-    def create_superuser(self, username, password, **extra_fields):
-        # Customize superuser creation logic (e.g., grant all permissions)
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
+    if len(password) < 4:
+      raise ValueError('Password must be at least 4 characters long.')
 
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError('Superuser must have is_staff=True.')
+    user = self.model(username=username, **extra_fields)
+    user.set_password(password)
+    user.save(using=self._db)
+    return user
 
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError('Superuser must have is_superuser=True.')
+  def create_superuser(self, username, password, **extra_fields):
+    # Customize superuser creation logic (e.g., grant all permissions)
+    extra_fields.setdefault('is_staff', True)
+    extra_fields.setdefault('is_superuser', True)
 
-        return self.create_user(username, password, **extra_fields)
-    
+    if extra_fields.get('is_staff') is not True:
+      raise ValueError('Superuser must have is_staff=True.')
+
+    if extra_fields.get('is_superuser') is not True:
+      raise ValueError('Superuser must have is_superuser=True.')
+
+    return self.create_user(username, password, **extra_fields)
+
+
 class GuardianModel(AbstractUser):
-    objects = GuardianManager()
-    child = models.ForeignKey(ChildModel, on_delete=models.CASCADE, null=True, blank=True)
-    date_joined = models.DateField(default=timezone.now, null=True, blank=True)
-    middle_name = models.CharField(max_length=200, blank=False)
+  objects = GuardianManager()
+  child = models.ForeignKey(ChildModel, on_delete=models.CASCADE, null=True, blank=True)
+  date_joined = models.DateField(default=timezone.now, null=True, blank=True)
+  middle_name = models.CharField(max_length=200, blank=False)
+  password = models.CharField(max_length=128, validators=[
+        MinLengthValidator(4),
+        MaxLengthValidator(10),
+    ], error_messages={
+        'min_length': 'Password must be at least 4 characters long.',
+        'max_length': 'Password cannot exceed 10 characters.'
+    })
 
 class GalleryModel(models.Model):
     typeChoices = (

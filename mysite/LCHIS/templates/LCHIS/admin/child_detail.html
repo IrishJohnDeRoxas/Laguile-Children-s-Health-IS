@@ -515,7 +515,6 @@
             {% for error in guardian_form.username.errors %}
             <div>
               <p>{{ error }}</p>
-
             </div>
             {% endfor %}
           </div>
@@ -530,6 +529,13 @@
               </div>
               <input type="checkbox" id="show_password">
               <label for="show_password">Show Password</label>
+            </div>
+            <div class="col-xlg-6 col-lg-6 col-md-6 col-sm-6 mt-2">
+              {% for error in guardian_form.password.errors %}
+              <div>
+                <p>{{ error }}</p>
+              </div>
+              {% endfor %}
             </div>
           </div>
         </div>
