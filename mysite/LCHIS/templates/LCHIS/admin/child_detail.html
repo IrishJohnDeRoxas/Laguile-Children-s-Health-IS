@@ -107,8 +107,8 @@
     <!-- Modals end -->
 
     {% csrf_token %}
-    <!-- {{ child_form.errors }} -->
-    <!-- {{ guardian_form.errors }} -->
+    {{ child_form.errors }}
+    {{ guardian_form.errors }}
 
     <input id="saveAndAdd" type="hidden" value="0" name="saveAndAdd">
     <input id="saveAndEdit" type="hidden" value="0" name="saveAndEdit">
@@ -508,7 +508,16 @@
               <div class="invalid-feedback">
                 Please add a username.
               </div>
+
             </div>
+          </div>
+          <div class="form-row mb-4">
+            {% for error in guardian_form.username.errors %}
+            <div>
+              <p>{{ error }}</p>
+
+            </div>
+            {% endfor %}
           </div>
           <div class="form-row mb-4">
             <div class="d-flex align-items-center" style="padding-left:6px;">
@@ -519,6 +528,8 @@
               <div class="invalid-feedback">
                 Please add a password.
               </div>
+              <input type="checkbox" id="show_password">
+              <label for="show_password">Show Password</label>
             </div>
           </div>
         </div>
@@ -663,13 +674,7 @@
   });
 
 
-  if (password.value) {
-    const passwordDiv = password.closest('div.form-row')
-    const usernameDiv = username.closest('div.form-row')
 
-    passwordDiv.classList.add('d-none')
-    usernameDiv.classList.add('d-none')
-  }
   window.addEventListener('beforeunload', (event) => {
 
     const form = document.getElementById('childForm')
@@ -706,7 +711,16 @@
     });
   })
 
+  const showPasswordCheckbox = document.getElementById('show_password');
+  const passwordInput = document.getElementById('id_password');
 
+  showPasswordCheckbox.addEventListener('change', () => {
+    if (showPasswordCheckbox.checked) {
+      passwordInput.type = 'text';
+    } else {
+      passwordInput.type = 'password';
+    }
+  });
 
 </script>
 
