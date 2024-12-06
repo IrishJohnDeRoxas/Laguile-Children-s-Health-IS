@@ -168,7 +168,7 @@ class GuardianModel(AbstractUser):
         MinLengthValidator(6),
         MaxLengthValidator(10),
     ], error_messages={
-        'min_length': 'Password must be at least 4 characters long.',
+        'min_length': 'Password must be at least 6 characters long.',
         'max_length': 'Password cannot exceed 10 characters.'
     })
 
